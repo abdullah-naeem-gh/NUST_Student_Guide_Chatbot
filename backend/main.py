@@ -6,7 +6,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.routes import ping
+from api.routes import ingest, ping
 from config import settings
 from index_state import describe_index_paths, indexes_exist
 
@@ -53,3 +53,4 @@ app.add_middleware(
 )
 
 app.include_router(ping.router)
+app.include_router(ingest.router)
