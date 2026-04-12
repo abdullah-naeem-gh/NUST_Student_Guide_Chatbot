@@ -1,0 +1,216 @@
+# .cursorrules — Academic Policy QA System
+
+## Project Overview
+This is a Big Data academic project: a Question-Answering system over university handbooks.
+It uses MinHash+LSH, SimHash, and TF-IDF retrieval with a React frontend and FastAPI backend.
+The goal is a working, well-structured, demo-ready system with strong experimental analysis.
+
+---
+
+## Tech Stack
+- **Backend**: Python 3.11+, FastAPI, Pydantic v2, pdfplumber, datasketch, sklearn, networkx, mmh3, nltk, anthropic
+- **Frontend**: React 18, Vite, TailwindCSS, Zustand, Axios, Recharts, React Router v6
+- **Testing**: pytest (backend), no frontend tests required
+- **Code style**: Black (backend), ESLint + Prettier (frontend)
+
+---
+
+## General Rules
+
+### Always
+- Read INSTRUCTIONS.md before implementing any module — it contains exact algorithms, parameters, and edge cases
+- Follow the phased TODO.md order — do not skip phases
+- Use Pydantic models for all API request/response schemas
+- Handle errors gracefully — never let an unhandled exception crash the server
+- Add a docstring to every Python function and class
+- Use TypeScript-style JSDoc comments on React components
+- Keep components small — if a component exceeds 150 lines, split it
+
+### Never
+- Never use `any` type in Pydantic models — always be explicit
+- Never hardcode file paths — use `config.py` constants
+- Never commit `.env` files, `data/raw/`, `data/index/*.pkl`, or `node_modules/`
+- Never use `print()` for logging — use Python's `logging` module
+- Never make API calls directly from React components — always go through `src/api/`
+- Never store sensitive data (API keys) in frontend code
+
+---
+
+## Backend Conventions
+
+### File structure per module
+Each module in `ingestion/`, `indexing/`, `retrieval/`, `generation/`, `evaluation/` must have:
+- `__init__.py` that exports the primary class/function
+- `models.py` for Pydantic schemas used by that module
+- The main implementation file
+
+### FastAPI patterns
+```python
+# Route files follow this pattern
+from fastapi import APIRouter, HTTPException
+from ..models import RequestModel, ResponseModel
+
+router = APIRouter(prefix="/endpoint", tags=["tag"])
+
+@router.post("/", response_model=ResponseModel)
+async def handler(request: RequestModel):
+    try:
+        result = service_function(request)
+        return result
+    except SomeSpecificError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+```
+
+### Config pattern
+All configurable values go in `config.py`:
+```python
+from pydantic_settings import BaseSettings
+
+class Settings(BaseSettings):
+    ANTHROPIC_API_KEY: str
+    CHUNK_SIZE_WORDS: int = 350
+    CHUNK_OVERLAP_WORDS: int = 75
+    MIN_CHUNK_WORDS: int = 100
+    MINHASH_NUM_PERM: int = 128
+    LSH_NUM_BANDS: int = 32
+    SIMHASH_HAMMING_THRESHOLD: int = 10
+    TOP_K_DEFAULT: int = 5
+    DATA_DIR: Path = Path("data")
+    
+    class Config:
+        env_file = ".env"
+
+settings = Settings()
+```
+
+### Data persistence
+- Chunks: `data/chunks/chunks.json` (human readable, easy to inspect)
+- Indexes: `data/index/*.pkl` using `joblib.dump` / `joblib.load`
+- Experiment results: `data/results/*.json`
+- Always check if index exists before building: `if not index_path.exists(): build()`
+
+### Logging
+```python
+import logging
+logger = logging.getLogger(__name__)
+# Use: logger.info(), logger.warning(), logger.error()
+# Configure in main.py with format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+```
+
+---
+
+## Frontend Conventions
+
+### Component pattern
+```jsx
+/**
+ * ChunkCard — displays a single retrieved chunk with highlights
+ * @param {Object} props
+ * @param {Object} props.chunk - RetrievedChunk object from API
+ * @param {string} props.query - Original query for highlight matching
+ * @param {boolean} props.isCited - Whether this chunk was cited in the answer
+ */
+export default function ChunkCard({ chunk, query, isCited }) {
+  // component logic
+}
+```
+
+### API calls
+All API functions live in `src/api/`. They return data directly (no response wrapper):
+```javascript
+// src/api/query.js
+import client from './client'
+
+export async function runQuery(query, method = 'all', k = 5) {
+  const { data } = await client.post('/query', { query, method, k })
+  return data
+}
+```
+
+### Zustand store
+```javascript
+// src/store/appStore.js
+import { create } from 'zustand'
+
+const useAppStore = create((set) => ({
+  // state
+  queryResults: null,
+  isLoading: false,
+  // actions
+  setQueryResults: (results) => set({ queryResults: results }),
+  setLoading: (loading) => set({ isLoading: loading }),
+}))
+```
+
+### Styling
+- Use Tailwind utility classes exclusively — no custom CSS except for CSS variables in `index.css`
+- Define design tokens in `index.css`:
+  ```css
+  :root {
+    --color-primary: #1a1a2e;
+    --color-accent: #e94560;
+    --color-surface: #16213e;
+    --color-text: #eaeaea;
+  }
+  ```
+- Dark mode via `class` strategy in `tailwind.config.js`
+- Responsive breakpoints: focus on `lg:` (1024px+) for demo laptop screen
+
+---
+
+## Git Commit Convention
+
+Format: `type(scope): description`
+
+Types:
+- `feat` — new feature
+- `fix` — bug fix
+- `chore` — setup, config, dependencies
+- `docs` — documentation
+- `test` — adding tests
+- `refactor` — code restructure without behavior change
+- `polish` — UI/UX improvements
+
+Scopes match folder names: `ingestion`, `indexing`, `retrieval`, `generation`, `evaluation`, `frontend`, `api`, `config`
+
+Examples:
+- `feat(ingestion): implement sliding window chunker with sentence boundaries`
+- `feat(indexing): add SimHash fingerprint with TF-IDF weighted terms`
+- `fix(retrieval): handle empty LSH results with TF-IDF fallback`
+- `feat(frontend): add side-by-side method comparison with latency badges`
+- `docs: add docstrings to all indexing modules`
+
+---
+
+## When Implementing a New Module
+
+1. Read the relevant section in INSTRUCTIONS.md
+2. Create the `models.py` file first — define all Pydantic schemas
+3. Implement the main logic with full docstrings
+4. Add error handling for every edge case listed in INSTRUCTIONS.md
+5. Write at least 2 tests in `tests/`
+6. Update `__init__.py` to export the main interface
+7. Wire into the API route
+8. Test manually with a real query
+9. Commit with proper message
+
+---
+
+## Performance Rules
+- Index loading must happen at startup (`@app.on_event("startup")`) — not on first request
+- Never rebuild an index if it already exists on disk (check file existence)
+- Retrieval must complete in < 100ms for MinHash and SimHash, < 500ms for TF-IDF on full corpus
+- LLM calls are the exception — up to 10s is acceptable
+- Use `asyncio.gather` to run all three methods in parallel when method="all"
+
+---
+
+## Demo-Critical Features (Do these with extra care)
+1. Three-column side-by-side comparison — this is what the examiner will remember
+2. Chunk text highlighting — must work accurately
+3. Analytics charts — must be correctly labeled with proper axes and legends
+4. Latency badges — must reflect real measurements, not hardcoded values
+5. The answer card — must clearly show it came from the handbook text, not general knowledge
