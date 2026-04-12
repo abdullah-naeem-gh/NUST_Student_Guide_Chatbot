@@ -1,0 +1,17 @@
+fastapi
+uvicorn[standard]
+pydantic
+pydantic-settings
+pdfplumber
+nltk
+datasketch
+scikit-learn
+joblib
+networkx
+mmh3
+anthropic
+python-multipart
+pytest
+httpx
+black
+ruff
