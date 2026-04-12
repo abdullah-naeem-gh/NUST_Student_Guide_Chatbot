@@ -1,5 +1,6 @@
 # Backend
 backend/.venv/
+backend/nltk_data/
 backend/__pycache__/
 backend/.env
 backend/**/*.pyc

@@ -1,0 +1,8 @@
+{
+  "include": ["backend"],
+  "exclude": ["**/node_modules", "**/.venv", "**/nltk_data"],
+  "venvPath": "backend",
+  "venv": ".venv",
+  "pythonVersion": "3.14",
+  "typeCheckingMode": "basic"
+}
