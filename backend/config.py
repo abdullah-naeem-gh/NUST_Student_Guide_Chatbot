@@ -8,7 +8,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     """Runtime configuration for paths, retrieval parameters, and API keys."""
 
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=".env", env_file_encoding="utf-8", extra="ignore"
+    )
 
     ANTHROPIC_API_KEY: str = ""
 
@@ -22,6 +24,8 @@ class Settings(BaseSettings):
 
     # Repository root is parent of backend/; data/ lives at project root
     DATA_DIR: Path = Path(__file__).resolve().parent.parent / "data"
+    RAW_PDF_DIR: Path = Path(__file__).resolve().parent.parent / "data" / "raw"
+    CHUNKS_DIR: Path = Path(__file__).resolve().parent.parent / "data" / "chunks"
 
 
 settings = Settings()
