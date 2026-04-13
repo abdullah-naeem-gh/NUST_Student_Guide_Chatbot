@@ -14,6 +14,7 @@ from ingestion.chunker import (
 )
 from ingestion.models import IngestProcessingStep, IngestResponse
 from ingestion.pdf_parser import parse_pdf
+from indexing.index_manager import IndexManager
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +34,7 @@ async def ingest_pdf(
     """
     Accept a PDF upload, run the ingestion pipeline, and write chunk JSON files.
 
-    Phase 1 performs parse → clean → chunk only (no indexing).
+    Phase 2 additionally builds MinHash, SimHash, TF-IDF, and PageRank artifacts.
 
     Args:
         file: Multipart PDF upload.
@@ -125,8 +126,21 @@ async def ingest_pdf(
             )
         )
 
+        t_index = time.perf_counter()
+        try:
+            mgr = IndexManager()
+            # Rebuild indexes when chunks are forced to rebuild as well.
+            build_results = mgr.build_all(chunks, force=force_rebuild)
+        except Exception as e:
+            logger.exception("Index build failed")
+            raise HTTPException(
+                status_code=500, detail="Indexing failed; see server logs"
+            ) from e
+
         total = round(time.perf_counter() - t0, 4)
         page_count = max((p.page_number for p in pages), default=0)
+        index_build_time_s = round(time.perf_counter() - t_index, 4)
+        methods_indexed = [r.name for r in build_results if r.built]
 
         logger.info(
             "Ingest complete: %s chunks, %s pages, written %s",
@@ -142,6 +156,8 @@ async def ingest_pdf(
             source_file=Path(file.filename).name,
             processing_steps=steps,
             total_duration_s=total,
+            index_build_time_s=index_build_time_s,
+            methods_indexed=methods_indexed,
         )
     finally:
         if tmp_path.exists():

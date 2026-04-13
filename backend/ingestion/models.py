@@ -46,7 +46,7 @@ class IngestProcessingStep(BaseModel):
 
 
 class IngestResponse(BaseModel):
-    """Response body for POST /ingest (Phase 1: parse, clean, chunk only)."""
+    """Response body for POST /ingest (Phase 1-2: parse, clean, chunk, index)."""
 
     status: str = "success"
     chunk_count: int
@@ -54,3 +54,5 @@ class IngestResponse(BaseModel):
     source_file: str
     processing_steps: list[IngestProcessingStep] = Field(default_factory=list)
     total_duration_s: float
+    index_build_time_s: float | None = None
+    methods_indexed: list[str] = Field(default_factory=list)

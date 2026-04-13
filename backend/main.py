@@ -6,9 +6,10 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.routes import ingest, ping
+from api.routes import ingest, ping, status
 from config import settings
 from index_state import describe_index_paths, indexes_exist
+from indexing import IndexManager
 
 logging.basicConfig(
     level=logging.INFO,
@@ -22,8 +23,7 @@ async def lifespan(app: FastAPI):
     """
     Configure application state at startup.
 
-    Verifies whether serialized indexes exist; full loading is implemented in
-    later phases when indexing modules are wired in.
+    Loads serialized indexes at startup when present (performance rule).
     """
     app.state.indexed = indexes_exist()
     if app.state.indexed:
@@ -31,9 +31,13 @@ async def lifespan(app: FastAPI):
             "Index artifacts found: %s",
             describe_index_paths(),
         )
-        logger.info(
-            "Index objects will be loaded when the indexing module is implemented."
-        )
+        try:
+            mgr = IndexManager()
+            mgr.load_all()
+            app.state.index_manager = mgr
+            logger.info("Index objects loaded into memory at startup.")
+        except Exception:
+            logger.exception("Index objects found but could not be loaded.")
     else:
         logger.info("No complete index set on disk yet (expected before Phase 2).")
     yield
@@ -54,3 +58,4 @@ app.add_middleware(
 
 app.include_router(ping.router)
 app.include_router(ingest.router)
+app.include_router(status.router)
