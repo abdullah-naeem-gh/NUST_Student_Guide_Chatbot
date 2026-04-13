@@ -6,10 +6,11 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.routes import ingest, ping, status
+from api.routes import ingest, ping, query, status
 from config import settings
 from index_state import describe_index_paths, indexes_exist
 from indexing import IndexManager
+from retrieval.retriever import Retriever
 
 logging.basicConfig(
     level=logging.INFO,
@@ -35,6 +36,7 @@ async def lifespan(app: FastAPI):
             mgr = IndexManager()
             mgr.load_all()
             app.state.index_manager = mgr
+            app.state.retriever = Retriever(mgr)
             logger.info("Index objects loaded into memory at startup.")
         except Exception:
             logger.exception("Index objects found but could not be loaded.")
@@ -58,4 +60,5 @@ app.add_middleware(
 
 app.include_router(ping.router)
 app.include_router(ingest.router)
+app.include_router(query.router)
 app.include_router(status.router)
