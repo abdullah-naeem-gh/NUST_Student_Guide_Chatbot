@@ -1,4 +1,4 @@
-"""Index presence checks and future load hooks for serialized retrieval indexes."""
+"""Index presence checks for serialized retrieval indexes."""
 
 from pathlib import Path
 
@@ -16,14 +16,15 @@ def indexes_exist(data_dir: Path | None = None) -> bool:
         data_dir: Root data directory; defaults to ``settings.DATA_DIR``.
 
     Returns:
-        Whether minhash, simhash, and tf-idf index files are all present.
+        Whether minhash, simhash, tf-idf, and pagerank artifacts are all present.
     """
     root = data_dir if data_dir is not None else settings.DATA_DIR
     idx = root / "index"
     required = (
         idx / "minhash.pkl",
-        idx / "simhash.pkl",
+        idx / "simhash.json",
         idx / "tfidf.pkl",
+        idx / "pagerank.json",
     )
     return all(p.exists() for p in required)
 
@@ -42,6 +43,7 @@ def describe_index_paths(data_dir: Path | None = None) -> dict[str, str]:
     idx = root / "index"
     return {
         "minhash": str((idx / "minhash.pkl").resolve()),
-        "simhash": str((idx / "simhash.pkl").resolve()),
+        "simhash": str((idx / "simhash.json").resolve()),
         "tfidf": str((idx / "tfidf.pkl").resolve()),
+        "pagerank": str((idx / "pagerank.json").resolve()),
     }

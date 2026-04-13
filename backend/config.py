@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     MIN_CHUNK_WORDS: int = 100
     MINHASH_NUM_PERM: int = 128
     LSH_NUM_BANDS: int = 32
+    LSH_ROWS_PER_BAND: int = 4
     SIMHASH_HAMMING_THRESHOLD: int = 10
     TOP_K_DEFAULT: int = 5
 
@@ -26,6 +27,7 @@ class Settings(BaseSettings):
     DATA_DIR: Path = Path(__file__).resolve().parent.parent / "data"
     RAW_PDF_DIR: Path = Path(__file__).resolve().parent.parent / "data" / "raw"
     CHUNKS_DIR: Path = Path(__file__).resolve().parent.parent / "data" / "chunks"
+    INDEX_DIR: Path = Path(__file__).resolve().parent.parent / "data" / "index"
 
 
 settings = Settings()
