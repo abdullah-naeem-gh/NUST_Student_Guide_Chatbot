@@ -16,7 +16,6 @@ from ingestion.models import Chunk
 logger = logging.getLogger(__name__)
 
 _WORD_RE = re.compile(r"\b[a-zA-Z][a-zA-Z0-9]*\b")
-_SHINGLE_K_WORDS = 3
 
 
 def _ensure_stopwords_and_stemmer() -> tuple[set[str], object]:
@@ -66,7 +65,7 @@ def _normalize_terms(text: str, stop: set[str], stemmer: object) -> list[str]:
     return [stem(t) for t in filtered]
 
 
-def shingle_k_words(terms: list[str], k: int = _SHINGLE_K_WORDS) -> set[str]:
+def shingle_k_words(terms: list[str], k: int) -> set[str]:
     """
     Create word-level k-shingles (INSTRUCTIONS §2.1).
 
@@ -83,6 +82,19 @@ def shingle_k_words(terms: list[str], k: int = _SHINGLE_K_WORDS) -> set[str]:
     if len(terms) < k:
         return {" ".join(terms)} if terms else set()
     return {" ".join(terms[i : i + k]) for i in range(0, len(terms) - k + 1)}
+
+
+def token_set_unigrams_bigrams(terms: list[str]) -> set[str]:
+    """
+    Create a set of unigrams and bigrams from normalized terms.
+
+    This representation is more query-friendly than only 3-shingles and helps MinHash
+    when queries are short (common in QA).
+    """
+
+    uni = set(terms)
+    bi = {" ".join(terms[i : i + 2]) for i in range(0, max(0, len(terms) - 1))}
+    return uni | bi
 
 
 def build_minhash_signature(shingles: set[str], num_perm: int) -> MinHash:
@@ -140,9 +152,11 @@ def build_minhash_lsh_index(chunks: list[Chunk]) -> MinHashLshIndex:
     lsh = MinHashLSH(num_perm=num_perm, params=(settings.LSH_NUM_BANDS, settings.LSH_ROWS_PER_BAND))
     signatures: dict[str, MinHash] = {}
 
+    k = int(getattr(settings, "MINHASH_SHINGLE_K_WORDS", 3))
+    use_ub = bool(getattr(settings, "MINHASH_USE_UNIGRAMS_AND_BIGRAMS", False))
     for c in chunks:
         terms = _normalize_terms(c.text, stop, stemmer)
-        shingles = shingle_k_words(terms, k=_SHINGLE_K_WORDS)
+        shingles = token_set_unigrams_bigrams(terms) if use_ub else shingle_k_words(terms, k=k)
         sig = build_minhash_signature(shingles, num_perm=num_perm)
         signatures[c.id] = sig
         lsh.insert(c.id, sig)

@@ -233,7 +233,14 @@ class Retriever:
         def _run():
             stop, stemmer = _ensure_stopwords_and_stemmer()
             terms = _normalize_terms(query, stop, stemmer)
-            shingles = shingle_k_words(terms)
+            use_ub = bool(getattr(settings, "MINHASH_USE_UNIGRAMS_AND_BIGRAMS", False))
+            if use_ub:
+                # Keep consistent with indexing representation.
+                shingles = set(terms) | {" ".join(terms[i : i + 2]) for i in range(0, max(0, len(terms) - 1))}
+            else:
+                shingles = shingle_k_words(
+                    terms, k=int(getattr(settings, "MINHASH_SHINGLE_K_WORDS", 3))
+                )
             qsig = build_minhash_signature(shingles, num_perm=settings.MINHASH_NUM_PERM)
             candidates = idx.lsh.query(qsig)
             if source_file:
@@ -245,18 +252,37 @@ class Retriever:
                 ]
             if not candidates:
                 return [], "tfidf"
+            # Rerank LSH candidates by exact Jaccard on the actual representation.
+            # This stays fully MinHash/set-based, but improves quality vs signature-only estimate.
+            def _exact_jaccard(a: set[str], b: set[str]) -> float:
+                if not a or not b:
+                    return 0.0
+                inter = len(a & b)
+                union = len(a) + len(b) - inter
+                return float(inter) / float(union) if union else 0.0
+
             scored: list[tuple[str, float]] = []
             for cid in candidates:
-                sig = idx.signatures.get(cid)
-                if sig is None:
+                cobj = self.chunk_by_id.get(str(cid))
+                if cobj is None:
                     continue
-                scored.append((cid, float(qsig.jaccard(sig))))
+                c_terms = _normalize_terms(cobj.text, stop, stemmer)
+                if use_ub:
+                    c_repr = set(c_terms) | {
+                        " ".join(c_terms[i : i + 2]) for i in range(0, max(0, len(c_terms) - 1))
+                    }
+                else:
+                    c_repr = shingle_k_words(
+                        c_terms, k=int(getattr(settings, "MINHASH_SHINGLE_K_WORDS", 3))
+                    )
+                scored.append((str(cid), _exact_jaccard(shingles, c_repr)))
             scored.sort(key=lambda x: x[1], reverse=True)
             return scored[:k], None
 
         (scored, fallback_to), latency_ms, mem_mb = self._measure(_run)
 
         chunks: list[RetrievedChunk] = []
+
         if fallback_to == "tfidf":
             tfidf_res = self._retrieve_tfidf(
                 query, k=k, use_pagerank=use_pagerank, source_file=source_file
@@ -271,7 +297,9 @@ class Retriever:
             )
 
         for cid, score in scored:
-            chunks.append(self._mk_chunk(cid, score=score, use_pagerank=use_pagerank, query=query))
+            chunks.append(
+                self._mk_chunk(cid, score=score, use_pagerank=use_pagerank, query=query)
+            )
         chunks.sort(key=lambda c: c.final_score, reverse=True)
         return RetrievalResult(
             method="minhash",

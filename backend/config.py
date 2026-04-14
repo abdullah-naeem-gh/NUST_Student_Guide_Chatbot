@@ -20,10 +20,21 @@ class Settings(BaseSettings):
     CHUNK_OVERLAP_WORDS: int = 75
     MIN_CHUNK_WORDS: int = 100
     MINHASH_NUM_PERM: int = 128
-    LSH_NUM_BANDS: int = 32
-    LSH_ROWS_PER_BAND: int = 4
+    # Tuned for QA-style short queries: k=1 yields non-empty LSH candidates.
+    MINHASH_SHINGLE_K_WORDS: int = 1
+    MINHASH_USE_UNIGRAMS_AND_BIGRAMS: bool = False
+    # Tuned LSH params (bands*rows = MINHASH_NUM_PERM)
+    # Very permissive for short QA queries; rerank handles precision.
+    LSH_NUM_BANDS: int = 128
+    LSH_ROWS_PER_BAND: int = 1
     SIMHASH_HAMMING_THRESHOLD: int = 10
     TOP_K_DEFAULT: int = 5
+
+    # TF-IDF tuning knobs (baseline defaults in INSTRUCTIONS §2.3)
+    TFIDF_MAX_FEATURES: int = 20000
+    TFIDF_NGRAM_MAX: int = 2
+    TFIDF_MIN_DF: int = 2
+    TFIDF_MAX_DF: float = 0.85
 
     # Repository root is parent of backend/; data/ lives at project root
     DATA_DIR: Path = Path(__file__).resolve().parent.parent / "data"

@@ -45,10 +45,10 @@ def build_tfidf_index(chunks: list[Chunk]) -> TfidfIndex:
     """
 
     vectorizer = TfidfVectorizer(
-        max_features=20000,
-        ngram_range=(1, 2),
-        min_df=2,
-        max_df=0.85,
+        max_features=int(getattr(settings, "TFIDF_MAX_FEATURES", 20000)),
+        ngram_range=(1, int(getattr(settings, "TFIDF_NGRAM_MAX", 2))),
+        min_df=int(getattr(settings, "TFIDF_MIN_DF", 2)),
+        max_df=float(getattr(settings, "TFIDF_MAX_DF", 0.85)),
         sublinear_tf=True,
         strip_accents="unicode",
         analyzer="word",
