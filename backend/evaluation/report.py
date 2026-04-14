@@ -61,7 +61,7 @@ def generate_report() -> Path:
         parts.append(
             "- **TF-IDF (baseline)**: kept default params (`ngram_max=2`, `min_df=2`, `max_df=0.85`, `max_features=20000`) because it achieved the best MAP@5 among the sweep candidates with low latency.\n"
             "- **MinHash**: tuned to `k=1` word shingles and `bands=128, rows=1` (still `num_perm=128`) to make LSH non-empty for short QA queries. System uses **MinHash+LSH** with explicit **TF-IDF fallback** when LSH returns zero candidates (reported as `fallback_rate`). The report also includes a **MinHash+LSH-only** row to show approximate behavior without fallback.\n"
-            "- **SimHash**: added df filtering (`SIMHASH_MIN_DF`, `SIMHASH_MAX_DF`) and sublinear TF weighting to reduce noise from overly common terms; threshold sweep still prefers smaller thresholds.\n"
+            "- **SimHash**: kept baseline tokenization (unigrams, stopword removal); threshold sweep still prefers smaller thresholds.\n"
         )
         parts.append("\n")
     else:
@@ -103,11 +103,12 @@ def generate_report() -> Path:
     if sc_path.exists():
         sc = _load(sc_path)
         parts.append("## Scalability\n")
-        parts.append("| Scale | Chunk count | Build time (s) | Mean TF-IDF query latency (ms) |\n")
-        parts.append("|---:|---:|---:|---:|\n")
+        parts.append("| Scale | Chunk count | Build time (s) | TF-IDF lat (ms) | MinHash lat (ms) | SimHash lat (ms) |\n")
+        parts.append("|---:|---:|---:|---:|---:|---:|\n")
         for p in sc.get("points", []):
+            lat = p.get("mean_query_latency_ms", {}) if isinstance(p.get("mean_query_latency_ms", {}), dict) else {}
             parts.append(
-                f"| {int(p['scale'])}x | {int(p['chunk_count'])} | {_fmt(p['build_time_s'], 2)} | {_fmt(p['mean_query_latency_ms'], 2)} |\n"
+                f"| {int(p['scale'])}x | {int(p['chunk_count'])} | {_fmt(p['build_time_s'], 2)} | {_fmt(lat.get('tfidf', 0.0), 2)} | {_fmt(lat.get('minhash', 0.0), 2)} | {_fmt(lat.get('simhash', 0.0), 2)} |\n"
             )
         parts.append("\n")
     else:

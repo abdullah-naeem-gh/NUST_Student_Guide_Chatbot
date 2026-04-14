@@ -400,27 +400,49 @@ def run_scalability(scales: tuple[int, ...] = (2, 4, 8)) -> dict[str, Any]:
 
     for scale in scales:
         scaled = _scaled_chunks(int(scale))
-        t0 = time.perf_counter()
-
         mgr = IndexManager(index_dir=_results_dir() / "_tmp_indexes" / f"scale_{scale}")
-        mgr.artifacts.tfidf = build_tfidf_index(scaled)
-        mgr.artifacts.minhash = build_minhash_lsh_index(scaled)
-        mgr.artifacts.simhash = build_simhash_index(scaled)
 
-        build_time_s = time.perf_counter() - t0
+        t0 = time.perf_counter()
+        mgr.artifacts.tfidf = build_tfidf_index(scaled)
+        tfidf_build_s = time.perf_counter() - t0
+
+        t0 = time.perf_counter()
+        mgr.artifacts.minhash = build_minhash_lsh_index(scaled)
+        minhash_build_s = time.perf_counter() - t0
+
+        t0 = time.perf_counter()
+        mgr.artifacts.simhash = build_simhash_index(scaled)
+        simhash_build_s = time.perf_counter() - t0
+
+        build_time_s = tfidf_build_s + minhash_build_s + simhash_build_s
         r = Retriever(mgr)
 
-        lat: list[float] = []
+        lat_tfidf: list[float] = []
+        lat_minhash: list[float] = []
+        lat_simhash: list[float] = []
         for b in BENCHMARK:
             res = r.retrieve(b["query"], method="tfidf", k=5, use_pagerank=False)
-            lat.append(float(res.latency_ms))
+            lat_tfidf.append(float(res.latency_ms))
+            res = r.retrieve(b["query"], method="minhash", k=5, use_pagerank=False)
+            lat_minhash.append(float(res.latency_ms))
+            res = r.retrieve(b["query"], method="simhash", k=5, use_pagerank=False)
+            lat_simhash.append(float(res.latency_ms))
 
         out["points"].append(
             {
                 "scale": int(scale),
                 "chunk_count": int(len(scaled)),
                 "build_time_s": float(round(build_time_s, 4)),
-                "mean_query_latency_ms": float(sum(lat) / len(lat)),
+                "build_times_s": {
+                    "tfidf": float(round(tfidf_build_s, 4)),
+                    "minhash": float(round(minhash_build_s, 4)),
+                    "simhash": float(round(simhash_build_s, 4)),
+                },
+                "mean_query_latency_ms": {
+                    "tfidf": float(sum(lat_tfidf) / len(lat_tfidf)),
+                    "minhash": float(sum(lat_minhash) / len(lat_minhash)),
+                    "simhash": float(sum(lat_simhash) / len(lat_simhash)),
+                },
             }
         )
 
