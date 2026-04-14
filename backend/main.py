@@ -6,7 +6,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.routes import ingest, ping, query, status
+from api.routes import experiments, ingest, ping, query, status
 from config import settings
 from index_state import describe_index_paths, indexes_exist
 from indexing import IndexManager
@@ -62,3 +62,4 @@ app.include_router(ping.router)
 app.include_router(ingest.router)
 app.include_router(query.router)
 app.include_router(status.router)
+app.include_router(experiments.router)
