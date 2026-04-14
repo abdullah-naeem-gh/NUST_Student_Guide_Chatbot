@@ -18,6 +18,8 @@ class QueryRequest(BaseModel):
     k: int = Field(default=5, ge=1, le=50)
     use_pagerank: bool = True
     generate_answer: bool = False
+    llm_model: str | None = None
+    source_file: str | None = None
 
 
 class RetrievedChunkModel(BaseModel):

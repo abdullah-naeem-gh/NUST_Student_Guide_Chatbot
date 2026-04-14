@@ -144,6 +144,7 @@ class Retriever:
         method: Method,
         k: int = 5,
         use_pagerank: bool = True,
+        source_file: str | None = None,
     ) -> RetrievalResult:
         """
         Unified retrieval entrypoint (INSTRUCTIONS §3.1).
@@ -159,11 +160,17 @@ class Retriever:
         """
 
         if method == "minhash":
-            return self._retrieve_minhash(query, k=k, use_pagerank=use_pagerank)
+            return self._retrieve_minhash(
+                query, k=k, use_pagerank=use_pagerank, source_file=source_file
+            )
         if method == "simhash":
-            return self._retrieve_simhash(query, k=k, use_pagerank=use_pagerank)
+            return self._retrieve_simhash(
+                query, k=k, use_pagerank=use_pagerank, source_file=source_file
+            )
         if method == "tfidf":
-            return self._retrieve_tfidf(query, k=k, use_pagerank=use_pagerank)
+            return self._retrieve_tfidf(
+                query, k=k, use_pagerank=use_pagerank, source_file=source_file
+            )
         raise ValueError(f"Unknown method: {method}")
 
     def _measure(self, fn):
@@ -214,7 +221,9 @@ class Retriever:
             highlight_spans=find_highlight_spans(c.text, query),
         )
 
-    def _retrieve_minhash(self, query: str, k: int, use_pagerank: bool) -> RetrievalResult:
+    def _retrieve_minhash(
+        self, query: str, k: int, use_pagerank: bool, source_file: str | None
+    ) -> RetrievalResult:
         """MinHash+LSH retrieval with signature-based Jaccard rerank."""
 
         idx = self.mgr.artifacts.minhash
@@ -227,6 +236,13 @@ class Retriever:
             shingles = shingle_k_words(terms)
             qsig = build_minhash_signature(shingles, num_perm=settings.MINHASH_NUM_PERM)
             candidates = idx.lsh.query(qsig)
+            if source_file:
+                candidates = [
+                    cid
+                    for cid in candidates
+                    if (self.chunk_by_id.get(str(cid)) is not None)
+                    and (self.chunk_by_id[str(cid)].source_file == source_file)
+                ]
             if not candidates:
                 return [], "tfidf"
             scored: list[tuple[str, float]] = []
@@ -242,7 +258,9 @@ class Retriever:
 
         chunks: list[RetrievedChunk] = []
         if fallback_to == "tfidf":
-            tfidf_res = self._retrieve_tfidf(query, k=k, use_pagerank=use_pagerank)
+            tfidf_res = self._retrieve_tfidf(
+                query, k=k, use_pagerank=use_pagerank, source_file=source_file
+            )
             return RetrievalResult(
                 method="minhash",
                 chunks=tfidf_res.chunks,
@@ -263,7 +281,9 @@ class Retriever:
             query=query,
         )
 
-    def _retrieve_simhash(self, query: str, k: int, use_pagerank: bool) -> RetrievalResult:
+    def _retrieve_simhash(
+        self, query: str, k: int, use_pagerank: bool, source_file: str | None
+    ) -> RetrievalResult:
         """SimHash retrieval via Hamming threshold + similarity rerank."""
 
         idx = self.mgr.artifacts.simhash
@@ -278,11 +298,19 @@ class Retriever:
             scored: list[tuple[str, float]] = []
             thr = int(settings.SIMHASH_HAMMING_THRESHOLD)
             for cid, fp in idx.fingerprints.items():
+                if source_file:
+                    cobj = self.chunk_by_id.get(str(cid))
+                    if cobj is None or cobj.source_file != source_file:
+                        continue
                 if hamming_distance(q_fp, fp) <= thr:
                     scored.append((cid, float(simhash_similarity(q_fp, fp))))
             if not scored:
                 # Fallback: return closest fingerprints even if above threshold.
                 for cid, fp in idx.fingerprints.items():
+                    if source_file:
+                        cobj = self.chunk_by_id.get(str(cid))
+                        if cobj is None or cobj.source_file != source_file:
+                            continue
                     scored.append((cid, float(simhash_similarity(q_fp, fp))))
             scored.sort(key=lambda x: x[1], reverse=True)
             return scored[:k]
@@ -301,7 +329,9 @@ class Retriever:
             query=query,
         )
 
-    def _retrieve_tfidf(self, query: str, k: int, use_pagerank: bool) -> RetrievalResult:
+    def _retrieve_tfidf(
+        self, query: str, k: int, use_pagerank: bool, source_file: str | None
+    ) -> RetrievalResult:
         """TF-IDF cosine similarity retrieval (baseline)."""
 
         idx = self.mgr.artifacts.tfidf
@@ -314,6 +344,14 @@ class Retriever:
             scores = linear_kernel(q_vec, idx.matrix).ravel()
             if scores.size == 0:
                 return []
+            if source_file:
+                # Mask scores for chunks not from the selected PDF.
+                mask = np.zeros(scores.shape, dtype=bool)
+                for i, cid in enumerate(idx.chunk_ids):
+                    cobj = self.chunk_by_id.get(str(cid))
+                    if cobj is not None and cobj.source_file == source_file:
+                        mask[i] = True
+                scores = np.where(mask, scores, -1e9)
             top = np.argsort(scores)[::-1][: int(k)]
             out: list[tuple[str, float]] = []
             for i in top.tolist():
