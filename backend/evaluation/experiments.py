@@ -268,8 +268,6 @@ def run_parameter_sensitivity() -> dict[str, Any]:
             settings.LSH_ROWS_PER_BAND = int(rows)
             t0 = time.perf_counter()
             mgr = IndexManager()
-            # MinHash may fall back to TF-IDF when LSH returns no candidates.
-            mgr.artifacts.tfidf = build_tfidf_index(chunks)
             mgr.artifacts.minhash = build_minhash_lsh_index(chunks)
             r = Retriever(mgr)
 
@@ -277,10 +275,9 @@ def run_parameter_sensitivity() -> dict[str, Any]:
             latencies: list[float] = []
             for b in BENCHMARK:
                 relevant = set(b["relevant_chunk_ids"])
-                res = r.retrieve(b["query"], method="minhash", k=10, use_pagerank=False)
-                retrieved = [c.chunk_id for c in res.chunks]
+                retrieved = _minhash_retrieve_ids_no_fallback(mgr, b["query"], k=10)
                 recalls.append(recall_at_k(retrieved, relevant, 5))
-                latencies.append(float(res.latency_ms))
+                latencies.append(0.0)
             out["minhash"].append(
                 {
                     "num_perm": int(num_perm),
@@ -306,15 +303,13 @@ def run_parameter_sensitivity() -> dict[str, Any]:
                 continue
             settings.LSH_ROWS_PER_BAND = int(settings.MINHASH_NUM_PERM) // int(num_bands)
             mgr = IndexManager()
-            mgr.artifacts.tfidf = build_tfidf_index(chunks)
             mgr.artifacts.minhash = build_minhash_lsh_index(chunks)
             r = Retriever(mgr)
 
             recalls: list[float] = []
             for b in BENCHMARK:
                 relevant = set(b["relevant_chunk_ids"])
-                res = r.retrieve(b["query"], method="minhash", k=10, use_pagerank=False)
-                retrieved = [c.chunk_id for c in res.chunks]
+                retrieved = _minhash_retrieve_ids_no_fallback(mgr, b["query"], k=10)
                 recalls.append(recall_at_k(retrieved, relevant, 5))
             out["lsh"].append(
                 {

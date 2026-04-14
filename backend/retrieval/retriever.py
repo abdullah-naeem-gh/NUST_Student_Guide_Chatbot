@@ -252,6 +252,21 @@ class Retriever:
                 ]
             if not candidates:
                 return [], "tfidf"
+            # Two-stage reranking to control candidate explosion:
+            # 1) preselect top-N candidates using signature-Jaccard estimate (cheap)
+            # 2) exact-Jaccard rerank only that shortlist (more expensive)
+            preselect_n = int(getattr(settings, "MINHASH_LSH_PRESELECT_TOP_N", 200))
+            exact_n = int(getattr(settings, "MINHASH_EXACT_RERANK_TOP_N", 50))
+
+            if preselect_n > 0 and len(candidates) > preselect_n:
+                approx_scored: list[tuple[str, float]] = []
+                for cid in candidates:
+                    sig = idx.signatures.get(cid)
+                    if sig is None:
+                        continue
+                    approx_scored.append((str(cid), float(qsig.jaccard(sig))))
+                approx_scored.sort(key=lambda x: x[1], reverse=True)
+                candidates = [cid for cid, _ in approx_scored[:preselect_n]]
             # Rerank LSH candidates by exact Jaccard on the actual representation.
             # This stays fully MinHash/set-based, but improves quality vs signature-only estimate.
             def _exact_jaccard(a: set[str], b: set[str]) -> float:
@@ -277,6 +292,8 @@ class Retriever:
                     )
                 scored.append((str(cid), _exact_jaccard(shingles, c_repr)))
             scored.sort(key=lambda x: x[1], reverse=True)
+            if exact_n > 0:
+                scored = scored[:exact_n]
             return scored[:k], None
 
         (scored, fallback_to), latency_ms, mem_mb = self._measure(_run)
