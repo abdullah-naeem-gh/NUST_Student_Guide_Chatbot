@@ -86,7 +86,8 @@ def _extract_words_multicolumn(page: Page) -> str:
     right = [w for w in words if (float(w["x0"]) + float(w["x1"])) / 2.0 >= mid]
 
     def sort_key(w: dict[str, Any]) -> tuple[float, float]:
-        return (-float(w["top"]), float(w["x0"]))
+        # pdfplumber "top" increases downwards; sort top-to-bottom, left-to-right.
+        return (float(w["top"]), float(w["x0"]))
 
     # Single-column or sparse right column: global sort
     if len(right) < max(3, len(words) // 10):
@@ -127,7 +128,8 @@ def _detect_section_title(page: Page) -> str:
     if not headings:
         return ""
 
-    headings.sort(key=lambda c: (-float(c.get("top", 0.0)), float(c.get("x0", 0.0))))
+    # Sort in normal reading order.
+    headings.sort(key=lambda c: (float(c.get("top", 0.0)), float(c.get("x0", 0.0))))
     return "".join(c.get("text", "") for c in headings).strip()
 
 

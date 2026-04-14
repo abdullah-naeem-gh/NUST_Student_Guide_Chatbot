@@ -34,8 +34,15 @@ def clean_text(text: str) -> str:
     # 4. Rejoin soft line breaks (single newline → space; paragraphs preserved)
     t = re.sub(r"(?<!\n)\n(?!\n)", " ", t)
 
-    # 5. Strip common handbook headers/footers (NUST … Handbook … year/page)
-    t = re.sub(r"NUST\s+.*?Handbook.*?\d+", " ", t, flags=re.IGNORECASE | re.DOTALL)
+    # 5. Strip common handbook headers/footers.
+    # Important: do NOT use DOTALL here; it can delete large spans if OCR misses newlines.
+    # Remove only the matching line(s).
+    t = re.sub(
+        r"^\s*NUST.*?Handbook.*?\d+\s*$",
+        " ",
+        t,
+        flags=re.IGNORECASE | re.MULTILINE,
+    )
 
     # 6. Remove page-number-only lines
     t = re.sub(r"^\s*\d+\s*$", "", t, flags=re.MULTILINE)
