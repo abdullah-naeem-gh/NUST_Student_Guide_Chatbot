@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from config import settings
+from evaluation.qualitative_scoring import load_scores, summarize_scores
 
 
 def _utc_now_iso() -> str:
@@ -113,6 +114,21 @@ def generate_report() -> Path:
         parts.append("\n")
     else:
         parts.append("## Scalability\n\n`scalability.json` not found.\n\n")
+
+    # Qualitative summary (if provided)
+    q = load_scores()
+    if q is not None:
+        s = summarize_scores(q)
+        parts.append("## Qualitative answer correctness\n")
+        parts.append(f"Scored over top-{int(s['k'])} evidence per query.\n\n")
+        parts.append("| Method | Correct | Partial | Incorrect | Unscored |\n")
+        parts.append("|---|---:|---:|---:|---:|\n")
+        for m in ("minhash", "simhash", "tfidf"):
+            c = s["counts"][m]
+            parts.append(
+                f"| {m} | {int(c['correct'])} | {int(c['partial'])} | {int(c['incorrect'])} | {int(c['unscored'])} |\n"
+            )
+        parts.append("\n")
 
     parts.append(
         "## Notes / interpretation\n\n"
