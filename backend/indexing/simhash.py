@@ -108,7 +108,7 @@ def _hash64(term: str) -> int:
     return int(lo)
 
 
-def compute_idf(doc_terms: list[list[str]]) -> dict[str, float]:
+def compute_idf(doc_terms: list[list[str]]) -> tuple[dict[str, float], set[str]]:
     """
     Compute IDF values over the corpus.
 
@@ -116,18 +116,31 @@ def compute_idf(doc_terms: list[list[str]]) -> dict[str, float]:
         doc_terms: Tokenized terms per chunk.
 
     Returns:
-        Mapping of term -> idf.
+        (idf mapping, allowed term set after df filtering).
     """
 
     n_docs = len(doc_terms)
     df: Counter[str] = Counter()
     for terms in doc_terms:
         df.update(set(terms))
+
+    min_df = int(getattr(settings, "SIMHASH_MIN_DF", 2))
+    max_df = float(getattr(settings, "SIMHASH_MAX_DF", 0.85))
+    allowed: set[str] = set()
+    for term, d in df.items():
+        if d < min_df:
+            continue
+        if (float(d) / float(max(1, n_docs))) > max_df:
+            continue
+        allowed.add(term)
+
     idf: dict[str, float] = {}
     for term, d in df.items():
+        if term not in allowed:
+            continue
         # Smooth to avoid div-by-zero and keep weights stable.
         idf[term] = math.log((1.0 + n_docs) / (1.0 + d)) + 1.0
-    return idf
+    return idf, allowed
 
 
 def simhash_fingerprint(terms: list[str], idf: dict[str, float]) -> int:
@@ -147,7 +160,13 @@ def simhash_fingerprint(terms: list[str], idf: dict[str, float]) -> int:
     tf = Counter(terms)
     vec = [0.0] * 64
     for term, f in tf.items():
-        w = float(f) * float(idf.get(term, 0.0))
+        idf_w = float(idf.get(term, 0.0))
+        if idf_w <= 0.0:
+            continue
+        if bool(getattr(settings, "SIMHASH_SUBLINEAR_TF", True)):
+            w = (1.0 + math.log(float(f))) * idf_w
+        else:
+            w = float(f) * idf_w
         h = _hash64(term)
         for i in range(64):
             bit = (h >> i) & 1
@@ -171,6 +190,7 @@ class SimHashIndex:
 
     fingerprints: dict[str, int]
     idf: dict[str, float]
+    allowed_terms: set[str]
 
 
 def build_simhash_index(chunks: list[Chunk]) -> SimHashIndex:
@@ -186,10 +206,11 @@ def build_simhash_index(chunks: list[Chunk]) -> SimHashIndex:
 
     stop = _ensure_stopwords()
     docs = [tokenize_terms(c.text, stop) for c in chunks]
-    idf = compute_idf(docs)
-    fingerprints = {c.id: simhash_fingerprint(docs[i], idf) for i, c in enumerate(chunks)}
+    idf, allowed = compute_idf(docs)
+    docs_f = [[t for t in terms if t in allowed] for terms in docs]
+    fingerprints = {c.id: simhash_fingerprint(docs_f[i], idf) for i, c in enumerate(chunks)}
     logger.info("SimHash built: %s fingerprints", len(fingerprints))
-    return SimHashIndex(fingerprints=fingerprints, idf=idf)
+    return SimHashIndex(fingerprints=fingerprints, idf=idf, allowed_terms=allowed)
 
 
 def save_simhash_index(index: SimHashIndex, out_path: Path | None = None) -> Path:
@@ -209,6 +230,7 @@ def save_simhash_index(index: SimHashIndex, out_path: Path | None = None) -> Pat
     payload = {
         "fingerprints": {k: int(v) for k, v in index.fingerprints.items()},
         "idf": index.idf,
+        "allowed_terms": sorted(index.allowed_terms),
     }
     path.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
     return path
@@ -229,5 +251,6 @@ def load_simhash_index(path: Path | None = None) -> SimHashIndex:
     payload = json.loads(p.read_text(encoding="utf-8"))
     fps = {str(k): int(v) for k, v in payload["fingerprints"].items()}
     idf = {str(k): float(v) for k, v in payload.get("idf", {}).items()}
-    return SimHashIndex(fingerprints=fps, idf=idf)
+    allowed = set(str(x) for x in payload.get("allowed_terms", []))
+    return SimHashIndex(fingerprints=fps, idf=idf, allowed_terms=allowed)
 

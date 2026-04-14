@@ -61,7 +61,7 @@ def generate_report() -> Path:
         parts.append(
             "- **TF-IDF (baseline)**: kept default params (`ngram_max=2`, `min_df=2`, `max_df=0.85`, `max_features=20000`) because it achieved the best MAP@5 among the sweep candidates with low latency.\n"
             "- **MinHash**: tuned to `k=1` word shingles and `bands=128, rows=1` (still `num_perm=128`) to make LSH non-empty for short QA queries. System uses **MinHash+LSH** with explicit **TF-IDF fallback** when LSH returns zero candidates (reported as `fallback_rate`). The report also includes a **MinHash+LSH-only** row to show approximate behavior without fallback.\n"
-            "- **SimHash**: kept baseline tokenization (unigrams, stopword removal) because stemming+bigrams decreased P@5 on the benchmark.\n"
+            "- **SimHash**: added df filtering (`SIMHASH_MIN_DF`, `SIMHASH_MAX_DF`) and sublinear TF weighting to reduce noise from overly common terms; threshold sweep still prefers smaller thresholds.\n"
         )
         parts.append("\n")
     else:

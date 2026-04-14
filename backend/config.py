@@ -31,6 +31,9 @@ class Settings(BaseSettings):
     LSH_NUM_BANDS: int = 64
     LSH_ROWS_PER_BAND: int = 2
     SIMHASH_HAMMING_THRESHOLD: int = 10
+    SIMHASH_MIN_DF: int = 2
+    SIMHASH_MAX_DF: float = 0.85
+    SIMHASH_SUBLINEAR_TF: bool = True
     TOP_K_DEFAULT: int = 5
 
     # TF-IDF tuning knobs (baseline defaults in INSTRUCTIONS §2.3)

@@ -338,6 +338,8 @@ class Retriever:
         def _run():
             stop = _ensure_stopwords()
             q_terms = tokenize_terms(query, stop)
+            if getattr(idx, "allowed_terms", None):
+                q_terms = [t for t in q_terms if t in idx.allowed_terms]
             q_fp = simhash_fingerprint(q_terms, idx.idf)
 
             scored: list[tuple[str, float]] = []
