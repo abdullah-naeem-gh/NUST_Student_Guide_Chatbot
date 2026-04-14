@@ -13,6 +13,8 @@ class Settings(BaseSettings):
     )
 
     ANTHROPIC_API_KEY: str = ""
+    OPENROUTER_API_KEY: str = ""
+    OPENROUTER_DEFAULT_MODEL: str = "openai/gpt-oss-120b:free"
 
     CHUNK_SIZE_WORDS: int = 350
     CHUNK_OVERLAP_WORDS: int = 75
