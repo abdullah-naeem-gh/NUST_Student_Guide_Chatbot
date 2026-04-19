@@ -1,19 +1,16 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { useEffect } from 'react'
 import QueryPage from './pages/QueryPage'
 import IngestPage from './pages/IngestPage'
 import useAppStore from './store/appStore'
-import { useEffect } from 'react'
 
 function App() {
   const { darkMode } = useAppStore()
 
   useEffect(() => {
-    // Sync dark mode on mount
-    if (darkMode) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
+    document.documentElement.classList.toggle('dark', darkMode)
+    document.body.classList.toggle('light', !darkMode)
+    document.body.classList.add('theme-guide')
   }, [darkMode])
 
   return (

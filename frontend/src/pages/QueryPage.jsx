@@ -1,138 +1,127 @@
-import { useState, useEffect, useMemo } from 'react'
-import PageWrapper from '../components/layout/PageWrapper'
-import SearchBar from '../components/query/SearchBar'
-import AnswerCard from '../components/query/AnswerCard'
-import MethodColumn from '../components/query/MethodColumn'
-import ChunkCard from '../components/query/ChunkCard'
-import LatencyBadge from '../components/ui/LatencyBadge'
+import { useEffect, useMemo } from 'react'
+import Navbar from '../components/layout/Navbar'
+import ChatPanel from '../components/chat/ChatPanel'
+import EvidencePanel from '../components/evidence/EvidencePanel'
 import useAppStore from '../store/appStore'
 import { runQuery } from '../api/query'
 import { getStatus } from '../api/status'
+import { parseSourceFilesFromStatus, resolveHandbookFiles } from '../lib/handbooks'
 
+/**
+ * QueryPage — two-panel chat interface (60% chat / 40% evidence)
+ */
 export default function QueryPage() {
-  const { 
-    queryResults, 
-    setQueryResults, 
-    isLoading, 
-    setLoading, 
-    setIndexStatus 
+  const {
+    messages,
+    addMessage,
+    updateMessage,
+    activeResultId,
+    isLoading,
+    setLoading,
+    setIndexStatus,
+    selectedHandbookFile,
+    setSelectedHandbookFile,
   } = useAppStore()
 
-  const [currentMethod, setCurrentMethod] = useState('all')
-
   useEffect(() => {
-    getStatus().then(setIndexStatus).catch(console.error)
-  }, [setIndexStatus])
+    getStatus()
+      .then((s) => {
+        setIndexStatus(s)
+        const files = parseSourceFilesFromStatus(s)
+        const { ug, pg } = resolveHandbookFiles(files)
+        const state = useAppStore.getState()
+        const cur = state.selectedHandbookFile
+        const valid = typeof cur === 'string' && cur.length > 0 && files.includes(cur)
+        if (valid) {
+          return
+        }
+        if (ug || pg) {
+          setSelectedHandbookFile(ug ?? pg ?? null)
+        } else {
+          setSelectedHandbookFile(files[0] ?? null)
+        }
+      })
+      .catch(console.error)
+  }, [setIndexStatus, setSelectedHandbookFile])
 
-  const handleSearch = async (query, method, k, generateAnswer) => {
+  const handleSend = async (query, method, k, generateAnswer) => {
+    const userId = Date.now()
+    const aiId = userId + 1
+
+    addMessage({ id: userId, role: 'user', content: query, timestamp: new Date() })
     setLoading(true)
-    setCurrentMethod(method)
+
     try {
-      const results = await runQuery(query, method, k, generateAnswer)
-      setQueryResults(results)
-    } catch (error) {
-      console.error('Search failed:', error)
-      // Toast error would be nice here
+      const data = await runQuery(query, method, k, generateAnswer, selectedHandbookFile)
+
+      const answerText =
+        typeof data.answer === 'string' && data.answer.trim().length > 0
+          ? data.answer
+          : extractFallbackAnswer(data, method)
+
+      addMessage({
+        id: aiId,
+        role: 'assistant',
+        content: answerText,
+        results: { method, results: data.results ?? data, query },
+        timestamp: new Date(),
+      })
+    } catch (err) {
+      addMessage({
+        id: aiId,
+        role: 'assistant',
+        content: 'Sorry, something went wrong. Please try again.',
+        results: null,
+        timestamp: new Date(),
+      })
     } finally {
       setLoading(false)
     }
   }
 
-  // Find chunks that appear in more than one method
-  const sharedIds = useMemo(() => {
-    if (!queryResults || currentMethod !== 'all') return []
-    
-    const idCounts = {}
-    const methods = ['minhash', 'simhash', 'tfidf']
-    
-    methods.forEach(m => {
-      if (queryResults.results && queryResults.results[m]) {
-        queryResults.results[m].chunks.forEach(chunk => {
-          idCounts[chunk.chunk_id] = (idCounts[chunk.chunk_id] || 0) + 1
-        })
-      }
-    })
-    
-    return Object.keys(idCounts).filter(id => idCounts[id] > 1)
-  }, [queryResults, currentMethod])
+  // The result object to pass to the evidence panel
+  const activeResult = useMemo(() => {
+    if (!activeResultId) {
+      // Default to most recent AI message with results
+      const last = [...messages].reverse().find(
+        (m) => m.role === 'assistant' && m.results
+      )
+      return last?.results ?? null
+    }
+    const msg = messages.find((m) => m.id === activeResultId)
+    return msg?.results ?? null
+  }, [activeResultId, messages])
 
   return (
-    <PageWrapper>
-      <div className="space-y-8">
-        <section className="max-w-4xl mx-auto w-full">
-          <header className="mb-8 text-center">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
-              Academic Policy QA
-            </h1>
-            <p className="text-slate-400 mt-2">
-              Cross-method retrieval comparison for university handbooks.
-            </p>
-          </header>
-          
-          <SearchBar onSearch={handleSearch} isLoading={isLoading} />
-        </section>
+    <div className="h-full flex flex-col" style={{ background: 'var(--bg)' }}>
+      <Navbar />
 
-        {queryResults && (
-          <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            {/* Answer Section */}
-          {queryResults.answer && (
-            <div className="max-w-4xl mx-auto">
-              <AnswerCard 
-                answer={queryResults.answer} 
-                citations={queryResults.cited_chunks} 
-              />
-            </div>
-          )}
-
-            {/* Results Grid / Columns */}
-            {currentMethod === 'all' ? (
-              <div className="flex flex-col lg:flex-row gap-6 h-[700px]">
-          <MethodColumn 
-            name="MinHash + LSH" 
-            data={queryResults.results.minhash} 
-            sharedIds={sharedIds}
-          />
-          <MethodColumn 
-            name="SimHash" 
-            data={queryResults.results.simhash} 
-            sharedIds={sharedIds}
-          />
-          <MethodColumn 
-            name="TF-IDF" 
-            data={queryResults.results.tfidf} 
-            sharedIds={sharedIds}
-          />
+      <div className="flex flex-1 min-h-0 overflow-hidden">
+        <div
+          className="flex flex-col min-h-0 shrink-0"
+          style={{ width: 420, minWidth: 320, maxWidth: 'min(420px, 44vw)' }}
+        >
+          <ChatPanel onSend={handleSend} />
         </div>
-      ) : (
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-between mb-4 px-2">
-            <h3 className="font-mono font-bold uppercase tracking-widest text-sm text-slate-400">
-              {currentMethod} Results
-            </h3>
-            {queryResults.results[currentMethod] && (
-              <LatencyBadge ms={queryResults.results[currentMethod].latency_ms} />
-            )}
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {queryResults.results[currentMethod]?.chunks.map((chunk, idx) => (
-              <ChunkCard key={idx} chunk={chunk} isShared={false} />
-            ))}
-          </div>
-        </div>
-      )}
-          </div>
-        )}
 
-        {!queryResults && !isLoading && (
-          <div className="max-w-4xl mx-auto text-center py-20 border-2 border-dashed border-navy-800 rounded-3xl">
-            <div className="w-16 h-16 bg-navy-800 text-slate-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            </div>
-            <h3 className="text-slate-400 font-medium">Ready for your query</h3>
-            <p className="text-slate-500 text-sm mt-1">Enter a question above to begin retrieval analysis.</p>
-          </div>
-        )}
+        <div className="flex flex-col flex-1 min-w-0 min-h-0" style={{ background: 'var(--bg)' }}>
+          <EvidencePanel activeResult={activeResult} />
+        </div>
       </div>
-    </PageWrapper>
+    </div>
   )
+}
+
+/** Fallback when LLM answer is not generated */
+function extractFallbackAnswer(data, method) {
+  try {
+    const results = data.results ?? data
+    const chunks = method === 'all'
+      ? (results.minhash?.chunks ?? results.simhash?.chunks ?? results.tfidf?.chunks ?? [])
+      : (results[method]?.chunks ?? [])
+    if (chunks.length === 0) return 'No relevant sections found for that query.'
+    return `Found ${chunks.length} relevant section${chunks.length > 1 ? 's' : ''} in the handbook. See the sources panel for details.`
+  } catch {
+    return 'Retrieval complete. See sources panel for results.'
+  }
 }

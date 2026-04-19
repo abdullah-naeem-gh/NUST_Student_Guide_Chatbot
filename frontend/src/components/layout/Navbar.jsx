@@ -1,68 +1,89 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import useAppStore from '../../store/appStore'
 
 /**
- * Navbar component for navigation and global status
+ * Top bar: wordmark, index status, optional library label from indexed PDF name.
  */
 export default function Navbar() {
-  const { indexStatus, darkMode, toggleDarkMode } = useAppStore()
-  const location = useLocation()
+  const { indexStatus, darkMode, toggleDarkMode, selectedHandbookFile } = useAppStore()
+
+  const libLabel =
+    fileBasename(selectedHandbookFile || indexStatus.source_file) || 'Knowledge base'
 
   return (
-    <nav className="h-16 border-b border-navy-700 bg-navy-900/50 backdrop-blur-md sticky top-0 z-50 px-6 flex items-center justify-between">
-      <div className="flex items-center gap-8">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-electric rounded flex items-center justify-center font-mono font-bold text-white">
-            N
-          </div>
-          <span className="font-mono font-bold text-xl tracking-tight hidden sm:inline">
-            NUST <span className="text-electric">GUIDE</span>
-          </span>
+    <header
+      className="h-[52px] shrink-0 flex items-center px-8 border-b gap-4"
+      style={{
+        background: 'var(--paper)',
+        borderColor: 'var(--rule)',
+      }}
+    >
+      <Link to="/" className="select-none shrink-0">
+        <div
+          className="font-mono text-[12.5px] tracking-[0.18em] uppercase"
+          style={{ color: 'var(--ink)', fontWeight: 400 }}
+        >
+          NUST <span style={{ color: 'var(--ink3)' }}>/ Guide</span>
+        </div>
+      </Link>
+
+      <div
+        className="ml-auto flex items-center gap-6 font-mono text-[11px] shrink-0 min-w-0"
+        style={{ color: 'var(--ink3)' }}
+      >
+        <span className="hidden sm:inline-flex items-center gap-1.5 truncate" title={libLabel}>
+          <span
+            className="inline-block w-[5px] h-[5px] rounded-full shrink-0"
+            style={{ background: 'var(--accent)' }}
+          />
+          {indexStatus.is_indexed ? (
+            <>
+              indexed · {indexStatus.num_chunks.toLocaleString()} chunks
+            </>
+          ) : (
+            'not indexed'
+          )}
+        </span>
+        <span className="hidden md:inline truncate max-w-[220px] lg:max-w-[320px]">{libLabel}</span>
+
+        <Link
+          to="/ingest"
+          className="p-1.5 rounded transition-colors shrink-0"
+          style={{ color: 'var(--ink3)' }}
+          title="Manage knowledge base"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="17 8 12 3 7 8" />
+            <line x1="12" y1="3" x2="12" y2="15" />
+          </svg>
         </Link>
 
-        <div className="flex items-center gap-1">
-          <NavLink to="/" active={location.pathname === '/'}>Query</NavLink>
-          <NavLink to="/ingest" active={location.pathname === '/ingest'}>Ingest</NavLink>
-        </div>
-      </div>
-
-      <div className="flex items-center gap-4">
-        {/* Index Status Dot */}
-        <div className="flex items-center gap-2 px-3 py-1 bg-navy-800 rounded-full border border-navy-700">
-          <div className={`w-2 h-2 rounded-full ${indexStatus.is_indexed ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]' : 'bg-red-500'}`} />
-          <span className="text-xs font-mono uppercase tracking-wider text-slate-400">
-            {indexStatus.is_indexed ? `${indexStatus.num_chunks} Chunks` : 'No Index'}
-          </span>
-        </div>
-
-        {/* Dark Mode Toggle */}
-        <button 
+        <button
+          type="button"
           onClick={toggleDarkMode}
-          className="p-2 hover:bg-navy-800 rounded-lg transition-colors text-slate-400 hover:text-white"
-          title="Toggle Dark Mode"
+          className="p-1.5 rounded transition-colors shrink-0"
+          style={{ color: 'var(--ink3)' }}
+          title="Toggle alternate theme"
         >
           {darkMode ? (
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="5" />
+              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+            </svg>
           ) : (
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
           )}
         </button>
       </div>
-    </nav>
+    </header>
   )
 }
 
-function NavLink({ to, children, active }) {
-  return (
-    <Link 
-      to={to} 
-      className={`px-4 py-2 rounded-lg font-medium text-sm transition-all ${
-        active 
-          ? 'text-white bg-electric/10' 
-          : 'text-slate-400 hover:text-white hover:bg-navy-800'
-      }`}
-    >
-      {children}
-    </Link>
-  )
+function fileBasename(path) {
+  if (!path || typeof path !== 'string') return ''
+  const parts = path.replace(/\\/g, '/').split('/')
+  return parts[parts.length - 1] || ''
 }

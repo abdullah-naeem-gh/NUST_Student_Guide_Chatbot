@@ -1,40 +1,72 @@
 import useAppStore from '../../store/appStore'
 
 /**
- * IndexStatusCard — Summary of the current index state
+ * IndexStatusCard — index metadata summary
  */
 export default function IndexStatusCard() {
   const { indexStatus } = useAppStore()
 
   return (
-    <div className="bg-navy-800 rounded-xl border border-navy-700 p-6 overflow-hidden relative">
-      <div className="absolute top-0 right-0 w-32 h-32 bg-electric/5 rounded-full -mr-16 -mt-16 blur-3xl" />
-      
-      <h3 className="font-mono font-bold text-slate-400 text-xs uppercase tracking-widest mb-4">Storage Metadata</h3>
-      
-      <div className="grid grid-cols-2 gap-6">
-        <div>
-          <p className="text-slate-500 text-xs font-mono uppercase">Status</p>
-          <p className={`text-lg font-bold mt-1 ${indexStatus.is_indexed ? 'text-green-400' : 'text-red-400'}`}>
-            {indexStatus.is_indexed ? 'ONLINE' : 'OFFLINE'}
-          </p>
+    <div
+      className="rounded-xl p-5"
+      style={{
+        background: 'rgba(255,255,255,0.04)',
+        border: '1px solid rgba(255,255,255,0.08)',
+      }}
+    >
+      <p className="text-xs font-semibold text-white mb-4" style={{ letterSpacing: '0.05em' }}>
+        Index Status
+      </p>
+
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center justify-between">
+          <span className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>Status</span>
+          <div className="flex items-center gap-2">
+            <div
+              className="w-2 h-2 rounded-full"
+              style={{ background: indexStatus.is_indexed ? '#34d399' : '#f87171' }}
+            />
+            <span
+              className="text-xs font-semibold"
+              style={{ color: indexStatus.is_indexed ? '#6ee7b7' : '#fca5a5' }}
+            >
+              {indexStatus.is_indexed ? 'Online' : 'Offline'}
+            </span>
+          </div>
         </div>
-        <div>
-          <p className="text-slate-500 text-xs font-mono uppercase">Total Chunks</p>
-          <p className="text-xl font-mono font-bold mt-1 text-white">{indexStatus.num_chunks}</p>
+
+        <div className="flex items-center justify-between">
+          <span className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>Chunks</span>
+          <span className="text-xs font-semibold text-white">{indexStatus.num_chunks}</span>
         </div>
-        <div className="col-span-2">
-          <p className="text-slate-500 text-xs font-mono uppercase">Last Index Update</p>
-          <p className="text-sm font-mono mt-1 text-slate-300">
-            {indexStatus.last_updated ? new Date(indexStatus.last_updated).toLocaleString() : 'N/A'}
-          </p>
+
+        <div className="flex items-center justify-between">
+          <span className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>Updated</span>
+          <span className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>
+            {indexStatus.last_updated
+              ? new Date(indexStatus.last_updated).toLocaleDateString()
+              : '—'}
+          </span>
         </div>
       </div>
 
-      <div className="mt-6 pt-6 border-t border-navy-700 flex flex-wrap gap-2">
-        <span className="px-2 py-1 bg-navy-700 rounded text-[10px] font-mono text-slate-400 border border-navy-600">MINHASH (LSH)</span>
-        <span className="px-2 py-1 bg-navy-700 rounded text-[10px] font-mono text-slate-400 border border-navy-600">SIMHASH</span>
-        <span className="px-2 py-1 bg-navy-700 rounded text-[10px] font-mono text-slate-400 border border-navy-600">TF-IDF</span>
+      <div
+        className="mt-4 pt-4 flex flex-wrap gap-1.5"
+        style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}
+      >
+        {['MinHash LSH', 'SimHash', 'TF-IDF'].map((label) => (
+          <span
+            key={label}
+            className="text-[10px] font-medium px-2 py-0.5 rounded"
+            style={{
+              background: 'rgba(255,255,255,0.06)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              color: 'rgba(255,255,255,0.4)',
+            }}
+          >
+            {label}
+          </span>
+        ))}
       </div>
     </div>
   )
