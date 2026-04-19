@@ -1,15 +1,29 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import HomePage from './pages/HomePage'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import QueryPage from './pages/QueryPage'
+import IngestPage from './pages/IngestPage'
+import useAppStore from './store/appStore'
+import { useEffect } from 'react'
 
-/**
- * Root router — placeholder routes until Phase 6.
- */
-export default function App() {
+function App() {
+  const { darkMode } = useAppStore()
+
+  useEffect(() => {
+    // Sync dark mode on mount
+    if (darkMode) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+  }, [darkMode])
+
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<QueryPage />} />
+        <Route path="/ingest" element={<IngestPage />} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   )
 }
+
+export default App
