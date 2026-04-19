@@ -6,7 +6,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.routes import experiments, ingest, ping, query, status
+from api.routes import experiments, ingest, pdf, ping, query, status
 from config import settings
 from index_state import describe_index_paths, indexes_exist
 from indexing import IndexManager
@@ -52,7 +52,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -63,3 +63,4 @@ app.include_router(ingest.router)
 app.include_router(query.router)
 app.include_router(status.router)
 app.include_router(experiments.router)
+app.include_router(pdf.router)

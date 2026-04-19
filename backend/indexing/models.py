@@ -27,6 +27,7 @@ class IndexStatusResponse(BaseModel):
     indexed: bool
     chunk_count: int = 0
     source_file: str = ""
+    source_files: list[str] = Field(default_factory=list)
     index_paths: dict[IndexName, str] = Field(default_factory=dict)
     index_sizes_bytes: dict[IndexName, int] = Field(default_factory=dict)
 
