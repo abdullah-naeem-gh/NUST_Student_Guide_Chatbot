@@ -5,17 +5,22 @@ export default {
   theme: {
     extend: {
       colors: {
-        navy: {
-          900: '#0f172a',
-          800: '#1e293b',
-          700: '#334155',
+        charcoal: {
+          DEFAULT: '#2D3E50',
+          light:   '#364a5e',
+          dark:    '#243343',
+          darker:  '#1c2a38',
         },
-        electric: '#3b82f6',
-        amber: '#f59e0b',
+        surface:  '#364a5e',
+        platinum: '#F4F8F9',
       },
       fontFamily: {
-        mono: ['"IBM Plex Mono"', 'monospace'],
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Lora', 'Georgia', 'Times New Roman', 'serif'],
+        serif: ['Lora', 'Georgia', 'Times New Roman', 'serif'],
+        mono: ['IBM Plex Mono', 'ui-monospace', 'monospace'],
+      },
+      borderColor: {
+        subtle: 'rgba(255, 255, 255, 0.08)',
       },
     },
   },
