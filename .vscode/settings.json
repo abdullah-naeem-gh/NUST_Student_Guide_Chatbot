@@ -1,5 +1,6 @@
 {
   "python.defaultInterpreterPath": "${workspaceFolder}/backend/.venv/bin/python",
   "python.analysis.extraPaths": [],
-  "basedpyright.analysis.extraPaths": []
+  "basedpyright.analysis.extraPaths": [],
+  "css.lint.unknownAtRules": "ignore"
 }
