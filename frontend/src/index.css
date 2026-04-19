@@ -3,12 +3,35 @@
 @tailwind utilities;
 
 :root {
-  --color-primary: #1a1a2e;
-  --color-accent: #e94560;
-  --color-surface: #16213e;
-  --color-text: #eaeaea;
+  --color-bg: #0f172a;
+  --color-accent: #3b82f6;
+  --color-highlight: #f59e0b;
+  --color-text: #f8fafc;
 }
 
-html.dark {
+@layer base {
+  body {
+    @apply bg-navy-900 text-slate-50 font-sans;
+  }
+
+  h1, h2, h3, h4, h5, h6, code, pre {
+    @apply font-mono;
+  }
+}
+
+.dark {
   color-scheme: dark;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-navy-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-navy-700 rounded-full hover:bg-navy-800;
 }
