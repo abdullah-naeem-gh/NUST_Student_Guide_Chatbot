@@ -14,6 +14,7 @@ import numpy as np
 from sklearn.metrics.pairwise import linear_kernel
 
 from config import settings
+from indexing.hybrid import query_minhash_candidates, score_candidates
 from indexing.index_manager import IndexManager, load_chunks
 from indexing.minhash_lsh import (
     _ensure_stopwords_and_stemmer,
@@ -22,11 +23,11 @@ from indexing.minhash_lsh import (
     shingle_k_words,
 )
 from indexing.simhash import (
+    _ensure_stopwords,
     hamming_distance,
     simhash_fingerprint,
     simhash_similarity,
     tokenize_terms,
-    _ensure_stopwords,
 )
 from retrieval.reranker import fuse_scores, normalize_01
 
@@ -243,30 +244,7 @@ class Retriever:
             raise RuntimeError("Hybrid retrieval requires both MinHash and SimHash indexes")
 
         def _run():
-            # --- MinHash query preprocessing ---
-            stop, stemmer = _ensure_stopwords_and_stemmer()
-            terms = _normalize_terms(query, stop, stemmer)
-            use_ub = bool(getattr(settings, "MINHASH_USE_UNIGRAMS_AND_BIGRAMS", False))
-            if use_ub:
-                shingles = set(terms) | {
-                    " ".join(terms[i : i + 2])
-                    for i in range(0, max(0, len(terms) - 1))
-                }
-            else:
-                shingles = shingle_k_words(
-                    terms, k=int(getattr(settings, "MINHASH_SHINGLE_K_WORDS", 3))
-                )
-            qsig = build_minhash_signature(shingles, num_perm=settings.MINHASH_NUM_PERM)
-
-            # --- SimHash query preprocessing ---
-            sh_stop = _ensure_stopwords()
-            q_fp = simhash_fingerprint(tokenize_terms(query, sh_stop), sh_idx.idf)
-
-            alpha = float(settings.HYBRID_MINHASH_WEIGHT)
-            beta = float(settings.HYBRID_SIMHASH_WEIGHT)
-
-            # --- LSH candidate retrieval ---
-            candidates = [str(cid) for cid in mh_idx.lsh.query(qsig)]
+            candidates = query_minhash_candidates(query, mh_idx)
             if source_file:
                 candidates = [
                     cid
@@ -277,6 +255,8 @@ class Retriever:
 
             if not candidates:
                 # No LSH hits — scan with SimHash only (still approximate, not exact)
+                sh_stop = _ensure_stopwords()
+                q_fp = simhash_fingerprint(tokenize_terms(query, sh_stop), sh_idx.idf)
                 scored: list[tuple[str, float]] = []
                 for cid, fp in sh_idx.fingerprints.items():
                     if source_file:
@@ -287,14 +267,7 @@ class Retriever:
                 scored.sort(key=lambda x: x[1], reverse=True)
                 return scored[:k], "simhash_scan"
 
-            # --- Combined scoring on LSH candidates ---
-            scored = []
-            for cid in candidates:
-                mh_score = float(qsig.jaccard(mh_idx.signatures[cid])) if cid in mh_idx.signatures else 0.0
-                sh_fp = sh_idx.fingerprints.get(cid)
-                sh_score = simhash_similarity(q_fp, sh_fp) if sh_fp is not None else 0.0
-                scored.append((cid, alpha * mh_score + beta * sh_score))
-
+            scored = score_candidates(query, candidates, mh_idx, sh_idx)
             scored.sort(key=lambda x: x[1], reverse=True)
             return scored[:k], None
 
