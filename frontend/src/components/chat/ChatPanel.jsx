@@ -5,8 +5,8 @@ import ChatMessage from './ChatMessage'
 import ChatInput from './ChatInput'
 import EmptyState from './EmptyState'
 
-const METHODS = ['all', 'minhash', 'simhash', 'tfidf']
-const METHOD_LABELS = { all: 'All', minhash: 'MinHash', simhash: 'SimHash', tfidf: 'TF-IDF' }
+const METHODS = ['all', 'hybrid', 'minhash', 'simhash', 'tfidf']
+const METHOD_LABELS = { all: 'All', hybrid: 'Hybrid', minhash: 'MinHash', simhash: 'SimHash', tfidf: 'TF-IDF' }
 
 /**
  * Left column: retrieval strip, messages, input.

@@ -9,7 +9,7 @@ import ChunkDrawer from './ChunkDrawer'
  * @param {Object|null} props.activeResult
  */
 export default function EvidencePanel({ activeResult }) {
-  const [activeMethod, setActiveMethod] = useState('minhash')
+  const [activeMethod, setActiveMethod] = useState('hybrid')
   const [activeChunkIndex, setActiveChunkIndex] = useState(0)
   const [panelView, setPanelView] = useState('document')
 
@@ -56,6 +56,7 @@ export default function EvidencePanel({ activeResult }) {
     if (!activeResult || !isAll) return {}
     const r = activeResult.results
     return {
+      hybrid: r.hybrid?.latency_ms,
       minhash: r.minhash?.latency_ms,
       simhash: r.simhash?.latency_ms,
       tfidf: r.tfidf?.latency_ms,
@@ -64,22 +65,9 @@ export default function EvidencePanel({ activeResult }) {
 
   const methodLabel = useMemo(() => {
     if (!activeResult) return '—'
-    if (isAll) {
-      return (
-        {
-          minhash: 'MinHash',
-          simhash: 'SimHash',
-          tfidf: 'TF-IDF',
-        }[activeMethod] ?? activeMethod
-      )
-    }
-    return (
-      {
-        minhash: 'MinHash',
-        simhash: 'SimHash',
-        tfidf: 'TF-IDF',
-      }[activeResult.method] ?? activeResult.method
-    )
+    const LABELS = { hybrid: 'Hybrid', minhash: 'MinHash', simhash: 'SimHash', tfidf: 'TF-IDF' }
+    if (isAll) return LABELS[activeMethod] ?? activeMethod
+    return LABELS[activeResult.method] ?? activeResult.method
   }, [activeResult, activeMethod, isAll])
 
   const filename =
@@ -121,9 +109,10 @@ export default function EvidencePanel({ activeResult }) {
           <span className="font-mono text-[10px] uppercase tracking-wide" style={{ color: 'var(--ink3)' }}>
             Method
           </span>
-          {(['minhash', 'simhash', 'tfidf']).map((key) => {
+          {(['hybrid', 'minhash', 'simhash', 'tfidf']).map((key) => {
             const on = activeMethod === key
-            const label = key === 'minhash' ? 'MinHash' : key === 'simhash' ? 'SimHash' : 'TF-IDF'
+            const LABELS = { hybrid: 'Hybrid', minhash: 'MinHash', simhash: 'SimHash', tfidf: 'TF-IDF' }
+            const label = LABELS[key] ?? key
             const ms = latencies[key]
             return (
               <button

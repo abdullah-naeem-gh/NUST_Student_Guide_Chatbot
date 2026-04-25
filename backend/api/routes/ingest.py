@@ -7,13 +7,8 @@ from pathlib import Path
 from fastapi import APIRouter, File, HTTPException, Query, UploadFile
 
 from config import settings
-from ingestion.chunker import (
-    build_chunks_from_prepared,
-    prepare_cleaned_pages,
-    save_chunks_json,
-)
+from ingestion.chunker import build_chunks_from_pdf, save_chunks_json
 from ingestion.models import IngestProcessingStep, IngestResponse
-from ingestion.pdf_parser import parse_pdf
 from indexing.index_manager import IndexManager
 
 logger = logging.getLogger(__name__)
@@ -69,53 +64,15 @@ async def ingest_pdf(
 
         tmp_path.write_bytes(contents)
 
-        t_parse = time.perf_counter()
-        try:
-            pages = parse_pdf(tmp_path)
-        except FileNotFoundError as e:
-            raise HTTPException(status_code=400, detail=str(e)) from e
-        except ValueError as e:
-            raise HTTPException(status_code=400, detail=str(e)) from e
-        except Exception as e:
-            logger.exception("PDF parse failed")
-            raise HTTPException(
-                status_code=400, detail=f"Could not parse PDF: {e}"
-            ) from e
-
-        steps.append(
-            IngestProcessingStep(
-                step="parse",
-                duration_s=round(time.perf_counter() - t_parse, 4),
-                status="done",
-            )
-        )
-
-        t_clean = time.perf_counter()
-        try:
-            prepared = prepare_cleaned_pages(pages)
-        except Exception as e:
-            logger.exception("Clean failed")
-            raise HTTPException(
-                status_code=500, detail="Cleaning failed; see server logs"
-            ) from e
-
-        steps.append(
-            IngestProcessingStep(
-                step="clean",
-                duration_s=round(time.perf_counter() - t_clean, 4),
-                status="done",
-            )
-        )
-
         t_chunk = time.perf_counter()
         try:
             safe_name = Path(file.filename).name
-            chunks = build_chunks_from_prepared(prepared, safe_name)
+            chunks = build_chunks_from_pdf(tmp_path, safe_name)
             out = save_chunks_json(chunks)
         except Exception as e:
-            logger.exception("Chunk failed")
+            logger.exception("Semantic chunking failed")
             raise HTTPException(
-                status_code=500, detail="Chunking failed; see server logs"
+                status_code=500, detail=f"Chunking failed: {e}"
             ) from e
 
         steps.append(
@@ -138,7 +95,7 @@ async def ingest_pdf(
             ) from e
 
         total = round(time.perf_counter() - t0, 4)
-        page_count = max((p.page_number for p in pages), default=0)
+        page_count = max((c.page_end for c in chunks), default=0)
         index_build_time_s = round(time.perf_counter() - t_index, 4)
         methods_indexed = [r.name for r in build_results if r.built]
 
@@ -202,32 +159,20 @@ async def ingest_from_raw(
 
     t_parse = time.perf_counter()
     for pdf_path in pdfs:
-        try:
-            pages = parse_pdf(pdf_path)
-        except Exception as e:
-            logger.exception("PDF parse failed for %s", pdf_path)
-            raise HTTPException(
-                status_code=400, detail=f"Could not parse {pdf_path.name}: {e}"
-            ) from e
-        page_count_total += max((p.page_number for p in pages), default=0)
-        source_files.append(pdf_path.name)
-
-        t_clean = time.perf_counter()
-        prepared = prepare_cleaned_pages(pages)
-        steps.append(
-            IngestProcessingStep(
-                step=f"clean:{pdf_path.name}",
-                duration_s=round(time.perf_counter() - t_clean, 4),
-                status="done",
-            )
-        )
-
         t_chunk = time.perf_counter()
-        chunks = build_chunks_from_prepared(prepared, pdf_path.name)
+        try:
+            chunks = build_chunks_from_pdf(pdf_path, pdf_path.name)
+        except Exception as e:
+            logger.exception("Chunking failed for %s", pdf_path)
+            raise HTTPException(
+                status_code=400, detail=f"Could not chunk {pdf_path.name}: {e}"
+            ) from e
         # Ensure globally unique, stable chunk IDs across multiple PDFs.
         for c in chunks:
             c.id = f"chunk_{chunk_counter:06d}"
             chunk_counter += 1
+        page_count_total += max((c.page_end for c in chunks), default=0)
+        source_files.append(pdf_path.name)
         steps.append(
             IngestProcessingStep(
                 step=f"chunk:{pdf_path.name}",
@@ -239,7 +184,7 @@ async def ingest_from_raw(
 
     steps.append(
         IngestProcessingStep(
-            step="parse",
+            step="ingest",
             duration_s=round(time.perf_counter() - t_parse, 4),
             status="done",
         )

@@ -9,9 +9,9 @@ import pytest
 from fastapi.testclient import TestClient
 
 from config import settings
-from ingestion.chunker import build_chunks_from_prepared, prepare_cleaned_pages
+from ingestion.chunker import build_chunks_from_pdf
 from ingestion.cleaner import clean_text
-from ingestion.pdf_parser import ParsedPage, parse_pdf
+from ingestion.pdf_parser import parse_pdf
 
 # Project root: backend/tests -> backend -> repo root
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -41,37 +41,16 @@ def test_cleaner_pipeline_order_and_hyphen_join() -> None:
     assert "\n\n" in out or "attendance" in out
 
 
-def test_chunker_overlap_and_sentence_boundaries() -> None:
-    """Sliding window keeps sentence boundaries and applies overlap between chunks."""
-    sents = [
-        "First sentence has exactly five words here.",
-        "Second sentence also has five words here now.",
-        "Third sentence adds five more words here today.",
-        "Fourth sentence keeps five words in this line.",
-        "Fifth sentence ends with five words right here.",
-    ]
-    body = " ".join(sents)
-    fake = ParsedPage(
-        page_number=1,
-        text=body,
-        section_title="Test Section",
-        has_table=False,
-    )
-    prepared = prepare_cleaned_pages([fake])
-    chunks = build_chunks_from_prepared(
-        prepared,
-        "unit_test.pdf",
-        chunk_size_words=12,
-        overlap_words=5,
-        min_chunk_words=3,
-    )
-    assert len(chunks) >= 2
+@pytest.mark.skipif(not UG_PDF.is_file(), reason="UG handbook PDF not in data/raw")
+def test_semantic_chunks_have_required_fields() -> None:
+    """Unstructured chunks carry id, text, page metadata, and source_file."""
+    chunks = build_chunks_from_pdf(UG_PDF, "UG_Handbook.pdf")
+    assert len(chunks) > 0
     for ch in chunks:
-        assert ch.text.strip() == ch.text
-        assert ch.page_start == 1 and ch.page_end == 1
-    joined = " ".join(c.text for c in chunks)
-    assert "First sentence" in joined
-    assert "Fifth sentence" in joined
+        assert ch.id.startswith("chunk_")
+        assert len(ch.text) > 0
+        assert ch.page_start >= 1
+        assert ch.source_file == "UG_Handbook.pdf"
 
 
 @pytest.mark.skipif(not UG_PDF.is_file(), reason="UG handbook PDF not in data/raw")

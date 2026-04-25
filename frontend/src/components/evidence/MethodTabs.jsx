@@ -3,11 +3,12 @@
  * @param {Object} props
  * @param {string} props.active - currently active method key
  * @param {Function} props.onChange - (key) => void
- * @param {Object} props.latencies - { minhash, simhash, tfidf } latency_ms values
- * @param {number} props.overlapCount - chunks that appear in all 3 methods
+ * @param {Object} props.latencies - { hybrid, minhash, simhash, tfidf } latency_ms values
+ * @param {number} props.overlapCount - chunks that appear in all methods
  */
 export default function MethodTabs({ active, onChange, latencies = {}, overlapCount = 0 }) {
   const tabs = [
+    { key: 'hybrid',  label: 'Hybrid'  },
     { key: 'minhash', label: 'MinHash' },
     { key: 'simhash', label: 'SimHash' },
     { key: 'tfidf',   label: 'TF-IDF'  },
