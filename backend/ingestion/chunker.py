@@ -93,7 +93,7 @@ def build_chunks_from_pdf(pdf_path: Path, source_file: str) -> list[Chunk]:
 
         chunks.append(
             Chunk(
-                id=f"chunk_{i:06d}",
+                id=f"{source_file.replace('.', '_')}_{i:06d}",
                 text=text,
                 page_start=p_start,
                 page_end=p_end,
