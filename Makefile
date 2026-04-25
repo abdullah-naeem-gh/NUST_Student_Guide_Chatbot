@@ -1,4 +1,4 @@
-.PHONY: dev-backend dev-frontend install-backend install-frontend
+.PHONY: dev-backend dev-frontend install-backend install-frontend run-experiments
 
 dev-backend:
 	cd backend && ./.venv/bin/uvicorn main:app --reload --port 8000
@@ -11,3 +11,6 @@ install-backend:
 
 install-frontend:
 	cd frontend && npm install
+
+run-experiments:
+	cd backend && ../.venv/bin/python ../scripts/run_experiments.py
