@@ -47,7 +47,8 @@ class Settings(BaseSettings):
     FIM_MIN_SUPPORT: int = 3            # minimum chunk co-occurrence count to keep an itemset
     FIM_MAX_ITEMSET_SIZE: int = 3       # max itemset size (2 = pairs only, 3 = pairs+triples)
     FIM_TOP_N_PER_TERM: int = 3         # co-occurring terms added per query term at runtime
-    FIM_ENABLED: bool = True            # master switch; set False to disable expansion
+    FIM_MIN_IDF: float = 3.0           # min TF-IDF IDF to accept an expansion term (filters generic terms)
+    FIM_ENABLED: bool = False           # disabled: corpus too small (434 chunks) for reliable signal
 
     # TF-IDF tuning knobs (baseline defaults in INSTRUCTIONS §2.3)
     TFIDF_MAX_FEATURES: int = 20000

@@ -21,6 +21,20 @@ from pathlib import Path
 from ingestion.models import Chunk
 from indexing.minhash_lsh import _ensure_stopwords_and_stemmer, _normalize_terms
 
+
+def _compute_stemmed_idf(transactions: list[frozenset[str]]) -> dict[str, float]:
+    """Compute IDF over stemmed token sets (consistent with FIM tokenization)."""
+    import math
+    n = len(transactions)
+    if n == 0:
+        return {}
+    df: dict[str, int] = defaultdict(int)
+    for tx in transactions:
+        for t in tx:
+            df[t] += 1
+    # sklearn-style smooth IDF: log((1+n)/(1+df)) + 1
+    return {t: math.log((1.0 + n) / (1.0 + d)) + 1.0 for t, d in df.items()}
+
 logger = logging.getLogger(__name__)
 
 
@@ -30,6 +44,8 @@ class FimIndex:
 
     # term → list of (co_term, support_count), sorted descending
     cooccurrence: dict[str, list[tuple[str, int]]] = field(default_factory=dict)
+    # stemmed term → IDF weight from TF-IDF vectorizer (used to filter generic expansions)
+    idf: dict[str, float] = field(default_factory=dict)
     min_support: int = 3
     max_itemset_size: int = 3
 
@@ -125,14 +141,25 @@ def build_fim_index(
                 if a != b:
                     cooccurrence[a][b] += count
 
-    # Sort each entry by count descending
+    # Rank co-terms by support × IDF: balances how often they co-occur (support)
+    # with how discriminative they are (IDF).  Pure support favours generic terms;
+    # pure IDF favours rare noise.  The product rewards terms that are both
+    # frequent co-occurrences AND semantically specific to the topic area.
+    idf_weights = _compute_stemmed_idf(transactions)
     sorted_cooc: dict[str, list[tuple[str, int]]] = {
-        term: sorted(partners.items(), key=lambda x: x[1], reverse=True)
+        term: sorted(
+            partners.items(),
+            key=lambda x: x[1] * idf_weights.get(x[0], 1.0),
+            reverse=True,
+        )
         for term, partners in cooccurrence.items()
     }
 
+    logger.info("FIM: computed %d stemmed IDF weights for expansion filtering", len(idf_weights))
+
     return FimIndex(
         cooccurrence=sorted_cooc,
+        idf=idf_weights,
         min_support=min_support,
         max_itemset_size=max_itemset_size,
     )
@@ -142,21 +169,23 @@ def expand_query(
     query: str,
     fim_index: FimIndex,
     top_n_per_term: int = 3,
+    min_idf: float = 3.0,
 ) -> str:
     """
-    Expand a query using corpus frequent co-occurrences.
+    Expand a query using corpus frequent co-occurrences, filtered by IDF.
 
-    For each stemmed query term found in the co-occurrence map, append up to
-    top_n_per_term frequent co-occurring terms to the query string.  Returns
-    the expanded query (original terms preserved verbatim at the front).
+    Only co-occurring terms with IDF ≥ min_idf are added — this excludes
+    near-universal terms like "student" or "nust" (low IDF) that appear in
+    almost every chunk and dilute retrieval signal.
 
     Args:
         query: Raw user query.
         fim_index: Loaded FimIndex.
         top_n_per_term: How many co-occurring terms to add per query term.
+        min_idf: Minimum IDF for an expansion term to be accepted.
 
     Returns:
-        Expanded query string (original + appended co-occurrence terms).
+        Expanded query string (original + appended discriminative co-terms).
     """
     if not fim_index.cooccurrence:
         return query
@@ -168,10 +197,18 @@ def expand_query(
     expansions: list[str] = []
     for term in query_terms:
         partners = fim_index.cooccurrence.get(term, [])
-        for co_term, _count in partners[:top_n_per_term]:
-            if co_term not in added:
-                expansions.append(co_term)
-                added.add(co_term)
+        count = 0
+        for co_term, _support in partners:
+            if count >= top_n_per_term:
+                break
+            if co_term in added:
+                continue
+            # Skip low-IDF generic terms — they pollute all retrieval methods
+            if fim_index.idf and fim_index.idf.get(co_term, 0.0) < min_idf:
+                continue
+            expansions.append(co_term)
+            added.add(co_term)
+            count += 1
 
     if not expansions:
         return query
@@ -186,6 +223,7 @@ def save_fim_index(index: FimIndex, path: Path) -> None:
     payload = {
         "min_support": index.min_support,
         "max_itemset_size": index.max_itemset_size,
+        "idf": index.idf,
         "cooccurrence": {
             term: [[co, cnt] for co, cnt in partners]
             for term, partners in index.cooccurrence.items()
@@ -203,6 +241,7 @@ def load_fim_index(path: Path) -> FimIndex:
     }
     return FimIndex(
         cooccurrence=cooccurrence,
+        idf={str(k): float(v) for k, v in payload.get("idf", {}).items()},
         min_support=int(payload["min_support"]),
         max_itemset_size=int(payload["max_itemset_size"]),
     )
