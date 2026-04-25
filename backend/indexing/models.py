@@ -8,7 +8,7 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 
-IndexName = Literal["minhash", "simhash", "tfidf", "pagerank"]
+IndexName = Literal["minhash", "simhash", "tfidf", "pagerank", "fim"]
 
 
 class IndexBuildResult(BaseModel):

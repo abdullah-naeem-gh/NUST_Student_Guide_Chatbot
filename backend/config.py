@@ -43,6 +43,12 @@ class Settings(BaseSettings):
     HYBRID_MINHASH_WEIGHT: float = 0.5
     HYBRID_SIMHASH_WEIGHT: float = 0.5
 
+    # Frequent Itemset Mining (query expansion)
+    FIM_MIN_SUPPORT: int = 3            # minimum chunk co-occurrence count to keep an itemset
+    FIM_MAX_ITEMSET_SIZE: int = 3       # max itemset size (2 = pairs only, 3 = pairs+triples)
+    FIM_TOP_N_PER_TERM: int = 3         # co-occurring terms added per query term at runtime
+    FIM_ENABLED: bool = True            # master switch; set False to disable expansion
+
     # TF-IDF tuning knobs (baseline defaults in INSTRUCTIONS §2.3)
     TFIDF_MAX_FEATURES: int = 20000
     TFIDF_NGRAM_MAX: int = 2
