@@ -29,6 +29,7 @@ from indexing.simhash import (
     load_simhash_index,
     save_simhash_index,
 )
+from indexing.fim import FimIndex, build_fim_index, load_fim_index, save_fim_index
 from indexing.tfidf_baseline import TfidfIndex, build_tfidf_index, load_tfidf_index, save_tfidf_index
 
 logger = logging.getLogger(__name__)
@@ -66,6 +67,7 @@ class IndexArtifacts:
     simhash: SimHashIndex | None = None
     tfidf: TfidfIndex | None = None
     pagerank: PageRankIndex | None = None
+    fim: FimIndex | None = None
 
 
 class IndexManager:
@@ -91,6 +93,7 @@ class IndexManager:
             "simhash": self.index_dir / "simhash.json",
             "tfidf": self.index_dir / "tfidf.pkl",
             "pagerank": self.index_dir / "pagerank.json",
+            "fim": self.index_dir / "fim.json",
         }
 
     def indexes_exist(self) -> bool:
@@ -140,6 +143,9 @@ class IndexManager:
         # PageRank (uses SimHash fingerprints for near-duplicate edges)
         results.append(self._build_one("pagerank", force, chunks))
 
+        # FIM (query expansion via frequent co-occurrences — optional, non-blocking)
+        results.append(self._build_one("fim", force, chunks))
+
         return results
 
     def _build_one(self, name: IndexName, force: bool, chunks: list[Chunk]) -> IndexBuildResult:
@@ -188,6 +194,14 @@ class IndexManager:
             idx = build_pagerank_index(chunks, self.artifacts.simhash.fingerprints)
             save_pagerank_index(idx, out_path)
             self.artifacts.pagerank = idx
+        elif name == "fim":
+            idx = build_fim_index(
+                chunks,
+                min_support=int(settings.FIM_MIN_SUPPORT),
+                max_itemset_size=int(settings.FIM_MAX_ITEMSET_SIZE),
+            )
+            save_fim_index(idx, out_path)
+            self.artifacts.fim = idx
         else:
             raise ValueError(f"Unknown index name: {name}")
 
@@ -212,5 +226,10 @@ class IndexManager:
         self.artifacts.simhash = load_simhash_index(self.paths["simhash"])
         self.artifacts.tfidf = load_tfidf_index(self.paths["tfidf"])
         self.artifacts.pagerank = load_pagerank_index(self.paths["pagerank"])
+        fim_path = self.paths["fim"]
+        if fim_path.exists():
+            self.artifacts.fim = load_fim_index(fim_path)
+        else:
+            logger.warning("FIM index not found at %s — query expansion disabled", fim_path)
         return self.artifacts
 

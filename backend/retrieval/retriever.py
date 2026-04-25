@@ -14,6 +14,7 @@ import numpy as np
 from sklearn.metrics.pairwise import linear_kernel
 
 from config import settings
+from indexing.fim import expand_query
 from indexing.hybrid import query_minhash_candidates, score_candidates
 from indexing.index_manager import IndexManager, load_chunks
 from indexing.minhash_lsh import (
@@ -139,6 +140,19 @@ class Retriever:
         raw = float(self._pagerank_raw.get(chunk_id, 0.0))
         return normalize_01(raw, self._pagerank_min, self._pagerank_max)
 
+    def _expand_query(self, query: str) -> str:
+        """Apply FIM-based query expansion if the index is loaded and enabled."""
+        if not getattr(settings, "FIM_ENABLED", True):
+            return query
+        fim = self.mgr.artifacts.fim
+        if fim is None:
+            return query
+        return expand_query(
+            query,
+            fim,
+            top_n_per_term=int(getattr(settings, "FIM_TOP_N_PER_TERM", 3)),
+        )
+
     def retrieve(
         self,
         query: str,
@@ -160,21 +174,22 @@ class Retriever:
             RetrievalResult.
         """
 
+        expanded = self._expand_query(query)
         if method == "hybrid":
             return self._retrieve_hybrid(
-                query, k=k, use_pagerank=use_pagerank, source_file=source_file
+                expanded, k=k, use_pagerank=use_pagerank, source_file=source_file
             )
         if method == "minhash":
             return self._retrieve_minhash(
-                query, k=k, use_pagerank=use_pagerank, source_file=source_file
+                expanded, k=k, use_pagerank=use_pagerank, source_file=source_file
             )
         if method == "simhash":
             return self._retrieve_simhash(
-                query, k=k, use_pagerank=use_pagerank, source_file=source_file
+                expanded, k=k, use_pagerank=use_pagerank, source_file=source_file
             )
         if method == "tfidf":
             return self._retrieve_tfidf(
-                query, k=k, use_pagerank=use_pagerank, source_file=source_file
+                expanded, k=k, use_pagerank=use_pagerank, source_file=source_file
             )
         raise ValueError(f"Unknown method: {method}")
 
