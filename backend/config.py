@@ -28,14 +28,14 @@ class Settings(BaseSettings):
     MINHASH_NUM_PERM: int = 128
     # Tuned for QA-style short queries: k=1 yields non-empty LSH candidates.
     MINHASH_SHINGLE_K_WORDS: int = 1
-    MINHASH_USE_UNIGRAMS_AND_BIGRAMS: bool = False
+    MINHASH_USE_UNIGRAMS_AND_BIGRAMS: bool = True
     # Candidate-control knobs for MinHash reranking (helps latency when LSH is permissive).
-    MINHASH_LSH_PRESELECT_TOP_N: int = 200
+    # Hybrid path: trim LSH candidates to top-50 by MinHash Jaccard before SimHash scoring.
+    MINHASH_LSH_PRESELECT_TOP_N: int = 50
     MINHASH_EXACT_RERANK_TOP_N: int = 50
-    # Tuned LSH params (bands*rows = MINHASH_NUM_PERM)
-    # Balance candidate_rate vs latency for reranking.
-    LSH_NUM_BANDS: int = 64
-    LSH_ROWS_PER_BAND: int = 2
+    # 128 bands × 1 row → LSH threshold ~0.008 (permissive candidate recall for short QA queries)
+    LSH_NUM_BANDS: int = 128
+    LSH_ROWS_PER_BAND: int = 1
     SIMHASH_HAMMING_THRESHOLD: int = 10
     TOP_K_DEFAULT: int = 5
 
