@@ -72,35 +72,37 @@ async def run_query(payload: QueryRequest, request: Request) -> QueryResponse:
 
     if payload.method == "all":
         tasks = [
+            asyncio.to_thread(r.retrieve, query, "hybrid", k, use_pr, payload.source_file),
+            asyncio.to_thread(r.retrieve, query, "tfidf", k, use_pr, payload.source_file),
             asyncio.to_thread(r.retrieve, query, "minhash", k, use_pr, payload.source_file),
             asyncio.to_thread(r.retrieve, query, "simhash", k, use_pr, payload.source_file),
-            asyncio.to_thread(r.retrieve, query, "tfidf", k, use_pr, payload.source_file),
         ]
-        minhash_res, simhash_res, tfidf_res = await asyncio.gather(*tasks)
+        hybrid_res, tfidf_res, minhash_res, simhash_res = await asyncio.gather(*tasks)
         results = {
+            "hybrid": _as_method_result(hybrid_res),
+            "tfidf": _as_method_result(tfidf_res),
             "minhash": _as_method_result(minhash_res),
             "simhash": _as_method_result(simhash_res),
-            "tfidf": _as_method_result(tfidf_res),
         }
     else:
         res = await asyncio.to_thread(
             r.retrieve, query, payload.method, k, use_pr, payload.source_file
         )
-        mr = _as_method_result(res)
         results = {
+            "hybrid": MethodResultModel(),
+            "tfidf": MethodResultModel(),
             "minhash": MethodResultModel(),
             "simhash": MethodResultModel(),
-            "tfidf": MethodResultModel(),
         }
-        results[str(payload.method)] = mr  # type: ignore[index]
+        results[str(payload.method)] = _as_method_result(res)
 
     answer = ""
     cited_chunks: list[str] = []
 
     if payload.generate_answer:
-        # Prefer TF-IDF chunks for generation (most stable/precise baseline),
-        # falling back to a merged list if TF-IDF returns nothing.
-        top_chunks = list(results["tfidf"].chunks)[:k]
+        # Prefer hybrid chunks for generation (best of both LSH signals),
+        # falling back to a merged list if hybrid returns nothing.
+        top_chunks = list(results["hybrid"].chunks)[:k] or list(results["tfidf"].chunks)[:k]
         if not top_chunks:
             # Combine all retrieved chunks, dedupe by chunk_id, then pick the best-k by final_score.
             merged: dict[str, RetrievedChunkModel] = {}

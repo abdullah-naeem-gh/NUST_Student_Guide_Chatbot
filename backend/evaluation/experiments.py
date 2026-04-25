@@ -128,6 +128,7 @@ def run_method_comparison(k: int = 5, use_pagerank: bool = False) -> dict[str, A
     r = _load_retriever()
     mgr = r.mgr
     per_method: dict[str, list[dict[str, Any]]] = {
+        "hybrid": [],
         "minhash": [],
         "minhash_lsh_only": [],
         "minhash_no_fallback": [],
@@ -138,7 +139,7 @@ def run_method_comparison(k: int = 5, use_pagerank: bool = False) -> dict[str, A
     for b in BENCHMARK:
         query = b["query"]
         relevant = set(b["relevant_chunk_ids"])
-        for method in ("minhash", "simhash", "tfidf"):
+        for method in ("hybrid", "minhash", "simhash", "tfidf"):
             res = r.retrieve(query=query, method=method, k=max(10, k), use_pagerank=use_pagerank)
             retrieved_ids = [c.chunk_id for c in res.chunks]
             per_method[method].append(
@@ -208,8 +209,8 @@ def run_method_comparison(k: int = 5, use_pagerank: bool = False) -> dict[str, A
             "mean_memory_mb": sum(r["memory_mb"] for r in rows) / len(rows),
         }
         # Add candidate/fallback rates where meaningful.
-        if method == "minhash":
-            base["fallback_rate"] = sum(1 for r in rows if r.get("fallback_to") == "tfidf") / len(rows)
+        if method in ("minhash", "hybrid"):
+            base["fallback_rate"] = sum(1 for r in rows if r.get("fallback_to") is not None) / len(rows)
         if method == "minhash_lsh_only":
             base["candidate_rate"] = sum(1 for r in rows if int(r.get("lsh_candidate_count", 0)) > 0) / len(rows)
             base["mean_lsh_candidate_count"] = sum(int(r.get("lsh_candidate_count", 0)) for r in rows) / len(rows)

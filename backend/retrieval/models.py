@@ -7,7 +7,7 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 
-RetrievalMethod = Literal["minhash", "simhash", "tfidf", "all"]
+RetrievalMethod = Literal["minhash", "simhash", "tfidf", "hybrid", "all"]
 
 
 class QueryRequest(BaseModel):
@@ -42,7 +42,7 @@ class MethodResultModel(BaseModel):
     chunks: list[RetrievedChunkModel] = Field(default_factory=list)
     latency_ms: float = 0.0
     memory_mb: float = 0.0
-    fallback_to: Literal["tfidf"] | None = None
+    fallback_to: str | None = None
 
 
 class QueryResponse(BaseModel):
@@ -51,5 +51,5 @@ class QueryResponse(BaseModel):
     query: str
     answer: str = ""
     cited_chunks: list[str] = Field(default_factory=list)
-    results: dict[Literal["minhash", "simhash", "tfidf"], MethodResultModel]
+    results: dict[str, MethodResultModel]
 

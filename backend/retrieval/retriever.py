@@ -32,7 +32,7 @@ from retrieval.reranker import fuse_scores, normalize_01
 
 logger = logging.getLogger(__name__)
 
-Method = Literal["minhash", "simhash", "tfidf", "all"]
+Method = Literal["minhash", "simhash", "tfidf", "hybrid", "all"]
 
 
 @dataclass(frozen=True)
@@ -159,6 +159,10 @@ class Retriever:
             RetrievalResult.
         """
 
+        if method == "hybrid":
+            return self._retrieve_hybrid(
+                query, k=k, use_pagerank=use_pagerank, source_file=source_file
+            )
         if method == "minhash":
             return self._retrieve_minhash(
                 query, k=k, use_pagerank=use_pagerank, source_file=source_file
@@ -219,6 +223,94 @@ class Retriever:
             page_end=int(c.page_end),
             section_title=str(c.section_title or ""),
             highlight_spans=find_highlight_spans(c.text, query),
+        )
+
+    def _retrieve_hybrid(
+        self, query: str, k: int, use_pagerank: bool, source_file: str | None
+    ) -> RetrievalResult:
+        """
+        Hybrid LSH retrieval: MinHash+LSH candidate filter + combined MinHash/SimHash scoring.
+
+        Pipeline:
+        1. MinHash+LSH → fast approximate candidate set.
+        2. Score each candidate: combined = α·minhash_jaccard + β·simhash_similarity.
+        3. If LSH returns no candidates, fall back to full SimHash scan (still approximate).
+        4. Return top-k by combined score.
+        """
+        mh_idx = self.mgr.artifacts.minhash
+        sh_idx = self.mgr.artifacts.simhash
+        if mh_idx is None or sh_idx is None:
+            raise RuntimeError("Hybrid retrieval requires both MinHash and SimHash indexes")
+
+        def _run():
+            # --- MinHash query preprocessing ---
+            stop, stemmer = _ensure_stopwords_and_stemmer()
+            terms = _normalize_terms(query, stop, stemmer)
+            use_ub = bool(getattr(settings, "MINHASH_USE_UNIGRAMS_AND_BIGRAMS", False))
+            if use_ub:
+                shingles = set(terms) | {
+                    " ".join(terms[i : i + 2])
+                    for i in range(0, max(0, len(terms) - 1))
+                }
+            else:
+                shingles = shingle_k_words(
+                    terms, k=int(getattr(settings, "MINHASH_SHINGLE_K_WORDS", 3))
+                )
+            qsig = build_minhash_signature(shingles, num_perm=settings.MINHASH_NUM_PERM)
+
+            # --- SimHash query preprocessing ---
+            sh_stop = _ensure_stopwords()
+            q_fp = simhash_fingerprint(tokenize_terms(query, sh_stop), sh_idx.idf)
+
+            alpha = float(settings.HYBRID_MINHASH_WEIGHT)
+            beta = float(settings.HYBRID_SIMHASH_WEIGHT)
+
+            # --- LSH candidate retrieval ---
+            candidates = [str(cid) for cid in mh_idx.lsh.query(qsig)]
+            if source_file:
+                candidates = [
+                    cid
+                    for cid in candidates
+                    if (c := self.chunk_by_id.get(cid)) is not None
+                    and c.source_file == source_file
+                ]
+
+            if not candidates:
+                # No LSH hits — scan with SimHash only (still approximate, not exact)
+                scored: list[tuple[str, float]] = []
+                for cid, fp in sh_idx.fingerprints.items():
+                    if source_file:
+                        c = self.chunk_by_id.get(str(cid))
+                        if c is None or c.source_file != source_file:
+                            continue
+                    scored.append((str(cid), simhash_similarity(q_fp, fp)))
+                scored.sort(key=lambda x: x[1], reverse=True)
+                return scored[:k], "simhash_scan"
+
+            # --- Combined scoring on LSH candidates ---
+            scored = []
+            for cid in candidates:
+                mh_score = float(qsig.jaccard(mh_idx.signatures[cid])) if cid in mh_idx.signatures else 0.0
+                sh_fp = sh_idx.fingerprints.get(cid)
+                sh_score = simhash_similarity(q_fp, sh_fp) if sh_fp is not None else 0.0
+                scored.append((cid, alpha * mh_score + beta * sh_score))
+
+            scored.sort(key=lambda x: x[1], reverse=True)
+            return scored[:k], None
+
+        (scored, fallback_used), latency_ms, mem_mb = self._measure(_run)
+        chunks = [
+            self._mk_chunk(cid, score=score, use_pagerank=use_pagerank, query=query)
+            for cid, score in scored
+        ]
+        chunks.sort(key=lambda c: c.final_score, reverse=True)
+        return RetrievalResult(
+            method="hybrid",
+            chunks=chunks[:k],
+            latency_ms=latency_ms,
+            memory_delta_mb=mem_mb,
+            query=query,
+            fallback_to=fallback_used,
         )
 
     def _retrieve_minhash(

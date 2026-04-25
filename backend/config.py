@@ -39,6 +39,10 @@ class Settings(BaseSettings):
     SIMHASH_HAMMING_THRESHOLD: int = 10
     TOP_K_DEFAULT: int = 5
 
+    # Hybrid retrieval weights (must sum to 1.0)
+    HYBRID_MINHASH_WEIGHT: float = 0.5
+    HYBRID_SIMHASH_WEIGHT: float = 0.5
+
     # TF-IDF tuning knobs (baseline defaults in INSTRUCTIONS §2.3)
     TFIDF_MAX_FEATURES: int = 20000
     TFIDF_NGRAM_MAX: int = 2
