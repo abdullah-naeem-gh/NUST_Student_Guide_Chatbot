@@ -1,3 +1,4 @@
+unstructured[pdf]
 fastapi
 uvicorn[standard]
 pydantic

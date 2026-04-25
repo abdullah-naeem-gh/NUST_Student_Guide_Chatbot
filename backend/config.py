@@ -16,9 +16,15 @@ class Settings(BaseSettings):
     OPENROUTER_API_KEY: str = ""
     OPENROUTER_DEFAULT_MODEL: str = "openai/gpt-oss-120b:free"
 
+    # Unstructured semantic chunking parameters
+    UNSTRUCTURED_STRATEGY: str = "fast"        # "fast" | "hi_res" | "ocr_only"
+    CHUNK_MAX_CHARACTERS: int = 2000           # hard ceiling per chunk
+    CHUNK_NEW_AFTER_N_CHARS: int = 1500        # soft target; splits at next title boundary
+    MIN_CHUNK_WORDS: int = 50
+
+    # Legacy sliding-window knobs (kept for backward compatibility)
     CHUNK_SIZE_WORDS: int = 350
     CHUNK_OVERLAP_WORDS: int = 75
-    MIN_CHUNK_WORDS: int = 100
     MINHASH_NUM_PERM: int = 128
     # Tuned for QA-style short queries: k=1 yields non-empty LSH candidates.
     MINHASH_SHINGLE_K_WORDS: int = 1
