@@ -18,7 +18,7 @@ class Settings(BaseSettings):
 
     # CORS Settings
     CORS_ALLOWED_ORIGINS: list[str] = ["http://localhost:5173", "http://localhost:3000"]
-    CORS_ALLOWED_ORIGIN_REGEX: str | None = r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$"
+    CORS_ALLOWED_ORIGIN_REGEX: str | None = None
 
     # Unstructured semantic chunking parameters
     UNSTRUCTURED_STRATEGY: str = "fast"        # "fast" | "hi_res" | "ocr_only"
