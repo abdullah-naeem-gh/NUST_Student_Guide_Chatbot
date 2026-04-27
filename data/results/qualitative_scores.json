@@ -1,0 +1,344 @@
+{
+  "generated_at": "2026-04-14T13:05:27.681986+00:00",
+  "k": 5,
+  "scores": [
+    {
+      "query": "Under what conditions is an undergraduate student considered academically deficient (probation/warning triggers)?",
+      "category": "gpa",
+      "methods": {
+        "minhash": {
+          "score": "correct",
+          "notes": "relevant_hits=chunk_000128@3,chunk_000145@4,chunk_000157@5,chunk_000129@6,chunk_000147@9 | top=chunk_000163@1(ov=0.33);chunk_000152@2(ov=0.22);chunk_000128@3(ov=0.89);chunk_000145@4(ov=0.89);chunk_000157@5(ov=0.78) | best_overlap=0.89 | fallback_to=None"
+        },
+        "simhash": {
+          "score": "correct",
+          "notes": "relevant_hits=chunk_000129@1,chunk_000146@2,chunk_000128@4,chunk_000157@5 | top=chunk_000129@1(ov=0.67);chunk_000146@2(ov=0.67);chunk_000127@3(ov=0.44);chunk_000128@4(ov=0.89);chunk_000157@5(ov=0.78) | best_overlap=0.89 | fallback_to=None"
+        },
+        "tfidf": {
+          "score": "correct",
+          "notes": "relevant_hits=chunk_000128@1,chunk_000157@2,chunk_000156@3,chunk_000145@4,chunk_000146@5 | top=chunk_000128@1(ov=0.89);chunk_000157@2(ov=0.78);chunk_000156@3(ov=0.78);chunk_000145@4(ov=0.89);chunk_000146@5(ov=0.67) | best_overlap=0.89 | fallback_to=None"
+        },
+        "hybrid": {
+          "score": "correct",
+          "notes": "(Inherited from MinHash) relevant_hits=chunk_000128@3,chunk_000145@4,chunk_000157@5,chunk_000129@6,chunk_000147@9 | top=chunk_000163@1(ov=0.33);chunk_000152@2(ov=0.22);chunk_000128@3(ov=0.89);chunk_000145@4(ov=0.89);chunk_000157@5(ov=0.78) | best_overlap=0.89 | fallback_to=None"
+        }
+      }
+    },
+    {
+      "query": "How are Semester GPA and CGPA reported/approved in the official results?",
+      "category": "gpa",
+      "methods": {
+        "minhash": {
+          "score": "partial",
+          "notes": "top=chunk_000029@1(ov=0.43);chunk_000218@2(ov=0.29) | best_overlap=0.43 | fallback_to=None"
+        },
+        "simhash": {
+          "score": "partial",
+          "notes": "top=chunk_000095@1(ov=0.14);chunk_000050@2(ov=0.00);chunk_000181@3(ov=0.14);chunk_000218@4(ov=0.29);chunk_000059@5(ov=0.14) | best_overlap=0.29 | fallback_to=None"
+        },
+        "tfidf": {
+          "score": "correct",
+          "notes": "relevant_hits=chunk_000013@2,chunk_000127@8,chunk_000126@10 | top=chunk_000012@1(ov=0.71);chunk_000013@2(ov=0.71);chunk_000143@3(ov=0.71);chunk_000125@4(ov=0.71);chunk_000128@5(ov=0.57) | best_overlap=0.71 | fallback_to=None"
+        },
+        "hybrid": {
+          "score": "partial",
+          "notes": "(Inherited from MinHash) top=chunk_000029@1(ov=0.43);chunk_000218@2(ov=0.29) | best_overlap=0.43 | fallback_to=None"
+        }
+      }
+    },
+    {
+      "query": "What is the policy when a student misses the mid semester examination due to acceptable reasons (make-up timing)?",
+      "category": "attendance",
+      "methods": {
+        "minhash": {
+          "score": "correct",
+          "notes": "relevant_hits=chunk_000012@1 | top=chunk_000012@1(ov=0.90);chunk_000154@2(ov=0.70);chunk_000026@3(ov=0.60);chunk_000146@4(ov=0.50);chunk_000029@5(ov=0.30) | best_overlap=0.90 | fallback_to=None"
+        },
+        "simhash": {
+          "score": "correct",
+          "notes": "relevant_hits=chunk_000011@1 | top=chunk_000011@1(ov=0.90);chunk_000063@2(ov=0.10);chunk_000091@3(ov=0.20);chunk_000056@4(ov=0.20);chunk_000155@5(ov=0.90) | best_overlap=0.90 | fallback_to=None"
+        },
+        "tfidf": {
+          "score": "correct",
+          "notes": "relevant_hits=chunk_000142@1,chunk_000011@2,chunk_000012@5,chunk_000125@7,chunk_000143@10 | top=chunk_000142@1(ov=0.90);chunk_000011@2(ov=0.90);chunk_000124@3(ov=0.90);chunk_000155@4(ov=0.90);chunk_000012@5(ov=0.90) | best_overlap=0.90 | fallback_to=None"
+        },
+        "hybrid": {
+          "score": "correct",
+          "notes": "(Inherited from MinHash) relevant_hits=chunk_000012@1 | top=chunk_000012@1(ov=0.90);chunk_000154@2(ov=0.70);chunk_000026@3(ov=0.60);chunk_000146@4(ov=0.50);chunk_000029@5(ov=0.30) | best_overlap=0.90 | fallback_to=None"
+        }
+      }
+    },
+    {
+      "query": "What is the policy when a student misses the end semester examination due to acceptable reasons (make-up timing/limits)?",
+      "category": "attendance",
+      "methods": {
+        "minhash": {
+          "score": "correct",
+          "notes": "relevant_hits=chunk_000012@1 | top=chunk_000012@1(ov=0.82);chunk_000154@2(ov=0.64);chunk_000026@3(ov=0.55);chunk_000039@4(ov=0.45);chunk_000029@5(ov=0.36) | best_overlap=0.82 | fallback_to=None"
+        },
+        "simhash": {
+          "score": "partial",
+          "notes": "top=chunk_000063@1(ov=0.09);chunk_000187@2(ov=0.09);chunk_000018@3(ov=0.36);chunk_000026@4(ov=0.55);chunk_000105@5(ov=0.18) | best_overlap=0.55 | fallback_to=None"
+        },
+        "tfidf": {
+          "score": "correct",
+          "notes": "relevant_hits=chunk_000142@1,chunk_000011@2,chunk_000125@6,chunk_000012@7,chunk_000143@8 | top=chunk_000142@1(ov=0.82);chunk_000011@2(ov=0.82);chunk_000124@3(ov=0.82);chunk_000155@4(ov=0.82);chunk_000156@5(ov=0.64) | best_overlap=0.82 | fallback_to=None"
+        },
+        "hybrid": {
+          "score": "correct",
+          "notes": "(Inherited from MinHash) relevant_hits=chunk_000012@1 | top=chunk_000012@1(ov=0.82);chunk_000154@2(ov=0.64);chunk_000026@3(ov=0.55);chunk_000039@4(ov=0.45);chunk_000029@5(ov=0.36) | best_overlap=0.82 | fallback_to=None"
+        }
+      }
+    },
+    {
+      "query": "Can a student repeat a course to clear an F/XF or improve the grade, and how are old vs new grades shown/used in CGPA?",
+      "category": "course_repetition",
+      "methods": {
+        "minhash": {
+          "score": "partial",
+          "notes": "top=chunk_000163@1(ov=0.25);chunk_000128@2(ov=0.42);chunk_000145@3(ov=0.50);chunk_000015@4(ov=0.42);chunk_000035@5(ov=0.17) | best_overlap=0.50 | fallback_to=None"
+        },
+        "simhash": {
+          "score": "correct",
+          "notes": "relevant_hits=chunk_000132@3,chunk_000150@4,chunk_000019@8,chunk_000133@9 | top=chunk_000027@1(ov=0.83);chunk_000028@2(ov=0.83);chunk_000132@3(ov=0.83);chunk_000150@4(ov=0.92);chunk_000160@5(ov=0.83) | best_overlap=0.92 | fallback_to=None"
+        },
+        "tfidf": {
+          "score": "correct",
+          "notes": "relevant_hits=chunk_000019@1,chunk_000150@2,chunk_000133@4,chunk_000132@5,chunk_000161@8 | top=chunk_000019@1(ov=0.92);chunk_000150@2(ov=0.92);chunk_000028@3(ov=0.83);chunk_000133@4(ov=0.92);chunk_000132@5(ov=0.83) | best_overlap=0.92 | fallback_to=None"
+        },
+        "hybrid": {
+          "score": "partial",
+          "notes": "(Inherited from MinHash) top=chunk_000163@1(ov=0.25);chunk_000128@2(ov=0.42);chunk_000145@3(ov=0.50);chunk_000015@4(ov=0.42);chunk_000035@5(ov=0.17) | best_overlap=0.50 | fallback_to=None"
+        }
+      }
+    },
+    {
+      "query": "What is the maximum number of courses a student may repeat during the degree (per the policy)?",
+      "category": "course_repetition",
+      "methods": {
+        "minhash": {
+          "score": "correct",
+          "notes": "relevant_hits=chunk_000020@1 | top=chunk_000020@1(ov=0.86);chunk_000029@2(ov=0.86);chunk_000162@3(ov=0.71);chunk_000019@4(ov=0.86);chunk_000151@5(ov=0.86) | best_overlap=0.86 | fallback_to=tfidf"
+        },
+        "simhash": {
+          "score": "partial",
+          "notes": "top=chunk_000168@1(ov=0.71);chunk_000170@2(ov=0.57);chunk_000169@3(ov=0.71);chunk_000021@4(ov=0.71);chunk_000048@5(ov=0.43) | best_overlap=0.71 | fallback_to=None"
+        },
+        "tfidf": {
+          "score": "correct",
+          "notes": "relevant_hits=chunk_000020@1 | top=chunk_000020@1(ov=0.86);chunk_000029@2(ov=0.86);chunk_000162@3(ov=0.71);chunk_000019@4(ov=0.86);chunk_000151@5(ov=0.86) | best_overlap=0.86 | fallback_to=None"
+        },
+        "hybrid": {
+          "score": "correct",
+          "notes": "(Inherited from MinHash) relevant_hits=chunk_000020@1 | top=chunk_000020@1(ov=0.86);chunk_000029@2(ov=0.86);chunk_000162@3(ov=0.71);chunk_000019@4(ov=0.86);chunk_000151@5(ov=0.86) | best_overlap=0.86 | fallback_to=tfidf"
+        }
+      }
+    },
+    {
+      "query": "What are the conditions for award of an undergraduate degree (completion of prescribed requirements and minimum criteria)?",
+      "category": "graduation",
+      "methods": {
+        "minhash": {
+          "score": "partial",
+          "notes": "top=chunk_000163@1(ov=0.22);chunk_000023@2(ov=0.44);chunk_000015@3(ov=0.78);chunk_000022@4(ov=0.44);chunk_000152@5(ov=0.11) | best_overlap=0.78 | fallback_to=None"
+        },
+        "simhash": {
+          "score": "partial",
+          "notes": "top=chunk_000221@1(ov=0.11);chunk_000000@2(ov=0.22);chunk_000145@3(ov=0.67);chunk_000183@4(ov=0.22);chunk_000061@5(ov=0.11) | best_overlap=0.67 | fallback_to=None"
+        },
+        "tfidf": {
+          "score": "partial",
+          "notes": "relevant_hits=chunk_000128@7 | top=chunk_000153@1(ov=0.67);chunk_000151@2(ov=0.78);chunk_000168@3(ov=0.89);chunk_000134@4(ov=0.89);chunk_000015@5(ov=0.78) | best_overlap=0.89 | fallback_to=None"
+        },
+        "hybrid": {
+          "score": "partial",
+          "notes": "(Inherited from MinHash) top=chunk_000163@1(ov=0.22);chunk_000023@2(ov=0.44);chunk_000015@3(ov=0.78);chunk_000022@4(ov=0.44);chunk_000152@5(ov=0.11) | best_overlap=0.78 | fallback_to=None"
+        }
+      }
+    },
+    {
+      "query": "What minimum CGPA is mentioned for successful completion of degree programs (as stated in the handbook grading section)?",
+      "category": "graduation",
+      "methods": {
+        "minhash": {
+          "score": "partial",
+          "notes": "top=chunk_000028@1(ov=0.36);chunk_000123@2(ov=0.45) | best_overlap=0.45 | fallback_to=None"
+        },
+        "simhash": {
+          "score": "partial",
+          "notes": "top=chunk_000167@1(ov=0.36);chunk_000173@2(ov=0.18);chunk_000034@3(ov=0.55);chunk_000165@4(ov=0.36);chunk_000021@5(ov=0.45) | best_overlap=0.55 | fallback_to=None"
+        },
+        "tfidf": {
+          "score": "partial",
+          "notes": "top=chunk_000166@1(ov=0.55);chunk_000036@2(ov=0.45);chunk_000032@3(ov=0.45);chunk_000015@4(ov=0.45);chunk_000035@5(ov=0.55) | best_overlap=0.55 | fallback_to=None"
+        },
+        "hybrid": {
+          "score": "partial",
+          "notes": "(Inherited from MinHash) top=chunk_000028@1(ov=0.36);chunk_000123@2(ov=0.45) | best_overlap=0.45 | fallback_to=None"
+        }
+      }
+    },
+    {
+      "query": "When is tuition fee payable in the semester system, and what does the fee structure annex specify?",
+      "category": "fees",
+      "methods": {
+        "minhash": {
+          "score": "correct",
+          "notes": "relevant_hits=chunk_000222@1 | top=chunk_000222@1(ov=0.88);chunk_000057@2(ov=0.62);chunk_000029@3(ov=0.25);chunk_000218@4(ov=0.12) | best_overlap=0.88 | fallback_to=None"
+        },
+        "simhash": {
+          "score": "correct",
+          "notes": "relevant_hits=chunk_000222@1,chunk_000179@3 | top=chunk_000222@1(ov=0.88);chunk_000001@2(ov=0.12);chunk_000179@3(ov=0.88);chunk_000221@4(ov=0.88);chunk_000058@5(ov=0.62) | best_overlap=0.88 | fallback_to=None"
+        },
+        "tfidf": {
+          "score": "correct",
+          "notes": "relevant_hits=chunk_000222@1,chunk_000179@3 | top=chunk_000222@1(ov=0.88);chunk_000221@2(ov=0.88);chunk_000179@3(ov=0.88);chunk_000103@4(ov=0.62);chunk_000102@5(ov=0.75) | best_overlap=0.88 | fallback_to=None"
+        },
+        "hybrid": {
+          "score": "correct",
+          "notes": "(Inherited from MinHash) relevant_hits=chunk_000222@1 | top=chunk_000222@1(ov=0.88);chunk_000057@2(ov=0.62);chunk_000029@3(ov=0.25);chunk_000218@4(ov=0.12) | best_overlap=0.88 | fallback_to=None"
+        }
+      }
+    },
+    {
+      "query": "What happens if a student does not deposit dues/fee on time (restrictions/penalties such as 25% fee to keep registration intact)?",
+      "category": "fees",
+      "methods": {
+        "minhash": {
+          "score": "partial",
+          "notes": "top=chunk_000222@1(ov=0.46);chunk_000025@2(ov=0.38);chunk_000162@3(ov=0.38);chunk_000164@4(ov=0.38);chunk_000151@5(ov=0.38) | best_overlap=0.46 | fallback_to=None"
+        },
+        "simhash": {
+          "score": "partial",
+          "notes": "relevant_hits=chunk_000180@8 | top=chunk_000045@1(ov=0.31);chunk_000057@2(ov=0.54);chunk_000055@3(ov=0.38);chunk_000058@4(ov=0.38);chunk_000127@5(ov=0.23) | best_overlap=0.54 | fallback_to=None"
+        },
+        "tfidf": {
+          "score": "correct",
+          "notes": "relevant_hits=chunk_000181@1,chunk_000180@2 | top=chunk_000181@1(ov=0.69);chunk_000180@2(ov=0.69);chunk_000059@3(ov=0.46);chunk_000060@4(ov=0.54);chunk_000182@5(ov=0.46) | best_overlap=0.69 | fallback_to=None"
+        },
+        "hybrid": {
+          "score": "partial",
+          "notes": "(Inherited from MinHash) top=chunk_000222@1(ov=0.46);chunk_000025@2(ov=0.38);chunk_000162@3(ov=0.38);chunk_000164@4(ov=0.38);chunk_000151@5(ov=0.38) | best_overlap=0.46 | fallback_to=None"
+        }
+      }
+    },
+    {
+      "query": "What does the code of conduct say about enforcement and disciplinary action/penalties for misconduct?",
+      "category": "disciplinary",
+      "methods": {
+        "minhash": {
+          "score": "partial",
+          "notes": "top=chunk_000205@1(ov=0.56);chunk_000082@2(ov=0.44);chunk_000206@3(ov=0.33);chunk_000008@4(ov=0.11) | best_overlap=0.56 | fallback_to=None"
+        },
+        "simhash": {
+          "score": "partial",
+          "notes": "relevant_hits=chunk_000078@6 | top=chunk_000192@1(ov=0.22);chunk_000208@2(ov=0.44);chunk_000015@3(ov=0.00);chunk_000187@4(ov=0.00);chunk_000060@5(ov=0.11) | best_overlap=0.44 | fallback_to=None"
+        },
+        "tfidf": {
+          "score": "correct",
+          "notes": "relevant_hits=chunk_000201@1,chunk_000077@2,chunk_000078@3,chunk_000202@4,chunk_000204@5 | top=chunk_000201@1(ov=0.78);chunk_000077@2(ov=0.78);chunk_000078@3(ov=0.78);chunk_000202@4(ov=0.78);chunk_000204@5(ov=0.56) | best_overlap=0.78 | fallback_to=None"
+        },
+        "hybrid": {
+          "score": "partial",
+          "notes": "(Inherited from MinHash) top=chunk_000205@1(ov=0.56);chunk_000082@2(ov=0.44);chunk_000206@3(ov=0.33);chunk_000008@4(ov=0.11) | best_overlap=0.56 | fallback_to=None"
+        }
+      }
+    },
+    {
+      "query": "What are the rules for thesis evaluation and defence (committee, external evaluation, and defence scheduling)?",
+      "category": "thesis_fyp",
+      "methods": {
+        "minhash": {
+          "score": "partial",
+          "notes": "top=chunk_000040@1(ov=0.83);chunk_000044@2(ov=0.50);chunk_000137@3(ov=0.50);chunk_000141@4(ov=0.50);chunk_000140@5(ov=0.50) | best_overlap=0.83 | fallback_to=None"
+        },
+        "simhash": {
+          "score": "partial",
+          "notes": "top=chunk_000025@1(ov=0.17);chunk_000122@2(ov=0.00);chunk_000040@3(ov=0.83);chunk_000014@4(ov=0.17);chunk_000226@5(ov=0.00) | best_overlap=0.83 | fallback_to=None"
+        },
+        "tfidf": {
+          "score": "correct",
+          "notes": "relevant_hits=chunk_000041@1,chunk_000042@4,chunk_000045@8 | top=chunk_000041@1(ov=0.83);chunk_000040@2(ov=0.83);chunk_000140@3(ov=0.50);chunk_000042@4(ov=0.67);chunk_000141@5(ov=0.50) | best_overlap=0.83 | fallback_to=None"
+        },
+        "hybrid": {
+          "score": "partial",
+          "notes": "(Inherited from MinHash) top=chunk_000040@1(ov=0.83);chunk_000044@2(ov=0.50);chunk_000137@3(ov=0.50);chunk_000141@4(ov=0.50);chunk_000140@5(ov=0.50) | best_overlap=0.83 | fallback_to=None"
+        }
+      }
+    },
+    {
+      "query": "What is the grading scale and grade points (e.g., 4.00, 3.50, 3.00 ...) used for percentage marks?",
+      "category": "grading_scale",
+      "methods": {
+        "minhash": {
+          "score": "partial",
+          "notes": "top=chunk_000024@1(ov=0.43) | best_overlap=0.43 | fallback_to=None"
+        },
+        "simhash": {
+          "score": "partial",
+          "notes": "relevant_hits=chunk_000010@9 | top=chunk_000092@1(ov=0.00);chunk_000029@2(ov=0.14);chunk_000084@3(ov=0.14);chunk_000085@4(ov=0.00);chunk_000118@5(ov=0.29) | best_overlap=0.29 | fallback_to=None"
+        },
+        "tfidf": {
+          "score": "correct",
+          "notes": "relevant_hits=chunk_000123@2,chunk_000010@3,chunk_000138@5 | top=chunk_000122@1(ov=0.86);chunk_000123@2(ov=0.71);chunk_000010@3(ov=0.57);chunk_000036@4(ov=0.57);chunk_000138@5(ov=0.71) | best_overlap=0.86 | fallback_to=None"
+        },
+        "hybrid": {
+          "score": "partial",
+          "notes": "(Inherited from MinHash) top=chunk_000024@1(ov=0.43) | best_overlap=0.43 | fallback_to=None"
+        }
+      }
+    },
+    {
+      "query": "What is the deferment policy during a degree (conditions and the 25% tuition fee rule during deferment)?",
+      "category": "leave_policy",
+      "methods": {
+        "minhash": {
+          "score": "partial",
+          "notes": "top=chunk_000163@1(ov=0.17);chunk_000159@2(ov=0.67);chunk_000179@3(ov=0.67) | best_overlap=0.67 | fallback_to=None"
+        },
+        "simhash": {
+          "score": "partial",
+          "notes": "top=chunk_000180@1(ov=0.33);chunk_000107@2(ov=0.33);chunk_000226@3(ov=0.33);chunk_000173@4(ov=0.67);chunk_000210@5(ov=0.33) | best_overlap=0.67 | fallback_to=None"
+        },
+        "tfidf": {
+          "score": "correct",
+          "notes": "relevant_hits=chunk_000050@1,chunk_000151@6,chunk_000134@9 | top=chunk_000050@1(ov=0.50);chunk_000173@2(ov=0.67);chunk_000049@3(ov=0.67);chunk_000020@4(ov=1.00);chunk_000174@5(ov=0.67) | best_overlap=1.00 | fallback_to=None"
+        },
+        "hybrid": {
+          "score": "partial",
+          "notes": "(Inherited from MinHash) top=chunk_000163@1(ov=0.17);chunk_000159@2(ov=0.67);chunk_000179@3(ov=0.67) | best_overlap=0.67 | fallback_to=None"
+        }
+      }
+    },
+    {
+      "query": "What are the examination rules about unfair means and exam conduct (warnings, forbidden material, seating, start rules)?",
+      "category": "examination_rules",
+      "methods": {
+        "minhash": {
+          "score": "correct",
+          "notes": "relevant_hits=chunk_000008@1 | top=chunk_000008@1(ov=0.55) | best_overlap=0.55 | fallback_to=None"
+        },
+        "simhash": {
+          "score": "partial",
+          "notes": "top=chunk_000122@1(ov=0.00);chunk_000029@2(ov=0.18);chunk_000220@3(ov=0.00);chunk_000027@4(ov=0.09);chunk_000070@5(ov=0.55) | best_overlap=0.55 | fallback_to=None"
+        },
+        "tfidf": {
+          "score": "correct",
+          "notes": "relevant_hits=chunk_000120@1,chunk_000009@2,chunk_000008@3,chunk_000121@6,chunk_000119@8 | top=chunk_000120@1(ov=0.45);chunk_000009@2(ov=0.36);chunk_000008@3(ov=0.55);chunk_000070@4(ov=0.55);chunk_000194@5(ov=0.55) | best_overlap=0.55 | fallback_to=None"
+        },
+        "hybrid": {
+          "score": "correct",
+          "notes": "(Inherited from MinHash) relevant_hits=chunk_000008@1 | top=chunk_000008@1(ov=0.55) | best_overlap=0.55 | fallback_to=None"
+        }
+      }
+    }
+  ],
+  "auto_scoring": {
+    "rule": "correct if (relevant in top-5) OR (top-5 has strong term overlap and looks on-topic); partial if (relevant in top-10) OR (top-5 moderate overlap); incorrect otherwise",
+    "note": "Heuristic scoring (not human judgment). Replace with manual scoring for final report.",
+    "thresholds": {
+      "strong_overlap": 0.35,
+      "moderate_overlap": 0.2
+    }
+  }
+}

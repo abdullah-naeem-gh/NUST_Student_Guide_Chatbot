@@ -1,50 +1,25 @@
 import useAppStore from '../../store/appStore'
 import ChatMarkdown from './ChatMarkdown'
 
-/**
- * @param {Object} props
- * @param {{ id, role, content, results, timestamp }} props.message
- */
 export default function ChatMessage({ message }) {
   const { activeResultId, setActiveResultId, setEvidenceFocus } = useAppStore()
   const { id, role, content, results } = message
   const isActive = activeResultId === id
 
-  const handleAssistantClick = () => {
-    if (role === 'assistant' && results) setActiveResultId(id)
-  }
-
   if (role === 'typing') {
     return (
-      <div className="chat-message-enter">
-        <div
-          className="inline-flex items-center gap-1.5 px-4 py-3 rounded-sm border"
-          style={{
-            background: 'var(--bg)',
-            borderColor: 'var(--rule)',
-          }}
-        >
-          <span className="typing-dot" />
-          <span className="typing-dot" />
-          <span className="typing-dot" />
-        </div>
+      <div className="chat-message-enter" style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 0' }}>
+        <span className="typing-dot" />
+        <span className="typing-dot" />
+        <span className="typing-dot" />
       </div>
     )
   }
 
   if (role === 'user') {
     return (
-      <div className="flex justify-end chat-message-enter">
-        <div
-          className="max-w-[78%] text-sm leading-relaxed px-4 py-3 rounded-sm border italic"
-          style={{
-            background: 'var(--bg)',
-            borderColor: 'var(--rule)',
-            color: 'var(--ink2)',
-          }}
-        >
-          {content}
-        </div>
+      <div className="chat-message-enter" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <div className="bubble-user">{content}</div>
       </div>
     )
   }
@@ -52,80 +27,61 @@ export default function ChatMessage({ message }) {
   const sourceChunks = getSourceChunks(results)
 
   return (
-    <div className="chat-message-enter max-w-full">
+    <div
+      className="chat-message-enter"
+      style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 6 }}
+    >
+      {/* Assistant label */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+        <div style={{
+          width: 22, height: 22, borderRadius: 6, background: 'var(--accent)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+          </svg>
+        </div>
+        <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--ink3)', fontFamily: 'var(--font-sans)' }}>NUST Guide</span>
+      </div>
+
+      {/* Bubble */}
       <div
+        className="bubble-assistant"
         role={results ? 'button' : undefined}
         tabIndex={results ? 0 : undefined}
-        onClick={handleAssistantClick}
-        onKeyDown={(e) => {
-          if (results && (e.key === 'Enter' || e.key === ' ')) {
-            e.preventDefault()
-            handleAssistantClick()
-          }
-        }}
-        className="rounded-sm transition-colors"
+        onClick={() => { if (results) setActiveResultId(id) }}
+        onKeyDown={(e) => { if (results && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); setActiveResultId(id) } }}
         style={{
-          outline: isActive ? `1px solid var(--accent)` : 'none',
+          outline: isActive ? `2px solid var(--accent)` : 'none',
           cursor: results ? 'pointer' : 'default',
         }}
       >
-        <div
-          className="font-mono uppercase mb-2.5 text-[10px] tracking-[0.1em]"
-          style={{ color: 'var(--accent)' }}
-        >
-          Answer
-        </div>
-        <div
-          className="text-sm leading-[1.75] pl-4 border-l-2"
-          style={{ borderLeftColor: 'var(--accent)', color: 'var(--ink)' }}
-        >
-          <ChatMarkdown>{content}</ChatMarkdown>
-        </div>
-
-        {sourceChunks.length > 0 && (
-          <div
-            className="mt-3.5 pt-3 flex items-center gap-2 flex-wrap border-t"
-            style={{ borderColor: 'var(--rule)' }}
-          >
-            <span
-              className="font-mono uppercase text-[10px] tracking-[0.08em] shrink-0"
-              style={{ color: 'var(--ink3)' }}
-            >
-              Sources
-            </span>
-            {sourceChunks.map((chunk) => (
-              <button
-                key={chunk.chunk_id}
-                type="button"
-                className="font-mono text-[10.5px] px-2 py-0.5 rounded-[1px] border transition-colors"
-                style={{
-                  color: 'var(--accent)',
-                  borderColor: 'currentColor',
-                  background: 'transparent',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'var(--accent)'
-                  e.currentTarget.style.color = 'var(--paper)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent'
-                  e.currentTarget.style.color = 'var(--accent)'
-                }}
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setActiveResultId(id)
-                  setEvidenceFocus({
-                    chunkId: chunk.chunk_id,
-                    pageStart: chunk.page_start != null ? Number(chunk.page_start) : undefined,
-                  })
-                }}
-              >
-                {pageLabel(chunk)}
-              </button>
-            ))}
-          </div>
-        )}
+        <ChatMarkdown>{content}</ChatMarkdown>
       </div>
+
+      {/* Source chips */}
+      {sourceChunks.length > 0 && (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, maxWidth: '85%' }}>
+          {sourceChunks.map((chunk) => (
+            <button
+              key={chunk.chunk_id}
+              type="button"
+              className="source-chip"
+              onClick={(e) => {
+                e.stopPropagation()
+                setActiveResultId(id)
+                setEvidenceFocus({
+                  chunkId: chunk.chunk_id,
+                  pageStart: chunk.page_start != null ? Number(chunk.page_start) : undefined,
+                })
+              }}
+            >
+              {pageLabel(chunk)}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

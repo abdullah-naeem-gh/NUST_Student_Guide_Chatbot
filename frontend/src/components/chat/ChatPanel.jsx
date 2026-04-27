@@ -1,166 +1,117 @@
 import { useEffect, useRef, useState } from 'react'
 import useAppStore from '../../store/appStore'
-import { parseSourceFilesFromStatus, resolveHandbookFiles } from '../../lib/handbooks'
 import ChatMessage from './ChatMessage'
 import ChatInput from './ChatInput'
 import EmptyState from './EmptyState'
 
-const METHODS = ['all', 'hybrid', 'minhash', 'simhash', 'tfidf']
-const METHOD_LABELS = { all: 'All', hybrid: 'Hybrid', minhash: 'MinHash', simhash: 'SimHash', tfidf: 'TF-IDF' }
+const RETRIEVAL_METHODS = [
+  { id: 'hybrid', label: 'Hybrid' },
+  { id: 'minhash', label: 'MinHash' },
+  { id: 'simhash', label: 'SimHash' },
+  { id: 'tfidf', label: 'TF-IDF' },
+  { id: 'all', label: 'Compare All' },
+]
 
-/**
- * Left column: retrieval strip, messages, input.
- * @param {Object} props
- * @param {Function} props.onSend - (query, method, k, generateAnswer) => void
- */
-export default function ChatPanel({ onSend }) {
-  const { messages, isLoading, indexStatus, selectedHandbookFile, setSelectedHandbookFile } =
-    useAppStore()
+export default function ChatPanel({ onSend, evidenceOpen, setEvidenceOpen }) {
+  const { messages, isLoading } = useAppStore()
   const bottomRef = useRef(null)
 
-  const [method, setMethod] = useState('all')
+  const [method, setMethod] = useState('tfidf')
   const [k, setK] = useState(5)
   const [generateAnswer, setGenerateAnswer] = useState(true)
-
-  const { ug: ugFile, pg: pgFile } = resolveHandbookFiles(parseSourceFilesFromStatus(indexStatus))
-  const showHandbookPicker = Boolean(ugFile || pgFile)
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, isLoading])
 
+  const methodLabel = RETRIEVAL_METHODS.find((m) => m.id === method)?.label ?? method
+
   return (
     <div
-      className="flex flex-col h-full min-h-0 border-r"
-      style={{ background: 'var(--paper)', borderColor: 'var(--rule)' }}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        minHeight: 0,
+        background: 'var(--bg)',
+        fontFamily: 'var(--font-sans)',
+      }}
     >
-      {showHandbookPicker && (
-        <div
-          className="flex items-center gap-0 shrink-0 border-b px-6 h-9"
-          style={{ borderColor: 'var(--rule)' }}
-        >
-          <span
-            className="font-mono uppercase mr-3.5 shrink-0"
-            style={{
-              fontSize: 10,
-              letterSpacing: '0.12em',
-              color: 'var(--ink3)',
-            }}
-          >
-            Handbook
-          </span>
-          <div className="flex items-stretch min-w-0 flex-1 gap-0">
-            {['ug', 'pg'].map((key) => {
-              const file = key === 'ug' ? ugFile : pgFile
-              const disabled = !file
-              const on = file && selectedHandbookFile === file
-              const label = key === 'ug' ? 'UG' : 'PG'
-              return (
-                <button
-                  key={key}
-                  type="button"
-                  disabled={disabled}
-                  onClick={() => file && setSelectedHandbookFile(file)}
-                  className="font-mono shrink-0 px-2.5 h-9 -mb-px border-b-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  style={{
-                    fontSize: '10.5px',
-                    letterSpacing: '0.04em',
-                    color: on ? 'var(--accent)' : 'var(--ink3)',
-                    borderBottomColor: on ? 'var(--accent)' : 'transparent',
-                    background: 'none',
-                    borderTop: 'none',
-                    borderLeft: 'none',
-                    borderRight: 'none',
-                  }}
-                  title={file ? file : `No ${label} handbook in the index`}
-                >
-                  {label}
-                </button>
-              )
-            })}
-          </div>
-        </div>
-      )}
-
-      <div
-        className="flex items-center gap-0 shrink-0 border-b px-6 h-10"
-        style={{ borderColor: 'var(--rule)' }}
-      >
-        <span
-          className="font-mono uppercase mr-3.5 shrink-0"
+      {/* Sub-header */}
+      <div style={{
+        height: 40,
+        flexShrink: 0,
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 20px',
+        borderBottom: '1px solid var(--rule)',
+        background: 'var(--paper)',
+        gap: 12,
+      }}>
+        <span style={{
+          fontSize: 11,
+          fontWeight: 700,
+          letterSpacing: '0.08em',
+          textTransform: 'uppercase',
+          color: 'var(--ink3)',
+          fontFamily: 'var(--font-sans)',
+        }}>
+          {methodLabel} retrieval · k={k}
+        </span>
+        <div style={{ flex: 1 }} />
+        <button
+          type="button"
+          onClick={() => setEvidenceOpen((v) => !v)}
           style={{
-            fontSize: 10,
-            letterSpacing: '0.12em',
-            color: 'var(--ink3)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            fontSize: 12,
+            fontWeight: 600,
+            color: evidenceOpen ? 'var(--accent)' : 'var(--ink3)',
+            padding: '4px 10px',
+            borderRadius: 6,
+            border: `1px solid ${evidenceOpen ? 'var(--accent)' : 'var(--rule)'}`,
+            background: evidenceOpen ? 'var(--accent-bg)' : 'transparent',
+            transition: 'all 0.15s',
+            cursor: 'pointer',
+            fontFamily: 'var(--font-sans)',
           }}
         >
-          Retrieval
-        </span>
-        <div className="flex items-stretch min-w-0 flex-1 gap-0 overflow-x-auto">
-          {METHODS.map((m) => {
-            const on = method === m
-            return (
-              <button
-                key={m}
-                type="button"
-                onClick={() => setMethod(m)}
-                className="font-mono shrink-0 px-2.5 h-10 -mb-px border-b-2 transition-colors"
-                style={{
-                  fontSize: '10.5px',
-                  letterSpacing: '0.04em',
-                  color: on ? 'var(--accent)' : 'var(--ink3)',
-                  borderBottomColor: on ? 'var(--accent)' : 'transparent',
-                  background: 'none',
-                  borderTop: 'none',
-                  borderLeft: 'none',
-                  borderRight: 'none',
-                }}
-              >
-                {METHOD_LABELS[m]}
-              </button>
-            )
-          })}
-        </div>
-        <div
-          className="flex items-center gap-1.5 shrink-0 font-mono ml-2"
-          style={{ fontSize: '10.5px', color: 'var(--ink3)' }}
-        >
-          <span>k =</span>
-          <input
-            type="number"
-            min={1}
-            max={20}
-            value={k}
-            onChange={(e) => setK(Math.min(20, Math.max(1, Number(e.target.value) || 1)))}
-            className="w-8 text-center font-mono bg-transparent border-b outline-none p-0"
-            style={{
-              fontSize: '10.5px',
-              color: 'var(--accent)',
-              borderColor: 'var(--rule)',
-            }}
-          />
-        </div>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+          </svg>
+          {evidenceOpen ? 'Hide sources' : 'Show sources'}
+        </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto min-h-0 px-7 py-8 messages-scroll">
+      {/* Messages */}
+      <div
+        className="messages-scroll"
+        style={{ flex: 1, overflowY: 'auto', padding: '28px 24px', display: 'flex', flexDirection: 'column', gap: 20 }}
+      >
         {messages.length === 0 && !isLoading ? (
           <EmptyState onSelect={(s) => onSend(s, method, k, generateAnswer)} />
         ) : (
-          <div className="flex flex-col gap-7 w-full">
+          <>
             {messages.map((msg) => (
               <ChatMessage key={msg.id} message={msg} />
             ))}
             {isLoading && <ChatMessage message={{ id: 'typing', role: 'typing' }} />}
             <div ref={bottomRef} />
-          </div>
+          </>
         )}
       </div>
 
+      {/* Input */}
       <ChatInput
         onSend={onSend}
         isLoading={isLoading}
         method={method}
+        setMethod={setMethod}
         k={k}
+        setK={setK}
         generateAnswer={generateAnswer}
         setGenerateAnswer={setGenerateAnswer}
       />

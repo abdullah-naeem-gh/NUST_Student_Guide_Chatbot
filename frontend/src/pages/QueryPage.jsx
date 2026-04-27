@@ -1,5 +1,6 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Navbar from '../components/layout/Navbar'
+import LandingPage from './LandingPage'
 import ChatPanel from '../components/chat/ChatPanel'
 import EvidencePanel from '../components/evidence/EvidencePanel'
 import useAppStore from '../store/appStore'
@@ -7,10 +8,7 @@ import { runQuery } from '../api/query'
 import { getStatus } from '../api/status'
 import { parseSourceFilesFromStatus, resolveHandbookFiles } from '../lib/handbooks'
 
-/**
- * QueryPage — two-panel chat interface (60% chat / 40% evidence)
- */
-export default function QueryPage() {
+export default function QueryPage({ initialScreen = 'landing' }) {
   const {
     messages,
     addMessage,
@@ -23,6 +21,10 @@ export default function QueryPage() {
     setSelectedHandbookFile,
   } = useAppStore()
 
+  const [screen, setScreen] = useState(initialScreen)
+  const [initialQuery, setInitialQuery] = useState('')
+  const [evidenceOpen, setEvidenceOpen] = useState(true)
+
   useEffect(() => {
     getStatus()
       .then((s) => {
@@ -32,12 +34,9 @@ export default function QueryPage() {
         const state = useAppStore.getState()
         const cur = state.selectedHandbookFile
         const valid = typeof cur === 'string' && cur.length > 0 && files.includes(cur)
-        if (valid) {
-          return
-        }
-        if (ug || pg) {
+        if (!valid && (ug || pg)) {
           setSelectedHandbookFile(ug ?? pg ?? null)
-        } else {
+        } else if (!valid) {
           setSelectedHandbookFile(files[0] ?? null)
         }
       })
@@ -45,6 +44,9 @@ export default function QueryPage() {
   }, [setIndexStatus, setSelectedHandbookFile])
 
   const handleSend = async (query, method, k, generateAnswer) => {
+    // Switch to chat view on first send
+    setScreen('chat')
+
     const userId = Date.now()
     const aiId = userId + 1
 
@@ -53,7 +55,6 @@ export default function QueryPage() {
 
     try {
       const data = await runQuery(query, method, k, generateAnswer, selectedHandbookFile)
-
       const answerText =
         typeof data.answer === 'string' && data.answer.trim().length > 0
           ? data.answer
@@ -79,13 +80,21 @@ export default function QueryPage() {
     }
   }
 
-  // The result object to pass to the evidence panel
+  const handleAsk = (q) => {
+    setInitialQuery(q)
+    setScreen('chat')
+    // Send immediately
+    handleSend(q, 'tfidf', 5, true)
+  }
+
+  const handleNavigate = (s) => {
+    setScreen(s)
+    if (s === 'landing') setInitialQuery('')
+  }
+
   const activeResult = useMemo(() => {
     if (!activeResultId) {
-      // Default to most recent AI message with results
-      const last = [...messages].reverse().find(
-        (m) => m.role === 'assistant' && m.results
-      )
+      const last = [...messages].reverse().find((m) => m.role === 'assistant' && m.results)
       return last?.results ?? null
     }
     const msg = messages.find((m) => m.id === activeResultId)
@@ -93,26 +102,41 @@ export default function QueryPage() {
   }, [activeResultId, messages])
 
   return (
-    <div className="h-full flex flex-col" style={{ background: 'var(--bg)' }}>
-      <Navbar />
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: 'var(--bg)' }}>
+      <Navbar screen={screen} onNavigate={handleNavigate} />
 
-      <div className="flex flex-1 min-h-0 overflow-hidden">
-        <div
-          className="flex flex-col min-h-0 shrink-0"
-          style={{ width: 420, minWidth: 320, maxWidth: 'min(420px, 44vw)' }}
-        >
-          <ChatPanel onSend={handleSend} />
-        </div>
+      <div style={{ flex: 1, display: 'flex', minHeight: 0, overflow: 'hidden' }}>
+        {screen === 'landing' ? (
+          <LandingPage onAsk={handleAsk} />
+        ) : (
+          <>
+            {/* Chat column */}
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              minHeight: 0,
+              flexShrink: 0,
+              width: evidenceOpen ? 460 : '100%',
+              minWidth: 320,
+              maxWidth: evidenceOpen ? 'min(460px, 50vw)' : '100%',
+              transition: 'width 0.2s ease, max-width 0.2s ease',
+            }}>
+              <ChatPanel onSend={handleSend} evidenceOpen={evidenceOpen} setEvidenceOpen={setEvidenceOpen} />
+            </div>
 
-        <div className="flex flex-col flex-1 min-w-0 min-h-0" style={{ background: 'var(--bg)' }}>
-          <EvidencePanel activeResult={activeResult} />
-        </div>
+            {/* Evidence panel */}
+            {evidenceOpen && (
+              <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0, minHeight: 0, animation: 'fadeIn 0.2s ease both' }}>
+                <EvidencePanel activeResult={activeResult} />
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   )
 }
 
-/** Fallback when LLM answer is not generated */
 function extractFallbackAnswer(data, method) {
   try {
     const results = data.results ?? data

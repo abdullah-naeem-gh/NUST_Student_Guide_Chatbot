@@ -151,6 +151,7 @@ class Retriever:
             query,
             fim,
             top_n_per_term=int(getattr(settings, "FIM_TOP_N_PER_TERM", 3)),
+            min_idf=float(getattr(settings, "FIM_MIN_IDF", 3.0)),
         )
 
     def retrieve(

@@ -5,13 +5,6 @@ backend/__pycache__/
 backend/.env
 backend/**/*.pyc
 
-# Data (project root)
-data/raw/
-data/index/
-data/chunks/
-data/results/
-*.pkl
-
 # Frontend
 frontend/node_modules/
 frontend/dist/

@@ -1,0 +1,93 @@
+{
+  "generated_at": "2026-04-27T09:09:46.445188+00:00",
+  "minhash": [
+    {
+      "num_perm": 32,
+      "num_bands": 32,
+      "rows_per_band": 1,
+      "mean_recall@5": 0.2173015873015873,
+      "mean_latency_ms": 0.0,
+      "build_time_s": 0.275
+    },
+    {
+      "num_perm": 64,
+      "num_bands": 32,
+      "rows_per_band": 2,
+      "mean_recall@5": 0.10222222222222221,
+      "mean_latency_ms": 0.0,
+      "build_time_s": 0.3044
+    },
+    {
+      "num_perm": 128,
+      "num_bands": 32,
+      "rows_per_band": 4,
+      "mean_recall@5": 0.0,
+      "mean_latency_ms": 0.0,
+      "build_time_s": 0.3488
+    },
+    {
+      "num_perm": 256,
+      "num_bands": 32,
+      "rows_per_band": 8,
+      "mean_recall@5": 0.0,
+      "mean_latency_ms": 0.0,
+      "build_time_s": 0.44
+    }
+  ],
+  "lsh": [
+    {
+      "num_bands": 16,
+      "rows_per_band": 8,
+      "mean_recall@5": 0.0
+    },
+    {
+      "num_bands": 32,
+      "rows_per_band": 4,
+      "mean_recall@5": 0.0
+    },
+    {
+      "num_bands": 64,
+      "rows_per_band": 2,
+      "mean_recall@5": 0.17444444444444446
+    }
+  ],
+  "simhash": [
+    {
+      "hamming_threshold": 5,
+      "mean_precision@5": 0.14666666666666667
+    },
+    {
+      "hamming_threshold": 8,
+      "mean_precision@5": 0.14666666666666667
+    },
+    {
+      "hamming_threshold": 10,
+      "mean_precision@5": 0.14666666666666667
+    },
+    {
+      "hamming_threshold": 12,
+      "mean_precision@5": 0.14666666666666667
+    },
+    {
+      "hamming_threshold": 15,
+      "mean_precision@5": 0.14666666666666667
+    }
+  ],
+  "hybrid": [
+    {
+      "alpha": 0.3,
+      "beta": 0.7,
+      "mean_precision@5": 0.28
+    },
+    {
+      "alpha": 0.5,
+      "beta": 0.5,
+      "mean_precision@5": 0.28
+    },
+    {
+      "alpha": 0.7,
+      "beta": 0.30000000000000004,
+      "mean_precision@5": 0.28
+    }
+  ]
+}

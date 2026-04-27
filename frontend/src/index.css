@@ -5,15 +5,23 @@
 /* Scholarly “paper & ink” theme (Query UI) */
 
 :root {
-  --bg: #f5f3ef;
-  --paper: #faf9f7;
-  --ink: #141311;
-  --ink2: #45423c;
-  --ink3: #636059;
-  --rule: #d9d5ce;
+  --bg: oklch(96.5% 0.008 85);
+  --paper: oklch(99.2% 0.003 85);
+  --ink: oklch(17% 0.012 85);
+  --ink2: oklch(38% 0.012 85);
+  --ink3: oklch(55% 0.010 85);
+  --rule: oklch(89% 0.007 85);
+  --rule2: oklch(93% 0.005 85);
   --accent: #146b5d;
+  --accent-bg: oklch(93% 0.04 165);
+  --accent-soft: oklch(96% 0.025 165);
   --hi: #d4ede8;
   --hi2: rgba(20, 107, 93, 0.14);
+  --nav-h: 56px;
+  --r: 8px;
+  --r-sm: 4px;
+  --shadow: 0 1px 3px oklch(0% 0 0 / 0.06), 0 4px 12px oklch(0% 0 0 / 0.04);
+  --shadow-up: 0 -1px 3px oklch(0% 0 0 / 0.04), 0 -4px 16px oklch(0% 0 0 / 0.06);
 
   /* Legacy token aliases used in tailwind / older panels */
   --bg-primary: var(--bg);
@@ -22,7 +30,8 @@
   --text-on-light: var(--ink);
   --text-muted: var(--ink3);
   --border-subtle: var(--rule);
-  --font-sans: 'Lora', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-serif: 'Lora', Georgia, 'Times New Roman', serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 }
 
@@ -35,8 +44,9 @@
   }
 
   body.theme-guide {
-    font-family: var(--font-sans);
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
     font-weight: 400;
+    -webkit-font-smoothing: antialiased;
     font-size: 15px;
     line-height: 1.7;
     background-color: var(--bg);
@@ -271,3 +281,106 @@ body.theme-guide .typing-dot:nth-child(3) {
 .rpv-core__viewer {
   background: var(--bg) !important;
 }
+
+/* Landing hero dot grid */
+.hero-dots {
+  background-image: radial-gradient(oklch(75% 0.008 85) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Tag pill */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+/* Suggestion card */
+.suggestion-card {
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+.suggestion-card:hover {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px var(--accent-soft);
+  transform: translateY(-1px);
+}
+
+/* Input area focus */
+.chat-input-area:focus-within .input-border {
+  border-color: var(--accent) !important;
+}
+
+/* New chat bubble styles */
+.bubble-user {
+  background: var(--accent);
+  color: white;
+  border-radius: 16px 16px 4px 16px;
+  padding: 10px 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  font-family: var(--font-sans);
+  max-width: 75%;
+}
+
+.bubble-assistant {
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 4px 16px 16px 16px;
+  border: 1px solid var(--rule);
+  box-shadow: var(--shadow);
+  padding: 14px 18px;
+  font-size: 15px;
+  line-height: 1.8;
+  font-family: var(--font-serif);
+  max-width: 85%;
+}
+
+/* Source chip */
+.source-chip {
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--accent-bg);
+  color: var(--accent);
+  border: 1px solid oklch(85% 0.06 165);
+  transition: all 0.12s;
+  cursor: pointer;
+}
+.source-chip:hover {
+  background: var(--accent);
+  color: white;
+}
+
+/* Method picker dropdown item hover */
+.method-item:hover {
+  background: var(--rule2);
+}
+
+/* Animations */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+.anim-fade-up { animation: fadeUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.anim-fade-in { animation: fadeIn 0.2s ease both; }

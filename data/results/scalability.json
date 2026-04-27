@@ -1,0 +1,56 @@
+{
+  "generated_at": "2026-04-27T09:09:49.363141+00:00",
+  "points": [
+    {
+      "scale": 2,
+      "chunk_count": 868,
+      "build_time_s": 0.9493,
+      "build_times_s": {
+        "tfidf": 0.0549,
+        "minhash": 0.7131,
+        "simhash": 0.1813,
+        "hybrid": 0.8944
+      },
+      "mean_query_latency_ms": {
+        "tfidf": 0.7475333333333333,
+        "minhash": 29.95486,
+        "simhash": 1.6226533333333333,
+        "hybrid": 7.4820866666666666
+      }
+    },
+    {
+      "scale": 4,
+      "chunk_count": 1736,
+      "build_time_s": 1.8497,
+      "build_times_s": {
+        "tfidf": 0.0984,
+        "minhash": 1.4174,
+        "simhash": 0.3339,
+        "hybrid": 1.7513
+      },
+      "mean_query_latency_ms": {
+        "tfidf": 1.1264533333333333,
+        "minhash": 17.693140000000003,
+        "simhash": 2.1757733333333333,
+        "hybrid": 8.444873333333334
+      }
+    },
+    {
+      "scale": 8,
+      "chunk_count": 3472,
+      "build_time_s": 3.7363,
+      "build_times_s": {
+        "tfidf": 0.1935,
+        "minhash": 2.8765,
+        "simhash": 0.6662,
+        "hybrid": 3.5428
+      },
+      "mean_query_latency_ms": {
+        "tfidf": 1.8180133333333333,
+        "minhash": 11.97352,
+        "simhash": 3.79312,
+        "hybrid": 10.079993333333334
+      }
+    }
+  ]
+}

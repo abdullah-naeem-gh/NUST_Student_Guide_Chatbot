@@ -10,7 +10,7 @@ from typing import Any, Literal, TypedDict
 from config import settings
 from evaluation.benchmark_queries import BENCHMARK
 
-Method = Literal["minhash", "simhash", "tfidf"]
+Method = Literal["minhash", "simhash", "tfidf", "hybrid"]
 Score = Literal["correct", "partial", "incorrect", "unscored"]
 
 
@@ -78,6 +78,7 @@ def init_scores_file(k: int = 5, overwrite: bool = False) -> Path:
                 "query": b["query"],
                 "category": b["category"],
                 "methods": {
+                    "hybrid": {"score": "unscored", "notes": ""},
                     "minhash": {"score": "unscored", "notes": ""},
                     "simhash": {"score": "unscored", "notes": ""},
                     "tfidf": {"score": "unscored", "notes": ""},
@@ -114,7 +115,7 @@ def summarize_scores(payload: QualitativeScoresFile) -> dict[str, Any]:
         Summary dict with counts per method.
     """
 
-    methods: list[Method] = ["minhash", "simhash", "tfidf"]
+    methods: list[Method] = ["hybrid", "minhash", "simhash", "tfidf"]
     counts: dict[str, dict[str, int]] = {
         m: {"correct": 0, "partial": 0, "incorrect": 0, "unscored": 0} for m in methods
     }

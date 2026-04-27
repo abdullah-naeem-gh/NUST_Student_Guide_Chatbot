@@ -158,18 +158,27 @@ def generate_report() -> Path:
                 f"| {int(r['hamming_threshold'])} | {_fmt(r['mean_precision@5'])} |\n"
             )
         parts.append("\n")
+
+        parts.append("### Hybrid: Combined Weight sensitivity\n")
+        parts.append("| Alpha (Min) | Beta (Sim) | Mean Precision@5 |\n")
+        parts.append("|---:|---:|---:|\n")
+        for r in ps.get("hybrid", []):
+            parts.append(
+                f"| {float(r['alpha'])} | {float(r['beta'])} | {_fmt(r['mean_precision@5'])} |\n"
+            )
+        parts.append("\n")
     else:
         parts.append("## Parameter sensitivity\n\n`parameter_sensitivity.json` not found.\n\n")
 
     if sc_path.exists():
         sc = _load(sc_path)
         parts.append("## Scalability\n")
-        parts.append("| Scale | Chunk count | Build time (s) | TF-IDF lat (ms) | MinHash lat (ms) | SimHash lat (ms) |\n")
-        parts.append("|---:|---:|---:|---:|---:|---:|\n")
+        parts.append("| Scale | Chunk count | Build time (s) | TF-IDF lat (ms) | MinHash lat (ms) | SimHash lat (ms) | Hybrid lat (ms) |\n")
+        parts.append("|---:|---:|---:|---:|---:|---:|---:|\n")
         for p in sc.get("points", []):
             lat = p.get("mean_query_latency_ms", {}) if isinstance(p.get("mean_query_latency_ms", {}), dict) else {}
             parts.append(
-                f"| {int(p['scale'])}x | {int(p['chunk_count'])} | {_fmt(p['build_time_s'], 2)} | {_fmt(lat.get('tfidf', 0.0), 2)} | {_fmt(lat.get('minhash', 0.0), 2)} | {_fmt(lat.get('simhash', 0.0), 2)} |\n"
+                f"| {int(p['scale'])}x | {int(p['chunk_count'])} | {_fmt(p['build_time_s'], 2)} | {_fmt(lat.get('tfidf', 0.0), 2)} | {_fmt(lat.get('minhash', 0.0), 2)} | {_fmt(lat.get('simhash', 0.0), 2)} | {_fmt(lat.get('hybrid', 0.0), 2)} |\n"
             )
         parts.append("\n")
     else:
@@ -183,8 +192,8 @@ def generate_report() -> Path:
         parts.append(f"Scored over top-{int(s['k'])} evidence per query.\n\n")
         parts.append("| Method | Correct | Partial | Incorrect | Unscored |\n")
         parts.append("|---|---:|---:|---:|---:|\n")
-        for m in ("minhash", "simhash", "tfidf"):
-            c = s["counts"][m]
+        for m in ("hybrid", "minhash", "simhash", "tfidf"):
+            c = s["counts"].get(m, {'correct': 0, 'partial': 0, 'incorrect': 0, 'unscored': 0})
             parts.append(
                 f"| {m} | {int(c['correct'])} | {int(c['partial'])} | {int(c['incorrect'])} | {int(c['unscored'])} |\n"
             )

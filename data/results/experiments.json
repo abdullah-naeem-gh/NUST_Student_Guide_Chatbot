@@ -1,0 +1,2892 @@
+{
+  "generated_at": "2026-04-27T09:09:57.377496+00:00",
+  "method_comparison": {
+    "generated_at": "2026-04-27T09:09:46.439691+00:00",
+    "k": 5,
+    "use_pagerank": false,
+    "summary": {
+      "hybrid": {
+        "mean_p@1": 0.4,
+        "mean_p@3": 0.26666666666666666,
+        "mean_p@5": 0.28,
+        "mean_r@5": 0.37619047619047613,
+        "map@5": 0.2666772486772487,
+        "mean_latency_ms": 29.684973333333332,
+        "mean_memory_mb": 1.2905533333333332,
+        "fallback_rate": 0.0
+      },
+      "minhash": {
+        "mean_p@1": 0.6,
+        "mean_p@3": 0.4444444444444444,
+        "mean_p@5": 0.3466666666666667,
+        "mean_r@5": 0.4217460317460317,
+        "map@5": 0.3425846560846561,
+        "mean_latency_ms": 57.432026666666665,
+        "mean_memory_mb": 0.12866666666666665,
+        "fallback_rate": 0.0
+      },
+      "minhash_lsh_only": {
+        "mean_p@1": 0.5333333333333333,
+        "mean_p@3": 0.4222222222222222,
+        "mean_p@5": 0.26666666666666666,
+        "mean_r@5": 0.3522222222222222,
+        "map@5": 0.3244444444444444,
+        "mean_latency_ms": 0.0,
+        "mean_memory_mb": 0.0,
+        "candidate_rate": 1.0,
+        "mean_lsh_candidate_count": 230.06666666666666
+      },
+      "minhash_no_fallback": {
+        "mean_p@1": 0.5333333333333333,
+        "mean_p@3": 0.4222222222222222,
+        "mean_p@5": 0.26666666666666666,
+        "mean_r@5": 0.3522222222222222,
+        "map@5": 0.3244444444444444,
+        "mean_latency_ms": 0.0,
+        "mean_memory_mb": 0.0
+      },
+      "simhash": {
+        "mean_p@1": 0.13333333333333333,
+        "mean_p@3": 0.13333333333333333,
+        "mean_p@5": 0.14666666666666667,
+        "mean_r@5": 0.17746031746031746,
+        "map@5": 0.08809523809523809,
+        "mean_latency_ms": 1.4153133333333334,
+        "mean_memory_mb": 0.12865333333333334
+      },
+      "tfidf": {
+        "mean_p@1": 0.6,
+        "mean_p@3": 0.5333333333333333,
+        "mean_p@5": 0.4533333333333333,
+        "mean_r@5": 0.5463492063492063,
+        "map@5": 0.4368095238095238,
+        "mean_latency_ms": 0.63846,
+        "mean_memory_mb": 0.8142866666666666
+      }
+    },
+    "per_query": {
+      "hybrid": [
+        {
+          "query": "Under what conditions is an undergraduate student considered academically deficient (probation/warning triggers)?",
+          "category": "gpa",
+          "relevant_chunk_ids": [
+            "UG_Handbook_pdf_000076",
+            "UG_Handbook_pdf_000128",
+            "UG_Handbook_pdf_000132",
+            "UG_Handbook_pdf_000133",
+            "UG_Handbook_pdf_000135",
+            "UG_Handbook_pdf_000176"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000176",
+            "UG_Handbook_pdf_000150",
+            "UG_Handbook_pdf_000170",
+            "PG_Handbook_pdf_000111",
+            "UG_Handbook_pdf_000082",
+            "UG_Handbook_pdf_000138",
+            "UG_Handbook_pdf_000195",
+            "UG_Handbook_pdf_000133",
+            "UG_Handbook_pdf_000076",
+            "UG_Handbook_pdf_000069"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.3333333333333333,
+          "p@5": 0.2,
+          "r@5": 0.16666666666666666,
+          "latency_ms": 344.8395,
+          "memory_mb": 17.1901,
+          "fallback_to": null
+        },
+        {
+          "query": "How are Semester GPA and CGPA reported/approved in the official results?",
+          "category": "gpa",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000068",
+            "UG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000129"
+          ],
+          "retrieved_chunk_ids": [
+            "PG_Handbook_pdf_000210",
+            "UG_Handbook_pdf_000132",
+            "PG_Handbook_pdf_000180",
+            "UG_Handbook_pdf_000176",
+            "UG_Handbook_pdf_000138",
+            "UG_Handbook_pdf_000245",
+            "PG_Handbook_pdf_000377",
+            "UG_Handbook_pdf_000075",
+            "UG_Handbook_pdf_000178",
+            "PG_Handbook_pdf_000400"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "r@5": 0.0,
+          "latency_ms": 6.5837,
+          "memory_mb": 0.1539,
+          "fallback_to": null
+        },
+        {
+          "query": "What is the policy when a student misses the mid semester examination due to acceptable reasons (make-up timing)?",
+          "category": "attendance",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000062",
+            "PG_Handbook_pdf_000116",
+            "UG_Handbook_pdf_000067",
+            "UG_Handbook_pdf_000124",
+            "UG_Handbook_pdf_000164"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000165",
+            "UG_Handbook_pdf_000125",
+            "PG_Handbook_pdf_000112",
+            "UG_Handbook_pdf_000164",
+            "UG_Handbook_pdf_000046",
+            "UG_Handbook_pdf_000124",
+            "PG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000166",
+            "PG_Handbook_pdf_000067",
+            "PG_Handbook_pdf_000377"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.2,
+          "r@5": 0.2,
+          "latency_ms": 7.5815,
+          "memory_mb": 0.1612,
+          "fallback_to": null
+        },
+        {
+          "query": "What is the policy when a student misses the end semester examination due to acceptable reasons (make-up timing/limits)?",
+          "category": "attendance",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000067",
+            "UG_Handbook_pdf_000125",
+            "UG_Handbook_pdf_000166"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000125",
+            "PG_Handbook_pdf_000112",
+            "UG_Handbook_pdf_000165",
+            "UG_Handbook_pdf_000135",
+            "UG_Handbook_pdf_000166",
+            "UG_Handbook_pdf_000046",
+            "PG_Handbook_pdf_000111",
+            "UG_Handbook_pdf_000132",
+            "UG_Handbook_pdf_000176",
+            "PG_Handbook_pdf_000051"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.3333333333333333,
+          "p@5": 0.4,
+          "r@5": 0.5,
+          "latency_ms": 7.5412,
+          "memory_mb": 0.1554,
+          "fallback_to": null
+        },
+        {
+          "query": "Can a student repeat a course to clear an F/XF or improve the grade, and how are old vs new grades shown/used in CGPA?",
+          "category": "course_repetition",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000085",
+            "PG_Handbook_pdf_000118",
+            "UG_Handbook_pdf_000089",
+            "UG_Handbook_pdf_000090",
+            "UG_Handbook_pdf_000148",
+            "UG_Handbook_pdf_000149",
+            "UG_Handbook_pdf_000188"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000135",
+            "UG_Handbook_pdf_000150",
+            "UG_Handbook_pdf_000176",
+            "UG_Handbook_pdf_000089",
+            "PG_Handbook_pdf_000117",
+            "PG_Handbook_pdf_000084",
+            "UG_Handbook_pdf_000148",
+            "UG_Handbook_pdf_000188",
+            "PG_Handbook_pdf_000085",
+            "UG_Handbook_pdf_000187"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.2,
+          "r@5": 0.14285714285714285,
+          "latency_ms": 7.7048,
+          "memory_mb": 0.1557,
+          "fallback_to": null
+        },
+        {
+          "query": "What is the maximum number of courses a student may repeat during the degree (per the policy)?",
+          "category": "course_repetition",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000085",
+            "PG_Handbook_pdf_000118",
+            "PG_Handbook_pdf_000161",
+            "UG_Handbook_pdf_000090"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000213",
+            "UG_Handbook_pdf_000212",
+            "UG_Handbook_pdf_000251",
+            "PG_Handbook_pdf_000075",
+            "PG_Handbook_pdf_000046",
+            "UG_Handbook_pdf_000178",
+            "UG_Handbook_pdf_000199",
+            "PG_Handbook_pdf_000183",
+            "PG_Handbook_pdf_000230",
+            "PG_Handbook_pdf_000118"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "r@5": 0.0,
+          "latency_ms": 7.2681,
+          "memory_mb": 0.1547,
+          "fallback_to": null
+        },
+        {
+          "query": "What are the conditions for award of an undergraduate degree (completion of prescribed requirements and minimum criteria)?",
+          "category": "graduation",
+          "relevant_chunk_ids": [
+            "UG_Handbook_pdf_000073",
+            "UG_Handbook_pdf_000130",
+            "UG_Handbook_pdf_000159"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000195",
+            "UG_Handbook_pdf_000220",
+            "UG_Handbook_pdf_000159",
+            "PG_Handbook_pdf_000079",
+            "UG_Handbook_pdf_000130",
+            "UG_Handbook_pdf_000204",
+            "UG_Handbook_pdf_000213",
+            "UG_Handbook_pdf_000252",
+            "UG_Handbook_pdf_000250",
+            "UG_Handbook_pdf_000150"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.3333333333333333,
+          "p@5": 0.4,
+          "r@5": 0.6666666666666666,
+          "latency_ms": 7.1473,
+          "memory_mb": 0.1544,
+          "fallback_to": null
+        },
+        {
+          "query": "What minimum CGPA is mentioned for successful completion of degree programs (as stated in the handbook grading section)?",
+          "category": "graduation",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000060",
+            "UG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000073",
+            "UG_Handbook_pdf_000107",
+            "UG_Handbook_pdf_000159"
+          ],
+          "retrieved_chunk_ids": [
+            "PG_Handbook_pdf_000104",
+            "PG_Handbook_pdf_000140",
+            "PG_Handbook_pdf_000321",
+            "PG_Handbook_pdf_000060",
+            "UG_Handbook_pdf_000217",
+            "UG_Handbook_pdf_000126",
+            "PG_Handbook_pdf_000114",
+            "PG_Handbook_pdf_000380",
+            "UG_Handbook_pdf_000211",
+            "UG_Handbook_pdf_000130"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.2,
+          "r@5": 0.2,
+          "latency_ms": 7.3708,
+          "memory_mb": 0.1555,
+          "fallback_to": null
+        },
+        {
+          "query": "When is tuition fee payable in the semester system, and what does the fee structure annex specify?",
+          "category": "fees",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000379",
+            "UG_Handbook_pdf_000395",
+            "UG_Handbook_pdf_000401"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000401",
+            "PG_Handbook_pdf_000379",
+            "UG_Handbook_pdf_000153",
+            "UG_Handbook_pdf_000395",
+            "PG_Handbook_pdf_000301",
+            "PG_Handbook_pdf_000220",
+            "PG_Handbook_pdf_000174",
+            "PG_Handbook_pdf_000128",
+            "PG_Handbook_pdf_000384",
+            "PG_Handbook_pdf_000218"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.6666666666666666,
+          "p@5": 0.6,
+          "r@5": 1.0,
+          "latency_ms": 6.8603,
+          "memory_mb": 0.1532,
+          "fallback_to": null
+        },
+        {
+          "query": "What happens if a student does not deposit dues/fee on time (restrictions/penalties such as 25% fee to keep registration intact)?",
+          "category": "fees",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000128",
+            "PG_Handbook_pdf_000224",
+            "UG_Handbook_pdf_000153",
+            "UG_Handbook_pdf_000243",
+            "UG_Handbook_pdf_000245"
+          ],
+          "retrieved_chunk_ids": [
+            "PG_Handbook_pdf_000112",
+            "PG_Handbook_pdf_000184",
+            "UG_Handbook_pdf_000200",
+            "PG_Handbook_pdf_000174",
+            "UG_Handbook_pdf_000401",
+            "PG_Handbook_pdf_000069",
+            "UG_Handbook_pdf_000333",
+            "PG_Handbook_pdf_000193",
+            "PG_Handbook_pdf_000377",
+            "PG_Handbook_pdf_000379"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "r@5": 0.0,
+          "latency_ms": 8.3907,
+          "memory_mb": 0.1558,
+          "fallback_to": null
+        },
+        {
+          "query": "What does the code of conduct say about enforcement and disciplinary action/penalties for misconduct?",
+          "category": "disciplinary",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000276",
+            "PG_Handbook_pdf_000278",
+            "UG_Handbook_pdf_000307",
+            "UG_Handbook_pdf_000309",
+            "UG_Handbook_pdf_000323"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000290",
+            "PG_Handbook_pdf_000257",
+            "PG_Handbook_pdf_000276",
+            "UG_Handbook_pdf_000309",
+            "PG_Handbook_pdf_000278",
+            "UG_Handbook_pdf_000292",
+            "UG_Handbook_pdf_000307",
+            "PG_Handbook_pdf_000345",
+            "PG_Handbook_pdf_000298",
+            "UG_Handbook_pdf_000132"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.3333333333333333,
+          "p@5": 0.6,
+          "r@5": 0.6,
+          "latency_ms": 6.5957,
+          "memory_mb": 0.1528,
+          "fallback_to": null
+        },
+        {
+          "query": "What are the rules for thesis evaluation and defence (committee, external evaluation, and defence scheduling)?",
+          "category": "thesis_fyp",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000166",
+            "PG_Handbook_pdf_000169",
+            "PG_Handbook_pdf_000170",
+            "PG_Handbook_pdf_000177"
+          ],
+          "retrieved_chunk_ids": [
+            "PG_Handbook_pdf_000166",
+            "PG_Handbook_pdf_000146",
+            "PG_Handbook_pdf_000153",
+            "PG_Handbook_pdf_000284",
+            "PG_Handbook_pdf_000134",
+            "UG_Handbook_pdf_000100",
+            "UG_Handbook_pdf_000297",
+            "UG_Handbook_pdf_000315",
+            "UG_Handbook_pdf_000333",
+            "PG_Handbook_pdf_000114"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.3333333333333333,
+          "p@5": 0.2,
+          "r@5": 0.25,
+          "latency_ms": 6.6799,
+          "memory_mb": 0.1529,
+          "fallback_to": null
+        },
+        {
+          "query": "What is the grading scale and grade points (e.g., 4.00, 3.50, 3.00 ...) used for percentage marks?",
+          "category": "grading_scale",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000060",
+            "UG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000107",
+            "UG_Handbook_pdf_000162"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000162",
+            "UG_Handbook_pdf_000203",
+            "PG_Handbook_pdf_000060",
+            "UG_Handbook_pdf_000191",
+            "UG_Handbook_pdf_000062",
+            "PG_Handbook_pdf_000152",
+            "UG_Handbook_pdf_000187",
+            "UG_Handbook_pdf_000261",
+            "PG_Handbook_pdf_000140",
+            "PG_Handbook_pdf_000084"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.6666666666666666,
+          "p@5": 0.6,
+          "r@5": 0.75,
+          "latency_ms": 6.8397,
+          "memory_mb": 0.1544,
+          "fallback_to": null
+        },
+        {
+          "query": "What is the deferment policy during a degree (conditions and the 25% tuition fee rule during deferment)?",
+          "category": "leave_policy",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000173",
+            "UG_Handbook_pdf_000153"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000153",
+            "PG_Handbook_pdf_000173",
+            "UG_Handbook_pdf_000146",
+            "PG_Handbook_pdf_000112",
+            "UG_Handbook_pdf_000220",
+            "UG_Handbook_pdf_000395",
+            "PG_Handbook_pdf_000103",
+            "PG_Handbook_pdf_000220",
+            "UG_Handbook_pdf_000150",
+            "PG_Handbook_pdf_000206"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.6666666666666666,
+          "p@5": 0.4,
+          "r@5": 1.0,
+          "latency_ms": 6.84,
+          "memory_mb": 0.1538,
+          "fallback_to": null
+        },
+        {
+          "query": "What are the examination rules about unfair means and exam conduct (warnings, forbidden material, seating, start rules)?",
+          "category": "examination_rules",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000057",
+            "PG_Handbook_pdf_000059",
+            "PG_Handbook_pdf_000254",
+            "UG_Handbook_pdf_000056",
+            "UG_Handbook_pdf_000058",
+            "UG_Handbook_pdf_000287"
+          ],
+          "retrieved_chunk_ids": [
+            "PG_Handbook_pdf_000278",
+            "UG_Handbook_pdf_000056",
+            "UG_Handbook_pdf_000061",
+            "UG_Handbook_pdf_000309",
+            "UG_Handbook_pdf_000163",
+            "PG_Handbook_pdf_000053",
+            "PG_Handbook_pdf_000084",
+            "PG_Handbook_pdf_000057",
+            "UG_Handbook_pdf_000066",
+            "PG_Handbook_pdf_000046"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.3333333333333333,
+          "p@5": 0.2,
+          "r@5": 0.16666666666666666,
+          "latency_ms": 7.0314,
+          "memory_mb": 0.1545,
+          "fallback_to": null
+        }
+      ],
+      "minhash": [
+        {
+          "query": "Under what conditions is an undergraduate student considered academically deficient (probation/warning triggers)?",
+          "category": "gpa",
+          "relevant_chunk_ids": [
+            "UG_Handbook_pdf_000076",
+            "UG_Handbook_pdf_000128",
+            "UG_Handbook_pdf_000132",
+            "UG_Handbook_pdf_000133",
+            "UG_Handbook_pdf_000135",
+            "UG_Handbook_pdf_000176"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000170",
+            "UG_Handbook_pdf_000176",
+            "UG_Handbook_pdf_000132",
+            "UG_Handbook_pdf_000147",
+            "UG_Handbook_pdf_000082",
+            "UG_Handbook_pdf_000073",
+            "PG_Handbook_pdf_000111",
+            "UG_Handbook_pdf_000195",
+            "UG_Handbook_pdf_000187",
+            "UG_Handbook_pdf_000168"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.6666666666666666,
+          "p@5": 0.4,
+          "r@5": 0.3333333333333333,
+          "latency_ms": 48.6739,
+          "memory_mb": 0.1295,
+          "fallback_to": null
+        },
+        {
+          "query": "How are Semester GPA and CGPA reported/approved in the official results?",
+          "category": "gpa",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000068",
+            "UG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000129"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000132",
+            "UG_Handbook_pdf_000135",
+            "UG_Handbook_pdf_000176",
+            "PG_Handbook_pdf_000064",
+            "UG_Handbook_pdf_000191",
+            "UG_Handbook_pdf_000073",
+            "PG_Handbook_pdf_000210",
+            "UG_Handbook_pdf_000168",
+            "UG_Handbook_pdf_000171",
+            "UG_Handbook_pdf_000131"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "r@5": 0.0,
+          "latency_ms": 46.5222,
+          "memory_mb": 0.1287,
+          "fallback_to": null
+        },
+        {
+          "query": "What is the policy when a student misses the mid semester examination due to acceptable reasons (make-up timing)?",
+          "category": "attendance",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000062",
+            "PG_Handbook_pdf_000116",
+            "UG_Handbook_pdf_000067",
+            "UG_Handbook_pdf_000124",
+            "UG_Handbook_pdf_000164"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000165",
+            "UG_Handbook_pdf_000166",
+            "UG_Handbook_pdf_000125",
+            "UG_Handbook_pdf_000067",
+            "PG_Handbook_pdf_000062",
+            "PG_Handbook_pdf_000112",
+            "PG_Handbook_pdf_000046",
+            "UG_Handbook_pdf_000124",
+            "UG_Handbook_pdf_000138",
+            "UG_Handbook_pdf_000135"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.4,
+          "r@5": 0.4,
+          "latency_ms": 55.5708,
+          "memory_mb": 0.1286,
+          "fallback_to": null
+        },
+        {
+          "query": "What is the policy when a student misses the end semester examination due to acceptable reasons (make-up timing/limits)?",
+          "category": "attendance",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000067",
+            "UG_Handbook_pdf_000125",
+            "UG_Handbook_pdf_000166"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000166",
+            "UG_Handbook_pdf_000125",
+            "UG_Handbook_pdf_000165",
+            "UG_Handbook_pdf_000067",
+            "UG_Handbook_pdf_000051",
+            "PG_Handbook_pdf_000062",
+            "PG_Handbook_pdf_000112",
+            "UG_Handbook_pdf_000107",
+            "PG_Handbook_pdf_000046",
+            "UG_Handbook_pdf_000244"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.6666666666666666,
+          "p@5": 0.6,
+          "r@5": 0.75,
+          "latency_ms": 54.6402,
+          "memory_mb": 0.1286,
+          "fallback_to": null
+        },
+        {
+          "query": "Can a student repeat a course to clear an F/XF or improve the grade, and how are old vs new grades shown/used in CGPA?",
+          "category": "course_repetition",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000085",
+            "PG_Handbook_pdf_000118",
+            "UG_Handbook_pdf_000089",
+            "UG_Handbook_pdf_000090",
+            "UG_Handbook_pdf_000148",
+            "UG_Handbook_pdf_000149",
+            "UG_Handbook_pdf_000188"
+          ],
+          "retrieved_chunk_ids": [
+            "PG_Handbook_pdf_000160",
+            "UG_Handbook_pdf_000150",
+            "PG_Handbook_pdf_000119",
+            "UG_Handbook_pdf_000188",
+            "PG_Handbook_pdf_000086",
+            "UG_Handbook_pdf_000187",
+            "UG_Handbook_pdf_000089",
+            "UG_Handbook_pdf_000171",
+            "UG_Handbook_pdf_000131",
+            "PG_Handbook_pdf_000084"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.2,
+          "r@5": 0.14285714285714285,
+          "latency_ms": 52.2874,
+          "memory_mb": 0.1286,
+          "fallback_to": null
+        },
+        {
+          "query": "What is the maximum number of courses a student may repeat during the degree (per the policy)?",
+          "category": "course_repetition",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000085",
+            "PG_Handbook_pdf_000118",
+            "PG_Handbook_pdf_000161",
+            "UG_Handbook_pdf_000090"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000251",
+            "PG_Handbook_pdf_000119",
+            "PG_Handbook_pdf_000159",
+            "UG_Handbook_pdf_000147",
+            "PG_Handbook_pdf_000118",
+            "PG_Handbook_pdf_000086",
+            "PG_Handbook_pdf_000230",
+            "UG_Handbook_pdf_000191",
+            "PG_Handbook_pdf_000231",
+            "UG_Handbook_pdf_000150"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.2,
+          "r@5": 0.25,
+          "latency_ms": 38.7169,
+          "memory_mb": 0.1286,
+          "fallback_to": null
+        },
+        {
+          "query": "What are the conditions for award of an undergraduate degree (completion of prescribed requirements and minimum criteria)?",
+          "category": "graduation",
+          "relevant_chunk_ids": [
+            "UG_Handbook_pdf_000073",
+            "UG_Handbook_pdf_000130",
+            "UG_Handbook_pdf_000159"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000159",
+            "UG_Handbook_pdf_000195",
+            "UG_Handbook_pdf_000073",
+            "PG_Handbook_pdf_000071",
+            "UG_Handbook_pdf_000212",
+            "PG_Handbook_pdf_000137",
+            "PG_Handbook_pdf_000103",
+            "PG_Handbook_pdf_000079",
+            "PG_Handbook_pdf_000060",
+            "UG_Handbook_pdf_000141"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.6666666666666666,
+          "p@5": 0.4,
+          "r@5": 0.6666666666666666,
+          "latency_ms": 57.3228,
+          "memory_mb": 0.1286,
+          "fallback_to": null
+        },
+        {
+          "query": "What minimum CGPA is mentioned for successful completion of degree programs (as stated in the handbook grading section)?",
+          "category": "graduation",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000060",
+            "UG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000073",
+            "UG_Handbook_pdf_000107",
+            "UG_Handbook_pdf_000159"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000159",
+            "PG_Handbook_pdf_000104",
+            "PG_Handbook_pdf_000060",
+            "UG_Handbook_pdf_000111",
+            "UG_Handbook_pdf_000212",
+            "UG_Handbook_pdf_000195",
+            "UG_Handbook_pdf_000073",
+            "PG_Handbook_pdf_000074",
+            "PG_Handbook_pdf_000092",
+            "PG_Handbook_pdf_000140"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.6666666666666666,
+          "p@5": 0.4,
+          "r@5": 0.4,
+          "latency_ms": 54.4558,
+          "memory_mb": 0.1286,
+          "fallback_to": null
+        },
+        {
+          "query": "When is tuition fee payable in the semester system, and what does the fee structure annex specify?",
+          "category": "fees",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000379",
+            "UG_Handbook_pdf_000395",
+            "UG_Handbook_pdf_000401"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000395",
+            "PG_Handbook_pdf_000379",
+            "PG_Handbook_pdf_000112",
+            "PG_Handbook_pdf_000377",
+            "UG_Handbook_pdf_000153",
+            "UG_Handbook_pdf_000401",
+            "PG_Handbook_pdf_000174",
+            "PG_Handbook_pdf_000128",
+            "PG_Handbook_pdf_000218",
+            "PG_Handbook_pdf_000092"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.6666666666666666,
+          "p@5": 0.4,
+          "r@5": 0.6666666666666666,
+          "latency_ms": 69.9539,
+          "memory_mb": 0.1286,
+          "fallback_to": null
+        },
+        {
+          "query": "What happens if a student does not deposit dues/fee on time (restrictions/penalties such as 25% fee to keep registration intact)?",
+          "category": "fees",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000128",
+            "PG_Handbook_pdf_000224",
+            "UG_Handbook_pdf_000153",
+            "UG_Handbook_pdf_000243",
+            "UG_Handbook_pdf_000245"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000243",
+            "UG_Handbook_pdf_000244",
+            "PG_Handbook_pdf_000221",
+            "PG_Handbook_pdf_000379",
+            "UG_Handbook_pdf_000153",
+            "PG_Handbook_pdf_000184",
+            "PG_Handbook_pdf_000128",
+            "UG_Handbook_pdf_000200",
+            "UG_Handbook_pdf_000403",
+            "PG_Handbook_pdf_000386"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.3333333333333333,
+          "p@5": 0.4,
+          "r@5": 0.4,
+          "latency_ms": 62.3515,
+          "memory_mb": 0.1286,
+          "fallback_to": null
+        },
+        {
+          "query": "What does the code of conduct say about enforcement and disciplinary action/penalties for misconduct?",
+          "category": "disciplinary",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000276",
+            "PG_Handbook_pdf_000278",
+            "UG_Handbook_pdf_000307",
+            "UG_Handbook_pdf_000309",
+            "UG_Handbook_pdf_000323"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000309",
+            "PG_Handbook_pdf_000278",
+            "UG_Handbook_pdf_000310",
+            "PG_Handbook_pdf_000257",
+            "UG_Handbook_pdf_000290",
+            "PG_Handbook_pdf_000277",
+            "UG_Handbook_pdf_000418",
+            "PG_Handbook_pdf_000279",
+            "PG_Handbook_pdf_000276",
+            "UG_Handbook_pdf_000315"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.6666666666666666,
+          "p@5": 0.4,
+          "r@5": 0.4,
+          "latency_ms": 74.8383,
+          "memory_mb": 0.1286,
+          "fallback_to": null
+        },
+        {
+          "query": "What are the rules for thesis evaluation and defence (committee, external evaluation, and defence scheduling)?",
+          "category": "thesis_fyp",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000166",
+            "PG_Handbook_pdf_000169",
+            "PG_Handbook_pdf_000170",
+            "PG_Handbook_pdf_000177"
+          ],
+          "retrieved_chunk_ids": [
+            "PG_Handbook_pdf_000166",
+            "PG_Handbook_pdf_000169",
+            "PG_Handbook_pdf_000170",
+            "PG_Handbook_pdf_000178",
+            "PG_Handbook_pdf_000146",
+            "PG_Handbook_pdf_000177",
+            "PG_Handbook_pdf_000179",
+            "PG_Handbook_pdf_000134",
+            "UG_Handbook_pdf_000122",
+            "PG_Handbook_pdf_000096"
+          ],
+          "p@1": 1.0,
+          "p@3": 1.0,
+          "p@5": 0.6,
+          "r@5": 0.75,
+          "latency_ms": 60.5868,
+          "memory_mb": 0.1286,
+          "fallback_to": null
+        },
+        {
+          "query": "What is the grading scale and grade points (e.g., 4.00, 3.50, 3.00 ...) used for percentage marks?",
+          "category": "grading_scale",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000060",
+            "UG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000107",
+            "UG_Handbook_pdf_000162"
+          ],
+          "retrieved_chunk_ids": [
+            "PG_Handbook_pdf_000060",
+            "UG_Handbook_pdf_000162",
+            "PG_Handbook_pdf_000140",
+            "PG_Handbook_pdf_000077",
+            "PG_Handbook_pdf_000159",
+            "UG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000063",
+            "UG_Handbook_pdf_000112",
+            "PG_Handbook_pdf_000122",
+            "UG_Handbook_pdf_000061"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.6666666666666666,
+          "p@5": 0.4,
+          "r@5": 0.5,
+          "latency_ms": 51.8265,
+          "memory_mb": 0.1286,
+          "fallback_to": null
+        },
+        {
+          "query": "What is the deferment policy during a degree (conditions and the 25% tuition fee rule during deferment)?",
+          "category": "leave_policy",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000173",
+            "UG_Handbook_pdf_000153"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000153",
+            "PG_Handbook_pdf_000128",
+            "PG_Handbook_pdf_000174",
+            "PG_Handbook_pdf_000112",
+            "PG_Handbook_pdf_000377",
+            "PG_Handbook_pdf_000092",
+            "PG_Handbook_pdf_000079",
+            "PG_Handbook_pdf_000218",
+            "UG_Handbook_pdf_000395",
+            "PG_Handbook_pdf_000173"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.3333333333333333,
+          "p@5": 0.2,
+          "r@5": 0.5,
+          "latency_ms": 62.7424,
+          "memory_mb": 0.1286,
+          "fallback_to": null
+        },
+        {
+          "query": "What are the examination rules about unfair means and exam conduct (warnings, forbidden material, seating, start rules)?",
+          "category": "examination_rules",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000057",
+            "PG_Handbook_pdf_000059",
+            "PG_Handbook_pdf_000254",
+            "UG_Handbook_pdf_000056",
+            "UG_Handbook_pdf_000058",
+            "UG_Handbook_pdf_000287"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000051",
+            "UG_Handbook_pdf_000046",
+            "PG_Handbook_pdf_000059",
+            "PG_Handbook_pdf_000051",
+            "UG_Handbook_pdf_000102",
+            "PG_Handbook_pdf_000046",
+            "UG_Handbook_pdf_000122",
+            "PG_Handbook_pdf_000057",
+            "UG_Handbook_pdf_000056",
+            "UG_Handbook_pdf_000309"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.3333333333333333,
+          "p@5": 0.2,
+          "r@5": 0.16666666666666666,
+          "latency_ms": 70.991,
+          "memory_mb": 0.1286,
+          "fallback_to": null
+        }
+      ],
+      "minhash_lsh_only": [
+        {
+          "query": "Under what conditions is an undergraduate student considered academically deficient (probation/warning triggers)?",
+          "category": "gpa",
+          "relevant_chunk_ids": [
+            "UG_Handbook_pdf_000076",
+            "UG_Handbook_pdf_000128",
+            "UG_Handbook_pdf_000132",
+            "UG_Handbook_pdf_000133",
+            "UG_Handbook_pdf_000135",
+            "UG_Handbook_pdf_000176"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000170",
+            "UG_Handbook_pdf_000176",
+            "UG_Handbook_pdf_000082",
+            "PG_Handbook_pdf_000111",
+            "PG_Handbook_pdf_000113",
+            "UG_Handbook_pdf_000178",
+            "UG_Handbook_pdf_000195",
+            "UG_Handbook_pdf_000407",
+            "UG_Handbook_pdf_000132",
+            "UG_Handbook_pdf_000073"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.3333333333333333,
+          "p@5": 0.2,
+          "r@5": 0.16666666666666666,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null,
+          "lsh_candidate_count": 341
+        },
+        {
+          "query": "How are Semester GPA and CGPA reported/approved in the official results?",
+          "category": "gpa",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000068",
+            "UG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000129"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000132",
+            "PG_Handbook_pdf_000210",
+            "PG_Handbook_pdf_000064",
+            "UG_Handbook_pdf_000135",
+            "UG_Handbook_pdf_000168",
+            "UG_Handbook_pdf_000171",
+            "UG_Handbook_pdf_000176",
+            "UG_Handbook_pdf_000131",
+            "UG_Handbook_pdf_000069",
+            "UG_Handbook_pdf_000170"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "r@5": 0.0,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null,
+          "lsh_candidate_count": 147
+        },
+        {
+          "query": "What is the policy when a student misses the mid semester examination due to acceptable reasons (make-up timing)?",
+          "category": "attendance",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000062",
+            "PG_Handbook_pdf_000116",
+            "UG_Handbook_pdf_000067",
+            "UG_Handbook_pdf_000124",
+            "UG_Handbook_pdf_000164"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000165",
+            "UG_Handbook_pdf_000138",
+            "UG_Handbook_pdf_000135",
+            "UG_Handbook_pdf_000125",
+            "UG_Handbook_pdf_000166",
+            "PG_Handbook_pdf_000111",
+            "PG_Handbook_pdf_000112",
+            "PG_Handbook_pdf_000046",
+            "UG_Handbook_pdf_000067",
+            "UG_Handbook_pdf_000061"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "r@5": 0.0,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null,
+          "lsh_candidate_count": 374
+        },
+        {
+          "query": "What is the policy when a student misses the end semester examination due to acceptable reasons (make-up timing/limits)?",
+          "category": "attendance",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000067",
+            "UG_Handbook_pdf_000125",
+            "UG_Handbook_pdf_000166"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000166",
+            "UG_Handbook_pdf_000125",
+            "UG_Handbook_pdf_000165",
+            "PG_Handbook_pdf_000112",
+            "UG_Handbook_pdf_000051",
+            "PG_Handbook_pdf_000046",
+            "UG_Handbook_pdf_000046",
+            "UG_Handbook_pdf_000138",
+            "PG_Handbook_pdf_000111",
+            "UG_Handbook_pdf_000388"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.6666666666666666,
+          "p@5": 0.4,
+          "r@5": 0.5,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null,
+          "lsh_candidate_count": 374
+        },
+        {
+          "query": "Can a student repeat a course to clear an F/XF or improve the grade, and how are old vs new grades shown/used in CGPA?",
+          "category": "course_repetition",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000085",
+            "PG_Handbook_pdf_000118",
+            "UG_Handbook_pdf_000089",
+            "UG_Handbook_pdf_000090",
+            "UG_Handbook_pdf_000148",
+            "UG_Handbook_pdf_000149",
+            "UG_Handbook_pdf_000188"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000150",
+            "UG_Handbook_pdf_000171",
+            "UG_Handbook_pdf_000131",
+            "PG_Handbook_pdf_000114",
+            "PG_Handbook_pdf_000119",
+            "UG_Handbook_pdf_000135",
+            "PG_Handbook_pdf_000084",
+            "PG_Handbook_pdf_000117",
+            "UG_Handbook_pdf_000089",
+            "PG_Handbook_pdf_000160"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "r@5": 0.0,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null,
+          "lsh_candidate_count": 332
+        },
+        {
+          "query": "What is the maximum number of courses a student may repeat during the degree (per the policy)?",
+          "category": "course_repetition",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000085",
+            "PG_Handbook_pdf_000118",
+            "PG_Handbook_pdf_000161",
+            "UG_Handbook_pdf_000090"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000251",
+            "UG_Handbook_pdf_000252",
+            "UG_Handbook_pdf_000147",
+            "PG_Handbook_pdf_000202",
+            "UG_Handbook_pdf_000135",
+            "PG_Handbook_pdf_000046",
+            "UG_Handbook_pdf_000178",
+            "PG_Handbook_pdf_000377",
+            "PG_Handbook_pdf_000077",
+            "PG_Handbook_pdf_000134"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "r@5": 0.0,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null,
+          "lsh_candidate_count": 351
+        },
+        {
+          "query": "What are the conditions for award of an undergraduate degree (completion of prescribed requirements and minimum criteria)?",
+          "category": "graduation",
+          "relevant_chunk_ids": [
+            "UG_Handbook_pdf_000073",
+            "UG_Handbook_pdf_000130",
+            "UG_Handbook_pdf_000159"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000159",
+            "UG_Handbook_pdf_000073",
+            "UG_Handbook_pdf_000195",
+            "PG_Handbook_pdf_000071",
+            "UG_Handbook_pdf_000176",
+            "UG_Handbook_pdf_000146",
+            "UG_Handbook_pdf_000211",
+            "UG_Handbook_pdf_000149",
+            "UG_Handbook_pdf_000186",
+            "UG_Handbook_pdf_000212"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.6666666666666666,
+          "p@5": 0.4,
+          "r@5": 0.6666666666666666,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null,
+          "lsh_candidate_count": 224
+        },
+        {
+          "query": "What minimum CGPA is mentioned for successful completion of degree programs (as stated in the handbook grading section)?",
+          "category": "graduation",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000060",
+            "UG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000073",
+            "UG_Handbook_pdf_000107",
+            "UG_Handbook_pdf_000159"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000159",
+            "PG_Handbook_pdf_000074",
+            "PG_Handbook_pdf_000104",
+            "PG_Handbook_pdf_000060",
+            "PG_Handbook_pdf_000092",
+            "UG_Handbook_pdf_000204",
+            "UG_Handbook_pdf_000073",
+            "PG_Handbook_pdf_000114",
+            "UG_Handbook_pdf_000130",
+            "UG_Handbook_pdf_000062"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.3333333333333333,
+          "p@5": 0.4,
+          "r@5": 0.4,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null,
+          "lsh_candidate_count": 258
+        },
+        {
+          "query": "When is tuition fee payable in the semester system, and what does the fee structure annex specify?",
+          "category": "fees",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000379",
+            "UG_Handbook_pdf_000395",
+            "UG_Handbook_pdf_000401"
+          ],
+          "retrieved_chunk_ids": [
+            "PG_Handbook_pdf_000379",
+            "UG_Handbook_pdf_000395",
+            "UG_Handbook_pdf_000401",
+            "PG_Handbook_pdf_000174",
+            "UG_Handbook_pdf_000153",
+            "PG_Handbook_pdf_000092",
+            "PG_Handbook_pdf_000218",
+            "PG_Handbook_pdf_000377",
+            "PG_Handbook_pdf_000301",
+            "UG_Handbook_pdf_000220"
+          ],
+          "p@1": 1.0,
+          "p@3": 1.0,
+          "p@5": 0.6,
+          "r@5": 1.0,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null,
+          "lsh_candidate_count": 106
+        },
+        {
+          "query": "What happens if a student does not deposit dues/fee on time (restrictions/penalties such as 25% fee to keep registration intact)?",
+          "category": "fees",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000128",
+            "PG_Handbook_pdf_000224",
+            "UG_Handbook_pdf_000153",
+            "UG_Handbook_pdf_000243",
+            "UG_Handbook_pdf_000245"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000153",
+            "PG_Handbook_pdf_000379",
+            "UG_Handbook_pdf_000243",
+            "UG_Handbook_pdf_000244",
+            "PG_Handbook_pdf_000067",
+            "PG_Handbook_pdf_000184",
+            "PG_Handbook_pdf_000386",
+            "PG_Handbook_pdf_000174",
+            "UG_Handbook_pdf_000395",
+            "UG_Handbook_pdf_000005"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.6666666666666666,
+          "p@5": 0.4,
+          "r@5": 0.4,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null,
+          "lsh_candidate_count": 314
+        },
+        {
+          "query": "What does the code of conduct say about enforcement and disciplinary action/penalties for misconduct?",
+          "category": "disciplinary",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000276",
+            "PG_Handbook_pdf_000278",
+            "UG_Handbook_pdf_000307",
+            "UG_Handbook_pdf_000309",
+            "UG_Handbook_pdf_000323"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000310",
+            "PG_Handbook_pdf_000278",
+            "UG_Handbook_pdf_000309",
+            "UG_Handbook_pdf_000292",
+            "PG_Handbook_pdf_000279",
+            "PG_Handbook_pdf_000400",
+            "UG_Handbook_pdf_000417",
+            "UG_Handbook_pdf_000418",
+            "UG_Handbook_pdf_000320",
+            "PG_Handbook_pdf_000289"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.6666666666666666,
+          "p@5": 0.4,
+          "r@5": 0.4,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null,
+          "lsh_candidate_count": 60
+        },
+        {
+          "query": "What are the rules for thesis evaluation and defence (committee, external evaluation, and defence scheduling)?",
+          "category": "thesis_fyp",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000166",
+            "PG_Handbook_pdf_000169",
+            "PG_Handbook_pdf_000170",
+            "PG_Handbook_pdf_000177"
+          ],
+          "retrieved_chunk_ids": [
+            "PG_Handbook_pdf_000166",
+            "PG_Handbook_pdf_000169",
+            "PG_Handbook_pdf_000177",
+            "PG_Handbook_pdf_000178",
+            "PG_Handbook_pdf_000146",
+            "PG_Handbook_pdf_000050",
+            "PG_Handbook_pdf_000134",
+            "PG_Handbook_pdf_000170",
+            "UG_Handbook_pdf_000122",
+            "PG_Handbook_pdf_000164"
+          ],
+          "p@1": 1.0,
+          "p@3": 1.0,
+          "p@5": 0.6,
+          "r@5": 0.75,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null,
+          "lsh_candidate_count": 81
+        },
+        {
+          "query": "What is the grading scale and grade points (e.g., 4.00, 3.50, 3.00 ...) used for percentage marks?",
+          "category": "grading_scale",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000060",
+            "UG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000107",
+            "UG_Handbook_pdf_000162"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000162",
+            "PG_Handbook_pdf_000060",
+            "PG_Handbook_pdf_000140",
+            "UG_Handbook_pdf_000063",
+            "PG_Handbook_pdf_000077",
+            "UG_Handbook_pdf_000170",
+            "UG_Handbook_pdf_000107",
+            "UG_Handbook_pdf_000062",
+            "PG_Handbook_pdf_000159",
+            "PG_Handbook_pdf_000110"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.6666666666666666,
+          "p@5": 0.4,
+          "r@5": 0.5,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null,
+          "lsh_candidate_count": 193
+        },
+        {
+          "query": "What is the deferment policy during a degree (conditions and the 25% tuition fee rule during deferment)?",
+          "category": "leave_policy",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000173",
+            "UG_Handbook_pdf_000153"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000153",
+            "PG_Handbook_pdf_000128",
+            "PG_Handbook_pdf_000174",
+            "PG_Handbook_pdf_000206",
+            "UG_Handbook_pdf_000220",
+            "PG_Handbook_pdf_000092",
+            "PG_Handbook_pdf_000379",
+            "PG_Handbook_pdf_000112",
+            "UG_Handbook_pdf_000191",
+            "PG_Handbook_pdf_000173"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.3333333333333333,
+          "p@5": 0.2,
+          "r@5": 0.5,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null,
+          "lsh_candidate_count": 161
+        },
+        {
+          "query": "What are the examination rules about unfair means and exam conduct (warnings, forbidden material, seating, start rules)?",
+          "category": "examination_rules",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000057",
+            "PG_Handbook_pdf_000059",
+            "PG_Handbook_pdf_000254",
+            "UG_Handbook_pdf_000056",
+            "UG_Handbook_pdf_000058",
+            "UG_Handbook_pdf_000287"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000051",
+            "PG_Handbook_pdf_000046",
+            "UG_Handbook_pdf_000133",
+            "UG_Handbook_pdf_000388",
+            "UG_Handbook_pdf_000165",
+            "PG_Handbook_pdf_000068",
+            "PG_Handbook_pdf_000207",
+            "UG_Handbook_pdf_000050",
+            "PG_Handbook_pdf_000053",
+            "UG_Handbook_pdf_000128"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "r@5": 0.0,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null,
+          "lsh_candidate_count": 135
+        }
+      ],
+      "minhash_no_fallback": [
+        {
+          "query": "Under what conditions is an undergraduate student considered academically deficient (probation/warning triggers)?",
+          "category": "gpa",
+          "relevant_chunk_ids": [
+            "UG_Handbook_pdf_000076",
+            "UG_Handbook_pdf_000128",
+            "UG_Handbook_pdf_000132",
+            "UG_Handbook_pdf_000133",
+            "UG_Handbook_pdf_000135",
+            "UG_Handbook_pdf_000176"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000170",
+            "UG_Handbook_pdf_000176",
+            "UG_Handbook_pdf_000082",
+            "PG_Handbook_pdf_000111",
+            "PG_Handbook_pdf_000113",
+            "UG_Handbook_pdf_000178",
+            "UG_Handbook_pdf_000195",
+            "UG_Handbook_pdf_000407",
+            "UG_Handbook_pdf_000132",
+            "UG_Handbook_pdf_000073"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.3333333333333333,
+          "p@5": 0.2,
+          "r@5": 0.16666666666666666,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null
+        },
+        {
+          "query": "How are Semester GPA and CGPA reported/approved in the official results?",
+          "category": "gpa",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000068",
+            "UG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000129"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000132",
+            "PG_Handbook_pdf_000210",
+            "PG_Handbook_pdf_000064",
+            "UG_Handbook_pdf_000135",
+            "UG_Handbook_pdf_000168",
+            "UG_Handbook_pdf_000171",
+            "UG_Handbook_pdf_000176",
+            "UG_Handbook_pdf_000131",
+            "UG_Handbook_pdf_000069",
+            "UG_Handbook_pdf_000170"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "r@5": 0.0,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null
+        },
+        {
+          "query": "What is the policy when a student misses the mid semester examination due to acceptable reasons (make-up timing)?",
+          "category": "attendance",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000062",
+            "PG_Handbook_pdf_000116",
+            "UG_Handbook_pdf_000067",
+            "UG_Handbook_pdf_000124",
+            "UG_Handbook_pdf_000164"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000165",
+            "UG_Handbook_pdf_000138",
+            "UG_Handbook_pdf_000135",
+            "UG_Handbook_pdf_000125",
+            "UG_Handbook_pdf_000166",
+            "PG_Handbook_pdf_000111",
+            "PG_Handbook_pdf_000112",
+            "PG_Handbook_pdf_000046",
+            "UG_Handbook_pdf_000067",
+            "UG_Handbook_pdf_000061"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "r@5": 0.0,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null
+        },
+        {
+          "query": "What is the policy when a student misses the end semester examination due to acceptable reasons (make-up timing/limits)?",
+          "category": "attendance",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000067",
+            "UG_Handbook_pdf_000125",
+            "UG_Handbook_pdf_000166"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000166",
+            "UG_Handbook_pdf_000125",
+            "UG_Handbook_pdf_000165",
+            "PG_Handbook_pdf_000112",
+            "UG_Handbook_pdf_000051",
+            "PG_Handbook_pdf_000046",
+            "UG_Handbook_pdf_000046",
+            "UG_Handbook_pdf_000138",
+            "PG_Handbook_pdf_000111",
+            "UG_Handbook_pdf_000388"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.6666666666666666,
+          "p@5": 0.4,
+          "r@5": 0.5,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null
+        },
+        {
+          "query": "Can a student repeat a course to clear an F/XF or improve the grade, and how are old vs new grades shown/used in CGPA?",
+          "category": "course_repetition",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000085",
+            "PG_Handbook_pdf_000118",
+            "UG_Handbook_pdf_000089",
+            "UG_Handbook_pdf_000090",
+            "UG_Handbook_pdf_000148",
+            "UG_Handbook_pdf_000149",
+            "UG_Handbook_pdf_000188"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000150",
+            "UG_Handbook_pdf_000171",
+            "UG_Handbook_pdf_000131",
+            "PG_Handbook_pdf_000114",
+            "PG_Handbook_pdf_000119",
+            "UG_Handbook_pdf_000135",
+            "PG_Handbook_pdf_000084",
+            "PG_Handbook_pdf_000117",
+            "UG_Handbook_pdf_000089",
+            "PG_Handbook_pdf_000160"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "r@5": 0.0,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null
+        },
+        {
+          "query": "What is the maximum number of courses a student may repeat during the degree (per the policy)?",
+          "category": "course_repetition",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000085",
+            "PG_Handbook_pdf_000118",
+            "PG_Handbook_pdf_000161",
+            "UG_Handbook_pdf_000090"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000251",
+            "UG_Handbook_pdf_000252",
+            "UG_Handbook_pdf_000147",
+            "PG_Handbook_pdf_000202",
+            "UG_Handbook_pdf_000135",
+            "PG_Handbook_pdf_000046",
+            "UG_Handbook_pdf_000178",
+            "PG_Handbook_pdf_000377",
+            "PG_Handbook_pdf_000077",
+            "PG_Handbook_pdf_000134"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "r@5": 0.0,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null
+        },
+        {
+          "query": "What are the conditions for award of an undergraduate degree (completion of prescribed requirements and minimum criteria)?",
+          "category": "graduation",
+          "relevant_chunk_ids": [
+            "UG_Handbook_pdf_000073",
+            "UG_Handbook_pdf_000130",
+            "UG_Handbook_pdf_000159"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000159",
+            "UG_Handbook_pdf_000073",
+            "UG_Handbook_pdf_000195",
+            "PG_Handbook_pdf_000071",
+            "UG_Handbook_pdf_000176",
+            "UG_Handbook_pdf_000146",
+            "UG_Handbook_pdf_000211",
+            "UG_Handbook_pdf_000149",
+            "UG_Handbook_pdf_000186",
+            "UG_Handbook_pdf_000212"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.6666666666666666,
+          "p@5": 0.4,
+          "r@5": 0.6666666666666666,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null
+        },
+        {
+          "query": "What minimum CGPA is mentioned for successful completion of degree programs (as stated in the handbook grading section)?",
+          "category": "graduation",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000060",
+            "UG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000073",
+            "UG_Handbook_pdf_000107",
+            "UG_Handbook_pdf_000159"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000159",
+            "PG_Handbook_pdf_000074",
+            "PG_Handbook_pdf_000104",
+            "PG_Handbook_pdf_000060",
+            "PG_Handbook_pdf_000092",
+            "UG_Handbook_pdf_000204",
+            "UG_Handbook_pdf_000073",
+            "PG_Handbook_pdf_000114",
+            "UG_Handbook_pdf_000130",
+            "UG_Handbook_pdf_000062"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.3333333333333333,
+          "p@5": 0.4,
+          "r@5": 0.4,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null
+        },
+        {
+          "query": "When is tuition fee payable in the semester system, and what does the fee structure annex specify?",
+          "category": "fees",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000379",
+            "UG_Handbook_pdf_000395",
+            "UG_Handbook_pdf_000401"
+          ],
+          "retrieved_chunk_ids": [
+            "PG_Handbook_pdf_000379",
+            "UG_Handbook_pdf_000395",
+            "UG_Handbook_pdf_000401",
+            "PG_Handbook_pdf_000174",
+            "UG_Handbook_pdf_000153",
+            "PG_Handbook_pdf_000092",
+            "PG_Handbook_pdf_000218",
+            "PG_Handbook_pdf_000377",
+            "PG_Handbook_pdf_000301",
+            "UG_Handbook_pdf_000220"
+          ],
+          "p@1": 1.0,
+          "p@3": 1.0,
+          "p@5": 0.6,
+          "r@5": 1.0,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null
+        },
+        {
+          "query": "What happens if a student does not deposit dues/fee on time (restrictions/penalties such as 25% fee to keep registration intact)?",
+          "category": "fees",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000128",
+            "PG_Handbook_pdf_000224",
+            "UG_Handbook_pdf_000153",
+            "UG_Handbook_pdf_000243",
+            "UG_Handbook_pdf_000245"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000153",
+            "PG_Handbook_pdf_000379",
+            "UG_Handbook_pdf_000243",
+            "UG_Handbook_pdf_000244",
+            "PG_Handbook_pdf_000067",
+            "PG_Handbook_pdf_000184",
+            "PG_Handbook_pdf_000386",
+            "PG_Handbook_pdf_000174",
+            "UG_Handbook_pdf_000395",
+            "UG_Handbook_pdf_000005"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.6666666666666666,
+          "p@5": 0.4,
+          "r@5": 0.4,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null
+        },
+        {
+          "query": "What does the code of conduct say about enforcement and disciplinary action/penalties for misconduct?",
+          "category": "disciplinary",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000276",
+            "PG_Handbook_pdf_000278",
+            "UG_Handbook_pdf_000307",
+            "UG_Handbook_pdf_000309",
+            "UG_Handbook_pdf_000323"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000310",
+            "PG_Handbook_pdf_000278",
+            "UG_Handbook_pdf_000309",
+            "UG_Handbook_pdf_000292",
+            "PG_Handbook_pdf_000279",
+            "PG_Handbook_pdf_000400",
+            "UG_Handbook_pdf_000417",
+            "UG_Handbook_pdf_000418",
+            "UG_Handbook_pdf_000320",
+            "PG_Handbook_pdf_000289"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.6666666666666666,
+          "p@5": 0.4,
+          "r@5": 0.4,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null
+        },
+        {
+          "query": "What are the rules for thesis evaluation and defence (committee, external evaluation, and defence scheduling)?",
+          "category": "thesis_fyp",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000166",
+            "PG_Handbook_pdf_000169",
+            "PG_Handbook_pdf_000170",
+            "PG_Handbook_pdf_000177"
+          ],
+          "retrieved_chunk_ids": [
+            "PG_Handbook_pdf_000166",
+            "PG_Handbook_pdf_000169",
+            "PG_Handbook_pdf_000177",
+            "PG_Handbook_pdf_000178",
+            "PG_Handbook_pdf_000146",
+            "PG_Handbook_pdf_000050",
+            "PG_Handbook_pdf_000134",
+            "PG_Handbook_pdf_000170",
+            "UG_Handbook_pdf_000122",
+            "PG_Handbook_pdf_000164"
+          ],
+          "p@1": 1.0,
+          "p@3": 1.0,
+          "p@5": 0.6,
+          "r@5": 0.75,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null
+        },
+        {
+          "query": "What is the grading scale and grade points (e.g., 4.00, 3.50, 3.00 ...) used for percentage marks?",
+          "category": "grading_scale",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000060",
+            "UG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000107",
+            "UG_Handbook_pdf_000162"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000162",
+            "PG_Handbook_pdf_000060",
+            "PG_Handbook_pdf_000140",
+            "UG_Handbook_pdf_000063",
+            "PG_Handbook_pdf_000077",
+            "UG_Handbook_pdf_000170",
+            "UG_Handbook_pdf_000107",
+            "UG_Handbook_pdf_000062",
+            "PG_Handbook_pdf_000159",
+            "PG_Handbook_pdf_000110"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.6666666666666666,
+          "p@5": 0.4,
+          "r@5": 0.5,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null
+        },
+        {
+          "query": "What is the deferment policy during a degree (conditions and the 25% tuition fee rule during deferment)?",
+          "category": "leave_policy",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000173",
+            "UG_Handbook_pdf_000153"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000153",
+            "PG_Handbook_pdf_000128",
+            "PG_Handbook_pdf_000174",
+            "PG_Handbook_pdf_000206",
+            "UG_Handbook_pdf_000220",
+            "PG_Handbook_pdf_000092",
+            "PG_Handbook_pdf_000379",
+            "PG_Handbook_pdf_000112",
+            "UG_Handbook_pdf_000191",
+            "PG_Handbook_pdf_000173"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.3333333333333333,
+          "p@5": 0.2,
+          "r@5": 0.5,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null
+        },
+        {
+          "query": "What are the examination rules about unfair means and exam conduct (warnings, forbidden material, seating, start rules)?",
+          "category": "examination_rules",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000057",
+            "PG_Handbook_pdf_000059",
+            "PG_Handbook_pdf_000254",
+            "UG_Handbook_pdf_000056",
+            "UG_Handbook_pdf_000058",
+            "UG_Handbook_pdf_000287"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000051",
+            "PG_Handbook_pdf_000046",
+            "UG_Handbook_pdf_000133",
+            "UG_Handbook_pdf_000388",
+            "UG_Handbook_pdf_000165",
+            "PG_Handbook_pdf_000068",
+            "PG_Handbook_pdf_000207",
+            "UG_Handbook_pdf_000050",
+            "PG_Handbook_pdf_000053",
+            "UG_Handbook_pdf_000128"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "r@5": 0.0,
+          "latency_ms": 0.0,
+          "memory_mb": 0.0,
+          "fallback_to": null
+        }
+      ],
+      "simhash": [
+        {
+          "query": "Under what conditions is an undergraduate student considered academically deficient (probation/warning triggers)?",
+          "category": "gpa",
+          "relevant_chunk_ids": [
+            "UG_Handbook_pdf_000076",
+            "UG_Handbook_pdf_000128",
+            "UG_Handbook_pdf_000132",
+            "UG_Handbook_pdf_000133",
+            "UG_Handbook_pdf_000135",
+            "UG_Handbook_pdf_000176"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000129",
+            "UG_Handbook_pdf_000150",
+            "UG_Handbook_pdf_000242",
+            "UG_Handbook_pdf_000176",
+            "UG_Handbook_pdf_000170",
+            "UG_Handbook_pdf_000198",
+            "PG_Handbook_pdf_000182",
+            "PG_Handbook_pdf_000222",
+            "UG_Handbook_pdf_000071",
+            "UG_Handbook_pdf_000138"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.2,
+          "r@5": 0.16666666666666666,
+          "latency_ms": 1.571,
+          "memory_mb": 0.1293,
+          "fallback_to": null
+        },
+        {
+          "query": "How are Semester GPA and CGPA reported/approved in the official results?",
+          "category": "gpa",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000068",
+            "UG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000129"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000254",
+            "PG_Handbook_pdf_000224",
+            "PG_Handbook_pdf_000210",
+            "PG_Handbook_pdf_000181",
+            "PG_Handbook_pdf_000221",
+            "UG_Handbook_pdf_000243",
+            "UG_Handbook_pdf_000323",
+            "UG_Handbook_pdf_000332",
+            "PG_Handbook_pdf_000019",
+            "PG_Handbook_pdf_000180"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "r@5": 0.0,
+          "latency_ms": 1.3489,
+          "memory_mb": 0.1287,
+          "fallback_to": null
+        },
+        {
+          "query": "What is the policy when a student misses the mid semester examination due to acceptable reasons (make-up timing)?",
+          "category": "attendance",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000062",
+            "PG_Handbook_pdf_000116",
+            "UG_Handbook_pdf_000067",
+            "UG_Handbook_pdf_000124",
+            "UG_Handbook_pdf_000164"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000165",
+            "UG_Handbook_pdf_000086",
+            "UG_Handbook_pdf_000125",
+            "UG_Handbook_pdf_000164",
+            "UG_Handbook_pdf_000186",
+            "UG_Handbook_pdf_000280",
+            "PG_Handbook_pdf_000191",
+            "PG_Handbook_pdf_000217",
+            "PG_Handbook_pdf_000247",
+            "UG_Handbook_pdf_000117"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.2,
+          "r@5": 0.2,
+          "latency_ms": 1.3837,
+          "memory_mb": 0.1286,
+          "fallback_to": null
+        },
+        {
+          "query": "What is the policy when a student misses the end semester examination due to acceptable reasons (make-up timing/limits)?",
+          "category": "attendance",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000067",
+            "UG_Handbook_pdf_000125",
+            "UG_Handbook_pdf_000166"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000086",
+            "UG_Handbook_pdf_000125",
+            "PG_Handbook_pdf_000112",
+            "PG_Handbook_pdf_000276",
+            "UG_Handbook_pdf_000146",
+            "PG_Handbook_pdf_000174",
+            "UG_Handbook_pdf_000090",
+            "UG_Handbook_pdf_000186",
+            "PG_Handbook_pdf_000217",
+            "UG_Handbook_pdf_000072"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.3333333333333333,
+          "p@5": 0.2,
+          "r@5": 0.25,
+          "latency_ms": 1.4295,
+          "memory_mb": 0.1286,
+          "fallback_to": null
+        },
+        {
+          "query": "Can a student repeat a course to clear an F/XF or improve the grade, and how are old vs new grades shown/used in CGPA?",
+          "category": "course_repetition",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000085",
+            "PG_Handbook_pdf_000118",
+            "UG_Handbook_pdf_000089",
+            "UG_Handbook_pdf_000090",
+            "UG_Handbook_pdf_000148",
+            "UG_Handbook_pdf_000149",
+            "UG_Handbook_pdf_000188"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000176",
+            "UG_Handbook_pdf_000135",
+            "UG_Handbook_pdf_000089",
+            "UG_Handbook_pdf_000148",
+            "PG_Handbook_pdf_000085",
+            "UG_Handbook_pdf_000149",
+            "UG_Handbook_pdf_000150",
+            "UG_Handbook_pdf_000187",
+            "UG_Handbook_pdf_000188",
+            "PG_Handbook_pdf_000117"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.3333333333333333,
+          "p@5": 0.6,
+          "r@5": 0.42857142857142855,
+          "latency_ms": 1.4406,
+          "memory_mb": 0.1286,
+          "fallback_to": null
+        },
+        {
+          "query": "What is the maximum number of courses a student may repeat during the degree (per the policy)?",
+          "category": "course_repetition",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000085",
+            "PG_Handbook_pdf_000118",
+            "PG_Handbook_pdf_000161",
+            "UG_Handbook_pdf_000090"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000213",
+            "UG_Handbook_pdf_000212",
+            "UG_Handbook_pdf_000353",
+            "UG_Handbook_pdf_000030",
+            "UG_Handbook_pdf_000215",
+            "UG_Handbook_pdf_000315",
+            "UG_Handbook_pdf_000334",
+            "PG_Handbook_pdf_000029",
+            "PG_Handbook_pdf_000267",
+            "PG_Handbook_pdf_000284"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "r@5": 0.0,
+          "latency_ms": 1.3325,
+          "memory_mb": 0.1286,
+          "fallback_to": null
+        },
+        {
+          "query": "What are the conditions for award of an undergraduate degree (completion of prescribed requirements and minimum criteria)?",
+          "category": "graduation",
+          "relevant_chunk_ids": [
+            "UG_Handbook_pdf_000073",
+            "UG_Handbook_pdf_000130",
+            "UG_Handbook_pdf_000159"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000132",
+            "UG_Handbook_pdf_000005",
+            "UG_Handbook_pdf_000220",
+            "UG_Handbook_pdf_000248",
+            "PG_Handbook_pdf_000138",
+            "UG_Handbook_pdf_000046",
+            "UG_Handbook_pdf_000408",
+            "PG_Handbook_pdf_000079",
+            "UG_Handbook_pdf_000000",
+            "UG_Handbook_pdf_000068"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "r@5": 0.0,
+          "latency_ms": 1.4793,
+          "memory_mb": 0.1286,
+          "fallback_to": null
+        },
+        {
+          "query": "What minimum CGPA is mentioned for successful completion of degree programs (as stated in the handbook grading section)?",
+          "category": "graduation",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000060",
+            "UG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000073",
+            "UG_Handbook_pdf_000107",
+            "UG_Handbook_pdf_000159"
+          ],
+          "retrieved_chunk_ids": [
+            "PG_Handbook_pdf_000147",
+            "UG_Handbook_pdf_000417",
+            "PG_Handbook_pdf_000212",
+            "PG_Handbook_pdf_000140",
+            "PG_Handbook_pdf_000210",
+            "UG_Handbook_pdf_000354",
+            "PG_Handbook_pdf_000322",
+            "UG_Handbook_pdf_000217",
+            "UG_Handbook_pdf_000345",
+            "PG_Handbook_pdf_000104"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "r@5": 0.0,
+          "latency_ms": 1.4108,
+          "memory_mb": 0.1286,
+          "fallback_to": null
+        },
+        {
+          "query": "When is tuition fee payable in the semester system, and what does the fee structure annex specify?",
+          "category": "fees",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000379",
+            "UG_Handbook_pdf_000395",
+            "UG_Handbook_pdf_000401"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000195",
+            "UG_Handbook_pdf_000032",
+            "PG_Handbook_pdf_000102",
+            "PG_Handbook_pdf_000220",
+            "PG_Handbook_pdf_000243",
+            "PG_Handbook_pdf_000274",
+            "UG_Handbook_pdf_000068",
+            "UG_Handbook_pdf_000153",
+            "UG_Handbook_pdf_000250",
+            "UG_Handbook_pdf_000401"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "r@5": 0.0,
+          "latency_ms": 1.4265,
+          "memory_mb": 0.1286,
+          "fallback_to": null
+        },
+        {
+          "query": "What happens if a student does not deposit dues/fee on time (restrictions/penalties such as 25% fee to keep registration intact)?",
+          "category": "fees",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000128",
+            "PG_Handbook_pdf_000224",
+            "UG_Handbook_pdf_000153",
+            "UG_Handbook_pdf_000243",
+            "UG_Handbook_pdf_000245"
+          ],
+          "retrieved_chunk_ids": [
+            "PG_Handbook_pdf_000112",
+            "UG_Handbook_pdf_000242",
+            "UG_Handbook_pdf_000200",
+            "PG_Handbook_pdf_000220",
+            "UG_Handbook_pdf_000195",
+            "UG_Handbook_pdf_000204",
+            "UG_Handbook_pdf_000401",
+            "PG_Handbook_pdf_000103",
+            "PG_Handbook_pdf_000174",
+            "PG_Handbook_pdf_000184"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "r@5": 0.0,
+          "latency_ms": 1.7209,
+          "memory_mb": 0.1286,
+          "fallback_to": null
+        },
+        {
+          "query": "What does the code of conduct say about enforcement and disciplinary action/penalties for misconduct?",
+          "category": "disciplinary",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000276",
+            "PG_Handbook_pdf_000278",
+            "UG_Handbook_pdf_000307",
+            "UG_Handbook_pdf_000309",
+            "UG_Handbook_pdf_000323"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000290",
+            "PG_Handbook_pdf_000000",
+            "PG_Handbook_pdf_000276",
+            "PG_Handbook_pdf_000308",
+            "PG_Handbook_pdf_000257",
+            "UG_Handbook_pdf_000224",
+            "UG_Handbook_pdf_000270",
+            "UG_Handbook_pdf_000307",
+            "PG_Handbook_pdf_000240",
+            "PG_Handbook_pdf_000265"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.3333333333333333,
+          "p@5": 0.2,
+          "r@5": 0.2,
+          "latency_ms": 1.3442,
+          "memory_mb": 0.1286,
+          "fallback_to": null
+        },
+        {
+          "query": "What are the rules for thesis evaluation and defence (committee, external evaluation, and defence scheduling)?",
+          "category": "thesis_fyp",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000166",
+            "PG_Handbook_pdf_000169",
+            "PG_Handbook_pdf_000170",
+            "PG_Handbook_pdf_000177"
+          ],
+          "retrieved_chunk_ids": [
+            "PG_Handbook_pdf_000166",
+            "PG_Handbook_pdf_000153",
+            "PG_Handbook_pdf_000110",
+            "PG_Handbook_pdf_000146",
+            "UG_Handbook_pdf_000141",
+            "UG_Handbook_pdf_000140",
+            "UG_Handbook_pdf_000084",
+            "UG_Handbook_pdf_000111",
+            "UG_Handbook_pdf_000180",
+            "UG_Handbook_pdf_000250"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.3333333333333333,
+          "p@5": 0.2,
+          "r@5": 0.25,
+          "latency_ms": 1.2769,
+          "memory_mb": 0.1286,
+          "fallback_to": null
+        },
+        {
+          "query": "What is the grading scale and grade points (e.g., 4.00, 3.50, 3.00 ...) used for percentage marks?",
+          "category": "grading_scale",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000060",
+            "UG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000107",
+            "UG_Handbook_pdf_000162"
+          ],
+          "retrieved_chunk_ids": [
+            "PG_Handbook_pdf_000202",
+            "UG_Handbook_pdf_000365",
+            "UG_Handbook_pdf_000306",
+            "PG_Handbook_pdf_000275",
+            "UG_Handbook_pdf_000417",
+            "PG_Handbook_pdf_000125",
+            "PG_Handbook_pdf_000176",
+            "UG_Handbook_pdf_000333",
+            "PG_Handbook_pdf_000301",
+            "UG_Handbook_pdf_000203"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "r@5": 0.0,
+          "latency_ms": 1.3105,
+          "memory_mb": 0.1286,
+          "fallback_to": null
+        },
+        {
+          "query": "What is the deferment policy during a degree (conditions and the 25% tuition fee rule during deferment)?",
+          "category": "leave_policy",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000173",
+            "UG_Handbook_pdf_000153"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000415",
+            "UG_Handbook_pdf_000204",
+            "PG_Handbook_pdf_000173",
+            "UG_Handbook_pdf_000153",
+            "UG_Handbook_pdf_000255",
+            "PG_Handbook_pdf_000398",
+            "PG_Handbook_pdf_000110",
+            "PG_Handbook_pdf_000115",
+            "UG_Handbook_pdf_000117",
+            "UG_Handbook_pdf_000146"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.3333333333333333,
+          "p@5": 0.4,
+          "r@5": 1.0,
+          "latency_ms": 1.3945,
+          "memory_mb": 0.1286,
+          "fallback_to": null
+        },
+        {
+          "query": "What are the examination rules about unfair means and exam conduct (warnings, forbidden material, seating, start rules)?",
+          "category": "examination_rules",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000057",
+            "PG_Handbook_pdf_000059",
+            "PG_Handbook_pdf_000254",
+            "UG_Handbook_pdf_000056",
+            "UG_Handbook_pdf_000058",
+            "UG_Handbook_pdf_000287"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000056",
+            "UG_Handbook_pdf_000417",
+            "PG_Handbook_pdf_000278",
+            "PG_Handbook_pdf_000400",
+            "UG_Handbook_pdf_000045",
+            "UG_Handbook_pdf_000158",
+            "PG_Handbook_pdf_000398",
+            "UG_Handbook_pdf_000058",
+            "UG_Handbook_pdf_000061",
+            "PG_Handbook_pdf_000311"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.3333333333333333,
+          "p@5": 0.2,
+          "r@5": 0.16666666666666666,
+          "latency_ms": 1.3599,
+          "memory_mb": 0.1286,
+          "fallback_to": null
+        }
+      ],
+      "tfidf": [
+        {
+          "query": "Under what conditions is an undergraduate student considered academically deficient (probation/warning triggers)?",
+          "category": "gpa",
+          "relevant_chunk_ids": [
+            "UG_Handbook_pdf_000076",
+            "UG_Handbook_pdf_000128",
+            "UG_Handbook_pdf_000132",
+            "UG_Handbook_pdf_000133",
+            "UG_Handbook_pdf_000135",
+            "UG_Handbook_pdf_000176"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000170",
+            "UG_Handbook_pdf_000075",
+            "UG_Handbook_pdf_000131",
+            "UG_Handbook_pdf_000171",
+            "UG_Handbook_pdf_000073",
+            "UG_Handbook_pdf_000132",
+            "UG_Handbook_pdf_000176",
+            "UG_Handbook_pdf_000130",
+            "UG_Handbook_pdf_000082",
+            "PG_Handbook_pdf_000111"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "r@5": 0.0,
+          "latency_ms": 0.9608,
+          "memory_mb": 0.8289,
+          "fallback_to": null
+        },
+        {
+          "query": "How are Semester GPA and CGPA reported/approved in the official results?",
+          "category": "gpa",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000068",
+            "UG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000129"
+          ],
+          "retrieved_chunk_ids": [
+            "PG_Handbook_pdf_000068",
+            "UG_Handbook_pdf_000071",
+            "UG_Handbook_pdf_000128",
+            "PG_Handbook_pdf_000210",
+            "UG_Handbook_pdf_000176",
+            "PG_Handbook_pdf_000059",
+            "UG_Handbook_pdf_000135",
+            "UG_Handbook_pdf_000058",
+            "UG_Handbook_pdf_000132",
+            "UG_Handbook_pdf_000257"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.3333333333333333,
+          "p@5": 0.2,
+          "r@5": 0.3333333333333333,
+          "latency_ms": 0.5865,
+          "memory_mb": 0.8136,
+          "fallback_to": null
+        },
+        {
+          "query": "What is the policy when a student misses the mid semester examination due to acceptable reasons (make-up timing)?",
+          "category": "attendance",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000062",
+            "PG_Handbook_pdf_000116",
+            "UG_Handbook_pdf_000067",
+            "UG_Handbook_pdf_000124",
+            "UG_Handbook_pdf_000164"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000067",
+            "PG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000165",
+            "UG_Handbook_pdf_000166",
+            "UG_Handbook_pdf_000125",
+            "UG_Handbook_pdf_000124",
+            "PG_Handbook_pdf_000112",
+            "UG_Handbook_pdf_000113",
+            "PG_Handbook_pdf_000116",
+            "UG_Handbook_pdf_000164"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.6666666666666666,
+          "p@5": 0.4,
+          "r@5": 0.4,
+          "latency_ms": 0.5802,
+          "memory_mb": 0.8136,
+          "fallback_to": null
+        },
+        {
+          "query": "What is the policy when a student misses the end semester examination due to acceptable reasons (make-up timing/limits)?",
+          "category": "attendance",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000067",
+            "UG_Handbook_pdf_000125",
+            "UG_Handbook_pdf_000166"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000166",
+            "UG_Handbook_pdf_000125",
+            "UG_Handbook_pdf_000067",
+            "PG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000165",
+            "UG_Handbook_pdf_000124",
+            "PG_Handbook_pdf_000112",
+            "PG_Handbook_pdf_000116",
+            "UG_Handbook_pdf_000164",
+            "UG_Handbook_pdf_000107"
+          ],
+          "p@1": 1.0,
+          "p@3": 1.0,
+          "p@5": 0.8,
+          "r@5": 1.0,
+          "latency_ms": 0.5967,
+          "memory_mb": 0.8136,
+          "fallback_to": null
+        },
+        {
+          "query": "Can a student repeat a course to clear an F/XF or improve the grade, and how are old vs new grades shown/used in CGPA?",
+          "category": "course_repetition",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000085",
+            "PG_Handbook_pdf_000118",
+            "UG_Handbook_pdf_000089",
+            "UG_Handbook_pdf_000090",
+            "UG_Handbook_pdf_000148",
+            "UG_Handbook_pdf_000149",
+            "UG_Handbook_pdf_000188"
+          ],
+          "retrieved_chunk_ids": [
+            "PG_Handbook_pdf_000117",
+            "UG_Handbook_pdf_000089",
+            "UG_Handbook_pdf_000148",
+            "UG_Handbook_pdf_000188",
+            "PG_Handbook_pdf_000084",
+            "PG_Handbook_pdf_000160",
+            "PG_Handbook_pdf_000085",
+            "UG_Handbook_pdf_000149",
+            "UG_Handbook_pdf_000150",
+            "PG_Handbook_pdf_000181"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.6666666666666666,
+          "p@5": 0.6,
+          "r@5": 0.42857142857142855,
+          "latency_ms": 0.5869,
+          "memory_mb": 0.8136,
+          "fallback_to": null
+        },
+        {
+          "query": "What is the maximum number of courses a student may repeat during the degree (per the policy)?",
+          "category": "course_repetition",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000085",
+            "PG_Handbook_pdf_000118",
+            "PG_Handbook_pdf_000161",
+            "UG_Handbook_pdf_000090"
+          ],
+          "retrieved_chunk_ids": [
+            "PG_Handbook_pdf_000085",
+            "UG_Handbook_pdf_000195",
+            "PG_Handbook_pdf_000230",
+            "UG_Handbook_pdf_000147",
+            "UG_Handbook_pdf_000213",
+            "UG_Handbook_pdf_000167",
+            "PG_Handbook_pdf_000118",
+            "UG_Handbook_pdf_000250",
+            "UG_Handbook_pdf_000150",
+            "PG_Handbook_pdf_000231"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.3333333333333333,
+          "p@5": 0.2,
+          "r@5": 0.25,
+          "latency_ms": 0.575,
+          "memory_mb": 0.8134,
+          "fallback_to": null
+        },
+        {
+          "query": "What are the conditions for award of an undergraduate degree (completion of prescribed requirements and minimum criteria)?",
+          "category": "graduation",
+          "relevant_chunk_ids": [
+            "UG_Handbook_pdf_000073",
+            "UG_Handbook_pdf_000130",
+            "UG_Handbook_pdf_000159"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000195",
+            "UG_Handbook_pdf_000211",
+            "UG_Handbook_pdf_000073",
+            "UG_Handbook_pdf_000159",
+            "PG_Handbook_pdf_000071",
+            "UG_Handbook_pdf_000045",
+            "UG_Handbook_pdf_000261",
+            "PG_Handbook_pdf_000138",
+            "UG_Handbook_pdf_000197",
+            "PG_Handbook_pdf_000073"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.3333333333333333,
+          "p@5": 0.4,
+          "r@5": 0.6666666666666666,
+          "latency_ms": 0.7031,
+          "memory_mb": 0.8134,
+          "fallback_to": null
+        },
+        {
+          "query": "What minimum CGPA is mentioned for successful completion of degree programs (as stated in the handbook grading section)?",
+          "category": "graduation",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000060",
+            "UG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000073",
+            "UG_Handbook_pdf_000107",
+            "UG_Handbook_pdf_000159"
+          ],
+          "retrieved_chunk_ids": [
+            "PG_Handbook_pdf_000152",
+            "UG_Handbook_pdf_000204",
+            "UG_Handbook_pdf_000195",
+            "UG_Handbook_pdf_000211",
+            "PG_Handbook_pdf_000134",
+            "UG_Handbook_pdf_000045",
+            "PG_Handbook_pdf_000074",
+            "PG_Handbook_pdf_000096",
+            "PG_Handbook_pdf_000104",
+            "UG_Handbook_pdf_000126"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "r@5": 0.0,
+          "latency_ms": 0.5847,
+          "memory_mb": 0.8133,
+          "fallback_to": null
+        },
+        {
+          "query": "When is tuition fee payable in the semester system, and what does the fee structure annex specify?",
+          "category": "fees",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000379",
+            "UG_Handbook_pdf_000395",
+            "UG_Handbook_pdf_000401"
+          ],
+          "retrieved_chunk_ids": [
+            "PG_Handbook_pdf_000174",
+            "UG_Handbook_pdf_000395",
+            "UG_Handbook_pdf_000401",
+            "PG_Handbook_pdf_000384",
+            "PG_Handbook_pdf_000379",
+            "PG_Handbook_pdf_000220",
+            "PG_Handbook_pdf_000128",
+            "UG_Handbook_pdf_000153",
+            "PG_Handbook_pdf_000377",
+            "PG_Handbook_pdf_000079"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.6666666666666666,
+          "p@5": 0.6,
+          "r@5": 1.0,
+          "latency_ms": 0.6665,
+          "memory_mb": 0.8132,
+          "fallback_to": null
+        },
+        {
+          "query": "What happens if a student does not deposit dues/fee on time (restrictions/penalties such as 25% fee to keep registration intact)?",
+          "category": "fees",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000128",
+            "PG_Handbook_pdf_000224",
+            "UG_Handbook_pdf_000153",
+            "UG_Handbook_pdf_000243",
+            "UG_Handbook_pdf_000245"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000243",
+            "UG_Handbook_pdf_000245",
+            "PG_Handbook_pdf_000224",
+            "PG_Handbook_pdf_000111",
+            "PG_Handbook_pdf_000379",
+            "UG_Handbook_pdf_000153",
+            "PG_Handbook_pdf_000221",
+            "PG_Handbook_pdf_000128",
+            "UG_Handbook_pdf_000395",
+            "UG_Handbook_pdf_000206"
+          ],
+          "p@1": 1.0,
+          "p@3": 1.0,
+          "p@5": 0.6,
+          "r@5": 0.6,
+          "latency_ms": 0.7374,
+          "memory_mb": 0.8132,
+          "fallback_to": null
+        },
+        {
+          "query": "What does the code of conduct say about enforcement and disciplinary action/penalties for misconduct?",
+          "category": "disciplinary",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000276",
+            "PG_Handbook_pdf_000278",
+            "UG_Handbook_pdf_000307",
+            "UG_Handbook_pdf_000309",
+            "UG_Handbook_pdf_000323"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000309",
+            "PG_Handbook_pdf_000257",
+            "UG_Handbook_pdf_000290",
+            "PG_Handbook_pdf_000278",
+            "PG_Handbook_pdf_000276",
+            "UG_Handbook_pdf_000307",
+            "UG_Handbook_pdf_000376",
+            "PG_Handbook_pdf_000345",
+            "PG_Handbook_pdf_000298",
+            "PG_Handbook_pdf_000277"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.3333333333333333,
+          "p@5": 0.6,
+          "r@5": 0.6,
+          "latency_ms": 0.6095,
+          "memory_mb": 0.8129,
+          "fallback_to": null
+        },
+        {
+          "query": "What are the rules for thesis evaluation and defence (committee, external evaluation, and defence scheduling)?",
+          "category": "thesis_fyp",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000166",
+            "PG_Handbook_pdf_000169",
+            "PG_Handbook_pdf_000170",
+            "PG_Handbook_pdf_000177"
+          ],
+          "retrieved_chunk_ids": [
+            "PG_Handbook_pdf_000166",
+            "PG_Handbook_pdf_000169",
+            "PG_Handbook_pdf_000146",
+            "PG_Handbook_pdf_000177",
+            "PG_Handbook_pdf_000170",
+            "UG_Handbook_pdf_000122",
+            "UG_Handbook_pdf_000117",
+            "UG_Handbook_pdf_000105",
+            "PG_Handbook_pdf_000134",
+            "PG_Handbook_pdf_000179"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.6666666666666666,
+          "p@5": 0.8,
+          "r@5": 1.0,
+          "latency_ms": 0.5999,
+          "memory_mb": 0.8129,
+          "fallback_to": null
+        },
+        {
+          "query": "What is the grading scale and grade points (e.g., 4.00, 3.50, 3.00 ...) used for percentage marks?",
+          "category": "grading_scale",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000060",
+            "UG_Handbook_pdf_000062",
+            "UG_Handbook_pdf_000107",
+            "UG_Handbook_pdf_000162"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000062",
+            "PG_Handbook_pdf_000060",
+            "UG_Handbook_pdf_000061",
+            "UG_Handbook_pdf_000162",
+            "PG_Handbook_pdf_000122",
+            "UG_Handbook_pdf_000058",
+            "PG_Handbook_pdf_000152",
+            "PG_Handbook_pdf_000273",
+            "UG_Handbook_pdf_000388",
+            "UG_Handbook_pdf_000304"
+          ],
+          "p@1": 1.0,
+          "p@3": 0.6666666666666666,
+          "p@5": 0.6,
+          "r@5": 0.75,
+          "latency_ms": 0.5588,
+          "memory_mb": 0.8129,
+          "fallback_to": null
+        },
+        {
+          "query": "What is the deferment policy during a degree (conditions and the 25% tuition fee rule during deferment)?",
+          "category": "leave_policy",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000173",
+            "UG_Handbook_pdf_000153"
+          ],
+          "retrieved_chunk_ids": [
+            "UG_Handbook_pdf_000220",
+            "PG_Handbook_pdf_000174",
+            "PG_Handbook_pdf_000173",
+            "PG_Handbook_pdf_000193",
+            "PG_Handbook_pdf_000112",
+            "PG_Handbook_pdf_000092",
+            "PG_Handbook_pdf_000206",
+            "UG_Handbook_pdf_000150",
+            "UG_Handbook_pdf_000401",
+            "UG_Handbook_pdf_000153"
+          ],
+          "p@1": 0.0,
+          "p@3": 0.3333333333333333,
+          "p@5": 0.2,
+          "r@5": 0.5,
+          "latency_ms": 0.6433,
+          "memory_mb": 0.8129,
+          "fallback_to": null
+        },
+        {
+          "query": "What are the examination rules about unfair means and exam conduct (warnings, forbidden material, seating, start rules)?",
+          "category": "examination_rules",
+          "relevant_chunk_ids": [
+            "PG_Handbook_pdf_000057",
+            "PG_Handbook_pdf_000059",
+            "PG_Handbook_pdf_000254",
+            "UG_Handbook_pdf_000056",
+            "UG_Handbook_pdf_000058",
+            "UG_Handbook_pdf_000287"
+          ],
+          "retrieved_chunk_ids": [
+            "PG_Handbook_pdf_000254",
+            "UG_Handbook_pdf_000287",
+            "UG_Handbook_pdf_000056",
+            "PG_Handbook_pdf_000057",
+            "UG_Handbook_pdf_000051",
+            "UG_Handbook_pdf_000052",
+            "PG_Handbook_pdf_000053",
+            "UG_Handbook_pdf_000050",
+            "UG_Handbook_pdf_000382",
+            "PG_Handbook_pdf_000050"
+          ],
+          "p@1": 1.0,
+          "p@3": 1.0,
+          "p@5": 0.8,
+          "r@5": 0.6666666666666666,
+          "latency_ms": 0.5876,
+          "memory_mb": 0.8129,
+          "fallback_to": null
+        }
+      ]
+    }
+  },
+  "parameter_sensitivity": {
+    "generated_at": "2026-04-27T09:09:46.445188+00:00",
+    "minhash": [
+      {
+        "num_perm": 32,
+        "num_bands": 32,
+        "rows_per_band": 1,
+        "mean_recall@5": 0.2173015873015873,
+        "mean_latency_ms": 0.0,
+        "build_time_s": 0.275
+      },
+      {
+        "num_perm": 64,
+        "num_bands": 32,
+        "rows_per_band": 2,
+        "mean_recall@5": 0.10222222222222221,
+        "mean_latency_ms": 0.0,
+        "build_time_s": 0.3044
+      },
+      {
+        "num_perm": 128,
+        "num_bands": 32,
+        "rows_per_band": 4,
+        "mean_recall@5": 0.0,
+        "mean_latency_ms": 0.0,
+        "build_time_s": 0.3488
+      },
+      {
+        "num_perm": 256,
+        "num_bands": 32,
+        "rows_per_band": 8,
+        "mean_recall@5": 0.0,
+        "mean_latency_ms": 0.0,
+        "build_time_s": 0.44
+      }
+    ],
+    "lsh": [
+      {
+        "num_bands": 16,
+        "rows_per_band": 8,
+        "mean_recall@5": 0.0
+      },
+      {
+        "num_bands": 32,
+        "rows_per_band": 4,
+        "mean_recall@5": 0.0
+      },
+      {
+        "num_bands": 64,
+        "rows_per_band": 2,
+        "mean_recall@5": 0.17444444444444446
+      }
+    ],
+    "simhash": [
+      {
+        "hamming_threshold": 5,
+        "mean_precision@5": 0.14666666666666667
+      },
+      {
+        "hamming_threshold": 8,
+        "mean_precision@5": 0.14666666666666667
+      },
+      {
+        "hamming_threshold": 10,
+        "mean_precision@5": 0.14666666666666667
+      },
+      {
+        "hamming_threshold": 12,
+        "mean_precision@5": 0.14666666666666667
+      },
+      {
+        "hamming_threshold": 15,
+        "mean_precision@5": 0.14666666666666667
+      }
+    ],
+    "hybrid": [
+      {
+        "alpha": 0.3,
+        "beta": 0.7,
+        "mean_precision@5": 0.28
+      },
+      {
+        "alpha": 0.5,
+        "beta": 0.5,
+        "mean_precision@5": 0.28
+      },
+      {
+        "alpha": 0.7,
+        "beta": 0.30000000000000004,
+        "mean_precision@5": 0.28
+      }
+    ]
+  },
+  "scalability": {
+    "generated_at": "2026-04-27T09:09:49.363141+00:00",
+    "points": [
+      {
+        "scale": 2,
+        "chunk_count": 868,
+        "build_time_s": 0.9493,
+        "build_times_s": {
+          "tfidf": 0.0549,
+          "minhash": 0.7131,
+          "simhash": 0.1813,
+          "hybrid": 0.8944
+        },
+        "mean_query_latency_ms": {
+          "tfidf": 0.7475333333333333,
+          "minhash": 29.95486,
+          "simhash": 1.6226533333333333,
+          "hybrid": 7.4820866666666666
+        }
+      },
+      {
+        "scale": 4,
+        "chunk_count": 1736,
+        "build_time_s": 1.8497,
+        "build_times_s": {
+          "tfidf": 0.0984,
+          "minhash": 1.4174,
+          "simhash": 0.3339,
+          "hybrid": 1.7513
+        },
+        "mean_query_latency_ms": {
+          "tfidf": 1.1264533333333333,
+          "minhash": 17.693140000000003,
+          "simhash": 2.1757733333333333,
+          "hybrid": 8.444873333333334
+        }
+      },
+      {
+        "scale": 8,
+        "chunk_count": 3472,
+        "build_time_s": 3.7363,
+        "build_times_s": {
+          "tfidf": 0.1935,
+          "minhash": 2.8765,
+          "simhash": 0.6662,
+          "hybrid": 3.5428
+        },
+        "mean_query_latency_ms": {
+          "tfidf": 1.8180133333333333,
+          "minhash": 11.97352,
+          "simhash": 3.79312,
+          "hybrid": 10.079993333333334
+        }
+      }
+    ]
+  }
+}
