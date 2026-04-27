@@ -12,9 +12,13 @@ class Settings(BaseSettings):
         env_file=".env", env_file_encoding="utf-8", extra="ignore"
     )
 
-    ANTHROPIC_API_KEY: str = ""
     OPENROUTER_API_KEY: str = ""
     OPENROUTER_DEFAULT_MODEL: str = "openai/gpt-oss-120b:free"
+    ANTHROPIC_API_KEY: str = ""  # Fallback only
+
+    # CORS Settings
+    CORS_ALLOWED_ORIGINS: list[str] = ["http://localhost:5173", "http://localhost:3000"]
+    CORS_ALLOWED_ORIGIN_REGEX: str | None = r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$"
 
     # Unstructured semantic chunking parameters
     UNSTRUCTURED_STRATEGY: str = "fast"        # "fast" | "hi_res" | "ocr_only"

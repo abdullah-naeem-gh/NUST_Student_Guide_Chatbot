@@ -50,9 +50,14 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+# Deployment CORS configuration
+origins = settings.CORS_ALLOWED_ORIGINS
+origin_regex = settings.CORS_ALLOWED_ORIGIN_REGEX
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$",
+    allow_origins=origins,
+    allow_origin_regex=origin_regex,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
