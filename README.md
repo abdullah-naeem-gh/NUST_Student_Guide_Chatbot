@@ -1,112 +1,95 @@
-# Academic Policy QA System
+# NUST Student Guide AI QA System
 
-> A scalable Question-Answering system over university handbooks using Big Data retrieval techniques.
-> Built for the Big Data Analytics course — NUST SEECS.
+An intelligent, retrieval-first QA system powered by **Locality Sensitive Hashing (LSH)** and **Hybrid Retrieval** over the NUST Undergraduate and Postgraduate Student Handbooks.
 
----
-
-## Architecture
-
-- **Backend**: FastAPI (Python) — MinHash+LSH, SimHash, TF-IDF, PageRank, LLM generation
-- **Frontend**: React + Vite + TailwindCSS — side-by-side method comparison, analytics dashboard
-- **Retrieval**: Three methods compared live on every query
-- **Extension**: PageRank section importance scoring
+This project was developed for the Big Data Analytics (BDA) course at NUST SEECS. It focuses on scalable, efficient retrieval of academic policies using MinHash, SimHash, and PageRank.
 
 ---
 
-## Quick Start
+## 🚀 Quick Start
 
-### Prerequisites
-- Python 3.11+
-- Node.js 18+
-- An Anthropic API key
+### 1. Prerequisites
+- **Python 3.10+**
+- **Node.js 18+**
+- **Anthropic API Key** (for LLM answer generation)
 
-### Install & Run
-
+### 2. Environment Setup
+Create a `.env` file in the `backend/` directory:
 ```bash
-# Clone
-git clone https://github.com/YOUR_USERNAME/academic-policy-qa.git
-cd academic-policy-qa
+ANTHROPIC_API_KEY=your_key_here
+```
 
-# Backend
+### 3. Installation & Run (Standalone Commands)
+
+#### Backend
+```bash
 cd backend
-cp .env.example .env
-# Edit .env and add your ANTHROPIC_API_KEY
+python -m venv .venv
+source .venv/bin/activate  # On Windows use \`.venv\Scripts\activate\`
 pip install -r requirements.txt
 uvicorn main:app --reload --port 8000
+```
 
-# Frontend (new terminal)
+#### Frontend
+```bash
 cd frontend
-cp .env.example .env
 npm install
 npm run dev
 ```
+The application will be available at [http://localhost:5173](http://localhost:5173).
 
-Open `http://localhost:5173` in your browser.
+---
 
-### Using the Makefile
+## 🛠 Project Structure
+
+- `backend/`: FastAPI application handling ingestion, indexing, and retrieval.
+- `frontend/`: React + Vite + Tailwind UI for query and analytics visualization.
+- `data/`:
+    - `raw/`: Source PDFs (UG/PG Handbooks).
+    - `chunks/`: Processed semantic text chunks.
+    - `index/`: Precomputed MinHash, SimHash, and TF-IDF artifacts.
+    - `results/`: Experimental evaluation data and reports.
+- `scripts/`: Utilities for running experiments and mass ingestion.
+
+---
+
+## 📖 Ingestion & Indexing Guide
+
+The project comes with pre-computed indices, but if you wish to add new documents or re-index:
+
+1. **Place PDFs**: Put your PDF files in `data/raw/`.
+2. **Ingest via UI**: Navigate to the **Ingest** page in the dashboard and click "Start Ingestion".
+3. **CLI Ingestion**:
+   ```bash
+   python scripts/ingest_cli.py # (If CLI script exists)
+   ```
+
+---
+
+## 📊 Experiments & Evaluation
+
+The system includes a robust evaluation framework measuring Precision@k, Recall@k, Latency, and Scalability.
+
+To run the experiments:
 ```bash
-make install-backend    # pip install backend deps
-make install-frontend   # npm install frontend deps
-make dev-backend        # start FastAPI server
-make dev-frontend       # start React dev server
-make run-experiments    # generate experiment results
+cd backend
+export PYTHONPATH=$PYTHONPATH:$(pwd)
+python ../scripts/run_experiments.py
 ```
+View the results in the **Analytics** tab of the web dashboard.
 
 ---
 
-## Usage
+## 🧠 Core Architecture
 
-1. **Ingest**: Go to the Ingest page, upload the handbook PDF, click Build Index
-2. **Query**: Enter a question, select retrieval method (or All), click Search
-3. **Compare**: View side-by-side results from MinHash, SimHash, and TF-IDF
-4. **Analytics**: Go to the Analytics page to view experiment results
-
----
-
-## Documentation
-
-| File | Purpose |
-|------|---------|
-| `docs/INSTRUCTIONS.md` | Deep technical spec for every algorithm |
-| `docs/FEATURES.md` | Complete feature specification |
-| `docs/TODO.md` | Phased development plan |
-| `docs/FOLDER_STRUCTURE.md` | Full project file layout |
-| `docs/SYSTEM_DESIGN.md` | Architecture and design decisions |
-| `docs/API_REFERENCE.md` | Complete API endpoint specification |
-| `docs/GIT_WORKFLOW.md` | Branch and commit strategy |
-| `.cursorrules` | Coding conventions for AI-assisted development |
+- **Ingestion**: Semantic chunking using `Unstructured` (or custom sliding window).
+- **Retrieval**: 
+    - **Hybrid**: MinHash+LSH (fast filtering) combined with SimHash (Hamming distance scoring).
+    - **Baseline**: TF-IDF exact vector similarity.
+- **Reranking**: PageRank importance scores fused with retrieval similarity.
+- **Generation**: Context-grounded response generation using Claude 3.
 
 ---
 
-## Retrieval Methods
-
-| Method | Type | Similarity Metric | Complexity |
-|--------|------|-------------------|-----------|
-| MinHash + LSH | Approximate | Jaccard (estimated) | O(1) per query |
-| SimHash | Approximate | Hamming distance | O(n) per query |
-| TF-IDF | Exact | Cosine similarity | O(V×n) per query |
-
----
-
-## Project Structure
-
-See `docs/FOLDER_STRUCTURE.md` for the complete layout.
-
----
-
-## Experiments
-
-Three required experiments:
-1. **Method comparison**: Precision@k and Recall@k across all methods on 15 benchmark queries
-2. **Parameter sensitivity**: Impact of NUM_PERM, NUM_BANDS, Hamming threshold
-3. **Scalability**: Query latency vs corpus size (1x, 2x, 4x, 8x)
-
-Run with: `python scripts/run_experiments.py`
-Results saved to `data/results/` and served via `GET /experiments`.
-
----
-
-## Team
-- Abdullah Naeem 
-- Abdullah Ejaz
+## 📝 License
+This project is for academic purposes as part of the NUST BDA course.
