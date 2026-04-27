@@ -11,12 +11,12 @@ This project was developed for the Big Data Analytics (BDA) course at NUST SEECS
 ### 1. Prerequisites
 - **Python 3.10+**
 - **Node.js 18+**
-- **Anthropic API Key** (for LLM answer generation)
+- **OpenRouter API Key** (for free/low-cost LLM answer generation)
 
 ### 2. Environment Setup
 Create a `.env` file in the `backend/` directory:
 ```bash
-ANTHROPIC_API_KEY=your_key_here
+OPENROUTER_API_KEY=your_key_here
 ```
 
 ### 3. Installation & Run (Standalone Commands)
@@ -61,7 +61,7 @@ The project comes with pre-computed indices, but if you wish to add new document
 2. **Ingest via UI**: Navigate to the **Ingest** page in the dashboard and click "Start Ingestion".
 3. **CLI Ingestion**:
    ```bash
-   python scripts/ingest_cli.py # (If CLI script exists)
+   python scripts/run_experiments.py # Runs indexing as part of the pipeline
    ```
 
 ---
@@ -87,7 +87,7 @@ View the results in the **Analytics** tab of the web dashboard.
     - **Hybrid**: MinHash+LSH (fast filtering) combined with SimHash (Hamming distance scoring).
     - **Baseline**: TF-IDF exact vector similarity.
 - **Reranking**: PageRank importance scores fused with retrieval similarity.
-- **Generation**: Context-grounded response generation using Claude 3.
+- **Generation**: Context-grounded response generation using OpenRouter (e.g., Qwen/GPT-4 Free).
 
 ---
 
