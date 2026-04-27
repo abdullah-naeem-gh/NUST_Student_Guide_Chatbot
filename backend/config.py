@@ -17,8 +17,12 @@ class Settings(BaseSettings):
     ANTHROPIC_API_KEY: str = ""  # Fallback only
 
     # CORS Settings
-    CORS_ALLOWED_ORIGINS: list[str] = ["http://localhost:5173", "http://localhost:3000"]
-    CORS_ALLOWED_ORIGIN_REGEX: str | None = None
+    CORS_ALLOWED_ORIGINS: list[str] = [
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "https://nust-student-guide-chatbot.vercel.app",
+    ]
+    CORS_ALLOWED_ORIGIN_REGEX: str | None = r"https://nust-student-guide-chatbot.*\.vercel\.app"
 
     # Unstructured semantic chunking parameters
     UNSTRUCTURED_STRATEGY: str = "fast"        # "fast" | "hi_res" | "ocr_only"
